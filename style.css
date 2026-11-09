@@ -1482,3 +1482,246 @@ p {
     padding: 70px 24px;
   }
 }
+/* Team page */
+.team-hero,
+.team-testimonial {
+  position: relative;
+  min-height: 600px;
+  padding: 120px max(24px, 7vw) 80px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  color: #f5efe3;
+}
+.team-hero img,
+.team-testimonial > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.team-hero:after,
+.team-testimonial:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    0deg,
+    rgba(30, 22, 17, 0.85),
+    rgba(30, 22, 17, 0.3)
+  );
+}
+.team-hero > div,
+.team-testimonial > div {
+  position: relative;
+  z-index: 1;
+  max-width: 950px;
+}
+.team-hero h1 {
+  font-size: clamp(3.2rem, 6.5vw, 6rem);
+}
+.team-hero p {
+  font-size: clamp(14px, 1.4vw, 19px);
+  max-width: 880px;
+}
+.team-origin {
+  padding: 100px max(24px, 9vw);
+  display: grid;
+  grid-template-columns: 38% 62%;
+  gap: 60px;
+}
+.team-origin h2,
+.team-method h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+.team-origin p,
+.team-method p {
+  color: #4a3f36;
+  font-size: 16px;
+  line-height: 1.65;
+}
+.team-origin .lead {
+  font-size: 19px;
+  font-weight: 500;
+  color: #2a211b;
+}
+.commitments {
+  padding: 100px max(24px, 9vw);
+  background: #362b22;
+  color: #f5efe3;
+}
+.commitments > h2,
+.team-members > h2,
+.trust-section > h2 {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  text-align: center;
+  margin-bottom: 56px;
+}
+.commitment-grid,
+.member-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.commitment-grid article {
+  border: 1px solid #5a4c40;
+  border-radius: 24px;
+  padding: 40px 36px;
+}
+.commitment-grid strong {
+  color: #d9aa3d;
+  font:
+    400 48px Georgia,
+    serif;
+}
+.commitment-grid h3 {
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+}
+.commitment-grid b {
+  display: block;
+}
+.commitment-grid p {
+  color: #d8cfc4;
+  line-height: 1.65;
+}
+.team-method {
+  display: grid;
+  grid-template-columns: 45% 55%;
+  min-height: 560px;
+}
+.team-method img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.team-method > div:last-child {
+  align-self: center;
+  padding: 80px max(32px, 7vw);
+  background: #faf7f0;
+}
+.team-members {
+  padding: 100px max(24px, 9vw);
+}
+.member-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+.member-grid article {
+  border-radius: 24px;
+  background: #faf7f0;
+  padding: 44px;
+}
+.initials {
+  display: inline-flex;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  font:
+    28px Georgia,
+    serif;
+  margin-bottom: 20px;
+}
+.initials--gold {
+  background: #d9aa3d;
+}
+.initials--dark {
+  background: #2a211b;
+  color: #d9aa3d;
+}
+.member-grid h3 {
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+}
+.member-grid p {
+  color: #4a3f36;
+  line-height: 1.65;
+}
+.trust-section {
+  padding: 100px max(24px, 9vw);
+  background: #faf7f0;
+}
+.trust-logos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  border-bottom: 1px solid #e3ddd2;
+  padding-bottom: 56px;
+}
+.trust-logos img {
+  max-width: 200px;
+  max-height: 80px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+.team-testimonial {
+  min-height: 560px;
+  align-items: center;
+  justify-content: center;
+}
+.team-testimonial > div {
+  max-width: 760px;
+}
+.team-testimonial h2 {
+  text-align: center;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  margin-bottom: 44px;
+}
+.team-testimonial blockquote {
+  margin: 0;
+  padding: 56px 64px;
+  border-radius: 32px 140px 32px 32px;
+  background: #d9aa3d;
+  color: #2a211b;
+  font-size: clamp(18px, 2vw, 28px);
+  font-weight: 500;
+}
+.team-testimonial p {
+  margin-left: 24px;
+}
+.team-contact {
+  padding: 100px 24px;
+  text-align: center;
+  background: #362b22;
+  color: #f5efe3;
+}
+.team-contact h2 {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+}
+.team-contact p {
+  color: #d8cfc4;
+}
+.team-contact .button {
+  margin: 20px 6px 0;
+}
+@media (max-width: 800px) {
+  .team-origin,
+  .team-method,
+  .member-grid {
+    grid-template-columns: 1fr;
+  }
+  .commitment-grid {
+    grid-template-columns: 1fr;
+  }
+  .team-origin,
+  .commitments,
+  .team-members,
+  .trust-section {
+    padding: 70px 24px;
+  }
+  .team-method > div:last-child {
+    padding: 60px 24px;
+  }
+  .trust-logos {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .team-testimonial {
+    padding: 70px 24px;
+  }
+  .team-testimonial blockquote {
+    padding: 36px 28px;
+    border-radius: 24px 70px 24px 24px;
+  }
+}
