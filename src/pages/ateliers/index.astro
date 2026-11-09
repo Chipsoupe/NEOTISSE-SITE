@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+
+const sections = [
+  {
+    id: 'demonstratifs',
+    title: 'Filage, tissage et teinture végétale',
+    lead: 'Découvrez les grandes étapes de la production textile, de la transformation des fibres à la réalisation d’étoffes, en passant par la coloration des fils.',
+    body: 'Une présentation démonstrative et explicative des techniques : à travers les outils, les matières premières et les gestes techniques, les participants découvrent les principes de fabrication des textiles. Chaque pôle aborde une étape de la chaîne opératoire textile, replacée dans son contexte historique et archéologique. Les outils sont reproduits à partir de résultats de fouilles.',
+    image: 'Filage-au-fuseau_o1sC.jpg',
+    alt: 'Filage au fuseau lors d’un atelier démonstratif',
+    dark: false,
+  },
+  {
+    id: 'tablettes',
+    title: 'Tissage aux tablettes',
+    lead: 'Initiez-vous au tissage aux tablettes et réalisez votre propre galon !',
+    body: 'Cette technique ancienne permet de produire des bandes textiles étroites à l’aide de petites tablettes percées, qui organisent et manipulent les fils. Les participants découvrent le fonctionnement de l’outil, comprennent l’entrecroisement des fils et expérimentent les gestes nécessaires à la réalisation d’un galon. Accompagnés pas à pas, ils voient leur création prendre forme au fil du tissage.',
+    extra: 'L’atelier associe apprentissage technique, manipulation et création, tout en abordant l’histoire des textiles et leurs usages dans les sociétés du passé. Chaque participant repart avec son propre galon.',
+    image: 'Atelier-participatif-tissage-aux-tablettes-scaled_o1sC.jpg',
+    alt: 'Participants d’un atelier de tissage aux tablettes',
+    dark: true,
+  },
+  {
+    id: 'enfants',
+    title: 'Découvrir le textile en expérimentant',
+    lead: 'Parce que les savoir-faire textiles se découvrent aussi par le jeu et la manipulation, deux activités sont proposées selon l’âge des participants, le contexte et les objectifs de l’intervention.',
+    body: 'Sur un support en carton et avec des fils de couleur, les enfants passent alternativement le fil au-dessus et au-dessous des fils tendus et découvrent comment se construit une surface textile. Une activité ludique qui développe la motricité fine, la concentration et l’observation. Chaque enfant repart avec son tissage.',
+    extra: 'Comment obtenir de la couleur à partir des plantes ? Les enfants découvrent les ingrédients, observent les couleurs et suivent les étapes de la teinture, une pratique ancienne qui associe matières naturelles, gestes techniques et expérimentation. Chaque enfant repart avec son écheveau teint.',
+    image: 'Atelier-enfant_o1sC.jpg',
+    alt: 'Enfant tissant des fils de couleur sur un carton',
+    dark: false,
+  },
+  {
+    id: 'experimentation',
+    title: 'Expérimentation archéologique',
+    lead: 'Des projets pour les archéologues, les chercheurs et les professionnels du patrimoine.',
+    body: 'En s’appuyant sur les données archéologiques, iconographiques et documentaires, ces expérimentations explorent les gestes, les outils, les matériaux et les procédés de la production textile. Elles permettent de mettre à l’épreuve des hypothèses, d’identifier les contraintes techniques de certaines méthodes et de mieux appréhender les possibilités offertes par les techniques anciennes.',
+    extra: 'Une première expérimentation, menée avec les archéologues Jean Vaquer et Michel Maillé, a porté sur la réalisation de ceintures à motifs de chevrons inspirées des statues-menhirs : un travail qui confronte les indices iconographiques aux contraintes de la pratique.',
+    image: 'Ceintures-realisees-pendant-les-XP_o1sC.jpg',
+    alt: 'Ceintures à chevrons réalisées pendant l’expérimentation statues-menhirs',
+    dark: true,
+  },
+  {
+    id: 'conferences',
+    title: 'Conférences : à la découverte de l’archéologie des textiles',
+    body: 'Des conférences consacrées aux textiles anciens, à leurs techniques de fabrication et à leur place dans les sociétés du passé. En s’appuyant sur les découvertes archéologiques, les sources iconographiques et la recherche, elles abordent la production des fibres, le filage, le tissage, la teinture, les outils, les structures textiles et les usages des étoffes.',
+    extra: 'Le contenu s’adapte aux thématiques souhaitées, au niveau de spécialisation du public et au contexte : institutions culturelles, associations, étudiants, professionnels du patrimoine, communautés scientifiques et grand public.',
+    image: 'Conference-communication_o1sC.jpg',
+    alt: 'Conférence devant un public',
+    dark: false,
+  },
+  {
+    id: 'accessibles',
+    title: 'Des ateliers accessibles',
+    body: 'Les visiteurs aveugles ou malvoyants découvrent fibres et tissus par le toucher. Pour les enfants autistes, nous choisissons des matières douces et un rythme plus calme.',
+    extra: 'Parlez-nous de votre public : nous adaptons le déroulé, les supports et la manipulation à chaque projet.',
+    image: 'Atelier-explicatif-_2__o1sC.jpg',
+    alt: 'Médiatrice présentant des textiles au public',
+    dark: true,
+  },
+];
+
+const steps = [
+  ['01', 'Introduction contextuelle', 'Présentation de Neotisse, de son approche pluridisciplinaire et du cadre archéologique de l’atelier selon la période étudiée.'],
+  ['02', 'Démonstration pratique', 'Reconstitution rigoureuse des gestes anciens, avec des outils reproduits à partir de résultats de fouilles archéologiques.'],
+  ['03', 'Expérimentation', 'Manipulation des matières et des outils pour comprendre concrètement les techniques et les savoir-faire textiles.'],
+];
+---
+
+<BaseLayout title="Ateliers - Neotisse" description="Des ateliers de médiation scientifique autour des savoir-faire textiles anciens, conçus pour faire découvrir les gestes, les matières et les techniques qui">
+  <section class="atelier-hero">
+    <img src="/images/Atelier-explicatif_o1sC.jpg" alt="Atelier explicatif autour d’une table de matériel textile" />
+    <div><h1>Nos ateliers</h1><p>Des ateliers de médiation scientifique autour des savoir-faire textiles anciens, conçus pour faire découvrir les gestes, les matières et les techniques qui ont façonné la production textile au fil des siècles. À travers la démonstration, l’expérimentation et la pratique, petits et grands explorent ce patrimoine de manière concrète, sensible et accessible.</p></div>
+  </section>
+  <section class="atelier-intro paper-section">
+    <div><h2>Pour les musées, les sites et les collectivités</h2><p>Nos ateliers s’adressent aux musées, aux sites archéologiques, aux structures culturelles et aux collectivités. Ils peuvent être adaptés aux publics, aux objectifs pédagogiques et aux contraintes de chaque projet.</p><div class="atelier-jumps">{sections.map((section) => <a href={`#${section.id}`}>{section.title.split(' — ')[0]}</a>)}</div></div>
+    <div class="atelier-callout"><h3>Un atelier sur mesure</h3><p>Chaque intervention peut être adaptée en fonction du public, de la durée souhaitée, du contexte historique et des objectifs de médiation. Les différents pôles peuvent être proposés indépendamment ou combinés pour construire un parcours de découverte plus complet.</p><Button href="/contact/" variant="dark">Concevoir mon atelier</Button></div>
+  </section>
+  {sections.map((section, index) => (
+    <section id={section.id} class:list={['atelier-detail-section', { 'atelier-detail-section--dark': section.dark, 'atelier-detail-section--reverse': index % 2 === 1 }]}>
+      <div class="atelier-detail-image"><img src={`/images/${section.image}`} alt={section.alt} loading="lazy" /></div>
+      <div class="atelier-detail-copy"><h2>{section.title}</h2>{section.lead && <p class="atelier-lead">{section.lead}</p>}<p>{section.body}</p>{section.extra && <p>{section.extra}</p>}<Button href="/contact/" variant="gold">{section.id === 'conferences' ? 'Programmer une conférence' : section.id === 'experimentation' ? 'Proposer un projet' : section.id === 'accessibles' ? 'En parler ensemble' : 'Organiser cet atelier'}</Button></div>
+    </section>
+  ))}
+  <section class="atelier-steps paper-section"><h2>Comment se déroule un atelier ?</h2><div>{steps.map(([number, title, text]) => <article><strong>{number}</strong><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+</BaseLayout>
