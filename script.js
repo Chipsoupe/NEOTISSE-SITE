@@ -49,7 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
         atelier.open = false;
       });
       summary?.addEventListener("click", (event) => {
-        if (event.detail > 0) event.preventDefault();
+        if (event.detail > 0 && !event.target.closest("a")) {
+          event.preventDefault();
+        }
       });
     });
   }

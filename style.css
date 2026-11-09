@@ -380,7 +380,7 @@ a {
   top: -4rem;
   z-index: 20;
   padding: 0.75rem 1rem;
-  background: #d9aa3d;
+  background: #F3DFA2;
 }
 .skip-link:focus {
   top: 1rem;
@@ -436,13 +436,18 @@ body {
 }
 .site-nav a:hover,
 .site-nav a:focus-visible {
-  color: #d9aa3d;
+  color: #F3DFA2;
 }
 .header-cta {
-  border: 1px solid #d9aa3d;
+  border: 1px solid #FFE436;
   border-radius: 10px;
   padding: 8px 8px 8px 14px;
   font-size: 13px;
+  transition: filter 180ms ease;
+}
+.header-cta:hover,
+.header-cta:focus-visible {
+  filter: brightness(0.78);
 }
 .header-cta span {
   display: inline-flex;
@@ -452,7 +457,7 @@ body {
   width: 32px;
   height: 32px;
   border-radius: 9px;
-  background: #d9aa3d;
+  background: #FFE436;
   color: #2a211b;
 }
 .menu-toggle {
@@ -526,6 +531,10 @@ body {
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
+  transition: filter 180ms ease;
+}
+.button:hover {
+  filter: brightness(0.78);
 }
 .button__arrow {
   display: inline-flex;
@@ -546,16 +555,16 @@ body {
 .button--dark {
   background: #2a211b;
   color: #f5efe3;
-  border: 1px solid #d9aa3d;
+  border: 1px solid #FFE436;
 }
 .button--dark .button__arrow,
 .button--gold {
-  background: #d9aa3d;
+  background: #FFE436;
   color: #2a211b;
 }
 .button--gold .button__arrow {
   background: #2a211b;
-  color: #d9aa3d;
+  color: #FFE436;
 }
 .paper-section {
   background: #e9e3d7;
@@ -725,6 +734,9 @@ body {
   color: #a89c8f;
   font-size: clamp(16px, 1.6vw, 24px);
 }
+.atelier-list summary a {
+  color: inherit;
+}
 .atelier-list summary::-webkit-details-marker {
   display: none;
 }
@@ -738,34 +750,37 @@ body {
   background: #4a3d32;
   color: #f5efe3;
   transition:
-    background-color 220ms ease,
-    color 220ms ease,
-    transform 220ms ease;
+    background-color 480ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 480ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 480ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .atelier-list details[open] summary {
   color: #f5efe3;
 }
 .atelier-list details[open] summary span {
-  background: #d9aa3d;
+  background: #F3DFA2;
   color: #2a211b;
 }
 @media (hover: hover) and (pointer: fine) {
   .homepage .atelier-list .atelier-detail {
+    display: flex;
     max-height: 0;
     overflow: hidden;
     padding-top: 0;
     padding-bottom: 0;
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-4px);
+    will-change: max-height, opacity, transform;
     transition:
-      max-height 320ms ease,
-      padding 320ms ease,
-      opacity 220ms ease,
-      transform 320ms ease;
+      max-height 620ms cubic-bezier(0.16, 1, 0.3, 1),
+      padding 620ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 420ms ease-out,
+      transform 620ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .homepage .atelier-list details[open] .atelier-detail,
-  .homepage .atelier-list details:hover .atelier-detail {
+  .homepage .atelier-list details:hover .atelier-detail,
+  .homepage .atelier-list details:focus-within .atelier-detail {
     max-height: 140px;
     display: flex;
     padding-top: 16px;
@@ -773,15 +788,16 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
-  .homepage .atelier-list details:hover summary {
+  .homepage .atelier-list details[open] summary,
+  .homepage .atelier-list details:hover summary,
+  .homepage .atelier-list details:focus-within summary {
     color: #f5efe3;
   }
-  .homepage .atelier-list details:hover summary span {
-    background: #d9aa3d;
+  .homepage .atelier-list details[open] summary span,
+  .homepage .atelier-list details:hover summary span,
+  .homepage .atelier-list details:focus-within summary span {
+    background: #F3DFA2;
     color: #2a211b;
-    transform: rotate(45deg);
-  }
-  .homepage .atelier-list details[open] summary span {
     transform: rotate(45deg);
   }
 }
@@ -1001,7 +1017,7 @@ body {
   margin: 0;
   padding: 32px 36px;
   border-radius: 32px 120px 32px 32px;
-  background: #d9aa3d;
+  background: #F3DFA2;
   color: #2a211b;
   font-size: clamp(17px, 1.5vw, 22px);
   font-weight: 500;
@@ -1014,7 +1030,7 @@ body {
   max-width: none;
   padding: 0 4px 20px;
   scroll-snap-type: x mandatory;
-  scrollbar-color: #d9aa3d #2a211b;
+  scrollbar-color: #F3DFA2 #2a211b;
 }
 .testimonial-track blockquote {
   scroll-snap-align: start;
@@ -1053,7 +1069,7 @@ body {
   max-width: 410px;
 }
 .contact-copy a {
-  color: #d9aa3d;
+  color: #F3DFA2;
   font-size: 20px;
 }
 .contact-form {
@@ -1105,7 +1121,7 @@ body {
 .form-grid input:focus,
 .form-grid textarea:focus {
   outline: none;
-  border-color: #d9aa3d;
+  border-color: #F3DFA2;
 }
 .form-footer {
   display: flex;
@@ -1152,7 +1168,7 @@ body {
   gap: 30px;
 }
 .footer-links h2 {
-  color: #d9aa3d;
+  color: #F3DFA2;
   font:
     600 13px Arial,
     sans-serif;
@@ -1170,7 +1186,7 @@ body {
   text-decoration: none;
 }
 .footer-links a:hover {
-  color: #d9aa3d;
+  color: #F3DFA2;
 }
 .footer-wordmark {
   width: 100%;
@@ -1184,7 +1200,7 @@ body {
   position: absolute;
   right: 24px;
   bottom: 24px;
-  border: 1px solid #d9aa3d;
+  border: 1px solid #F3DFA2;
   border-radius: 8px;
   padding: 8px 12px;
   color: #f5efe3;
@@ -1230,7 +1246,7 @@ body {
   font-weight: 600;
 }
 .cookie-button--primary {
-  background: #d9aa3d;
+  background: #F3DFA2;
   color: #2a211b;
 }
 .cookie-button--secondary {
@@ -1524,7 +1540,7 @@ body {
 .atelier-callout {
   padding: 36px 36px 34px;
   border-radius: 24px 110px 24px 24px;
-  background: #d9aa3d;
+  background: #F3DFA2;
 }
 .atelier-callout h3 {
   font-size: clamp(1.7rem, 3vw, 2.75rem);
@@ -1635,7 +1651,7 @@ body {
   background: #faf7f0;
 }
 .atelier-steps strong {
-  color: #d9aa3d;
+  color: #F3DFA2;
   font:
     400 48px Georgia,
     serif;
@@ -1945,7 +1961,7 @@ body {
   padding: 40px 36px;
 }
 .commitment-grid strong {
-  color: #d9aa3d;
+  color: #F3DFA2;
   font:
     400 48px Georgia,
     serif;
@@ -1999,11 +2015,11 @@ body {
   margin-bottom: 20px;
 }
 .initials--gold {
-  background: #d9aa3d;
+  background: #F3DFA2;
 }
 .initials--dark {
   background: #2a211b;
-  color: #d9aa3d;
+  color: #F3DFA2;
 }
 .member-grid h3 {
   font-size: clamp(1.7rem, 3vw, 2.4rem);
@@ -2047,7 +2063,7 @@ body {
   margin: 0;
   padding: 56px 64px;
   border-radius: 32px 140px 32px 32px;
-  background: #d9aa3d;
+  background: #F3DFA2;
   color: #2a211b;
   font-size: clamp(18px, 2vw, 28px);
   font-weight: 500;
@@ -2140,7 +2156,7 @@ body {
 .news-card time {
   display: block;
   margin-top: 22px;
-  color: #b8892e;
+  color: #F3DFA2;
   font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
