@@ -552,6 +552,16 @@ p {
   );
   background-size: 7px 7px;
 }
+.intro,
+.partners,
+.paper-wool-section {
+  background-image:
+    linear-gradient(rgb(233 227 215 / 78%), rgb(233 227 215 / 78%)),
+    url("/textures/laine.webp");
+  background-repeat: repeat;
+  background-size: auto, 300px;
+  background-blend-mode: normal, multiply;
+}
 .intro {
   padding: 80px max(24px, 7vw);
   display: grid;
@@ -1278,8 +1288,8 @@ p {
 }
 .atelier-hero {
   position: relative;
-  min-height: 600px;
-  padding: 120px max(24px, 7vw) 80px;
+  min-height: 500px;
+  padding: 90px max(24px, 7vw) 60px;
   display: flex;
   align-items: flex-end;
   color: #f5efe3;
@@ -1311,10 +1321,10 @@ p {
   font-size: clamp(14px, 1.4vw, 19px);
 }
 .atelier-intro {
-  padding: 90px max(24px, 7vw);
+  padding: 64px max(24px, 7vw);
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
-  gap: 60px;
+  gap: 40px;
   align-items: center;
 }
 .atelier-intro h2,
@@ -1322,7 +1332,7 @@ p {
   font-size: clamp(2rem, 4vw, 3.25rem);
 }
 .atelier-callout {
-  padding: 48px 44px 44px;
+  padding: 36px 36px 34px;
   border-radius: 24px 110px 24px 24px;
   background: #d9aa3d;
 }
@@ -1346,7 +1356,8 @@ p {
 .atelier-detail-section {
   display: grid;
   grid-template-columns: 45% 55%;
-  min-height: 680px;
+  min-height: 0;
+  align-items: stretch;
 }
 .atelier-detail-section--reverse {
   grid-template-columns: 55% 45%;
@@ -1357,13 +1368,29 @@ p {
 .atelier-detail-image img {
   width: 100%;
   height: 100%;
-  min-height: 560px;
+  min-height: 0;
   -o-object-fit: cover;
   object-fit: cover;
 }
+.atelier-detail-image {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  align-self: stretch;
+  overflow: hidden;
+}
+.atelier-detail-image img {
+  flex: 1;
+  display: block;
+  min-height: 0;
+}
+#demonstratifs .atelier-detail-image {
+  align-self: center;
+  max-height: 420px;
+}
 .atelier-detail-copy {
   align-self: center;
-  padding: 80px max(32px, 7vw);
+  padding: 56px max(32px, 7vw);
   background: #faf7f0;
 }
 .atelier-detail-section--dark .atelier-detail-copy {
@@ -1389,11 +1416,11 @@ p {
   margin-top: 12px;
 }
 .atelier-steps {
-  padding: 100px max(24px, 7vw);
+  padding: 72px max(24px, 7vw);
 }
 .atelier-steps > h2 {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 32px;
 }
 .atelier-steps > div {
   display: grid;
@@ -1401,7 +1428,7 @@ p {
   gap: 24px;
 }
 .atelier-steps article {
-  padding: 36px 32px;
+  padding: 28px 26px;
   border-radius: 24px;
   background: #faf7f0;
 }
@@ -1427,10 +1454,21 @@ p {
     order: 0;
   }
   .atelier-detail-copy {
-    padding: 60px 24px;
+    padding: 44px 24px;
   }
   .atelier-detail-image img {
-    min-height: 360px;
+    height: 280px;
+  }
+  .atelier-hero {
+    min-height: 420px;
+    padding: 80px 24px 44px;
+  }
+  .atelier-intro {
+    padding: 52px 24px;
+    gap: 28px;
+  }
+  .atelier-steps {
+    padding: 56px 24px;
   }
   .atelier-steps > div {
     grid-template-columns: 1fr;
@@ -1963,6 +2001,52 @@ p {
 .news-contact .button {
   margin-top: 16px;
 }
+
+/* Texture papier sur les surfaces marron foncé. */
+.atelier-feature,
+.site-footer,
+.contact-intro,
+.contact-info-card--dark,
+.atelier-detail-section--dark .atelier-detail-copy,
+.calendar-welcome,
+.commitments,
+.team-contact,
+.news-heading,
+.news-contact {
+  background-image:
+    linear-gradient(rgb(54 43 34 / 60%), rgb(54 43 34 / 60%)),
+    url("/textures/pepier%20marron.webp");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+  background-blend-mode: normal, soft-light;
+}
+
+.dates,
+.calendar-upcoming,
+.atelier-steps,
+.contact-details,
+.contact-process,
+.contact-faq,
+.past-events,
+.team-origin,
+.team-members,
+.trust-section,
+.news-list,
+.atelier-detail-copy:not(.atelier-detail-section--dark .atelier-detail-copy),
+.team-method > div:last-child {
+  background-color: #faf7f0;
+  background-image:
+    linear-gradient(rgb(250 247 240 / 76%), rgb(250 247 240 / 76%)),
+    url("/textures/soie.webp");
+  background-repeat: no-repeat, repeat;
+  background-size:
+    100% 100%,
+    900px 620px;
+  background-position: center;
+  background-blend-mode: normal, multiply;
+}
+
 @media (max-width: 800px) {
   .news-heading {
     padding: 120px 24px 60px;
