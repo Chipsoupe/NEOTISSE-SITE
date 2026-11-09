@@ -1,0 +1,24 @@
+<div class="cookie-banner" data-cookie-banner hidden>
+  <div>
+    <p class="cookie-banner__title">Respect de votre vie privée</p>
+    <p>Ce site utilise uniquement des cookies nécessaires et, avec votre accord, des cookies statistiques.</p>
+  </div>
+  <div class="cookie-banner__actions">
+    <button type="button" class="cookie-button cookie-button--secondary" data-cookie-deny>Refuser</button>
+    <button type="button" class="cookie-button cookie-button--primary" data-cookie-accept>Accepter</button>
+  </div>
+</div>
+<script>
+  const banner = document.querySelector<HTMLElement>('[data-cookie-banner]');
+  const key = 'neotisse-cookie-consent';
+  const setConsent = (value: string) => {
+    document.cookie = `${key}=${value}; max-age=${60 * 60 * 24 * 183}; path=/; SameSite=Lax`;
+    if (banner) banner.hidden = true;
+  };
+  if (!document.cookie.includes(`${key}=`) && banner) banner.hidden = false;
+  document.querySelector('[data-cookie-accept]')?.addEventListener('click', () => setConsent('statistics'));
+  document.querySelector('[data-cookie-deny]')?.addEventListener('click', () => setConsent('necessary'));
+  document.querySelector('[data-manage-cookies]')?.addEventListener('click', () => {
+    if (banner) banner.hidden = false;
+  });
+</script>

@@ -1,0 +1,12 @@
+---
+interface Props {
+  href: string;
+  variant?: 'light' | 'dark' | 'gold';
+  children: any;
+}
+
+const { href, variant = 'gold', children } = Astro.props;
+---
+<a class={`button button--${variant}`} href={href}>
+  <span>{children}</span><span class="button__arrow" aria-hidden="true">↗</span>
+</a>

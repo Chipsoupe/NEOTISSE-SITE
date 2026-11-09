@@ -1,0 +1,26 @@
+---
+const groups = [
+  { title: 'Le site', links: [['Ateliers', '/ateliers/'], ['Calendrier', '/calendrier/'], ['L’équipe', '/lassociation/'], ['Contact', '/contact/']] },
+  { title: 'Ateliers', links: [['Démonstratifs', '/ateliers/#demonstratifs'], ['Tissage aux tablettes', '/ateliers/#tablettes'], ['Enfants', '/ateliers/#enfants'], ['Conférences', '/ateliers/#conferences'], ['Accessibles', '/ateliers/#accessibles']] },
+  { title: 'Infos', links: [['Mentions légales', '/mentions-legales/'], ['Confidentialité', '/confidentialite/'], ['Cookies', '/gestion-des-cookies/']] },
+];
+---
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-about">
+      <a href="/"><img src="/images/Neotisse_IJXv.png" alt="Néotisse – accueil" width="94" height="92" /></a>
+      <p>Ateliers de médiation en archéologie textile, à Montpellier et partout en France.</p>
+      <small>© 2026 Neotisse</small>
+    </div>
+    <div class="footer-links">
+      {groups.map((group) => (
+        <div>
+          <h2>{group.title}</h2>
+          <ul>{group.links.map(([label, href]) => <li><a href={href}>{label}</a></li>)}</ul>
+        </div>
+      ))}
+    </div>
+  </div>
+  <img class="footer-wordmark" src="/images/neotisse-wordmark-or_IJXv.png" alt="Neotisse" width="1200" height="210" />
+  <button class="manage-cookies" type="button" data-manage-cookies>Gérer les cookies</button>
+</footer>
