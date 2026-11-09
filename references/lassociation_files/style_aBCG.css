@@ -1,0 +1,730 @@
+/*
+Theme Name: Neotisse
+Description: Thème enfant de Twenty Twenty-Five pour l'association Néotisse (charte : beige, brun, or).
+Template: twentytwentyfive
+Version: 1.1.7
+Text Domain: neotisse
+*/
+
+/* ---------- En-tête ---------- */
+.neotisse-header {
+	gap: 24px;
+}
+.neotisse-header .wp-block-image {
+	margin: 0;
+	flex-shrink: 0;
+}
+.neotisse-header .wp-block-navigation a:hover,
+.neotisse-header .wp-block-navigation a:focus {
+	color: #d9aa3d;
+}
+.neotisse-header .wp-block-button__link:hover {
+	background-color: #3a2e25 !important;
+}
+
+/* ---------- Texture « papier marron » sur les fonds brun foncé ----------
+   S'applique automatiquement à toute colonne dont le fond est #362b22
+   (ex. « Nos ateliers », carte du festival) et à l'en-tête hors accueil.
+   Le voile brun (78 %) ramène la texture à la teinte de la maquette. */
+.wp-block-column.has-background[style*="#362b22"],
+.wp-block-group.has-background[style*="#362b22"]:not(.neotisse-header) {
+	background-image:
+		linear-gradient(rgba(42, 33, 27, 0.78), rgba(42, 33, 27, 0.78)),
+		url("/wp-content/themes/neotisse/assets/papier-marron-tuile.webp");
+	/* Texture en « panneau » : tuile raccordable répétée, à petite échelle */
+	background-size: auto, 420px auto;
+	background-repeat: repeat;
+	background-position: 0 0;
+}
+
+/* ---------- Styles de blocs Neotisse (choisis dans l'éditeur) ---------- */
+.wp-block-button[class*="is-style-neotisse-"] .wp-block-button__link {
+	display: inline-flex;
+	align-items: center;
+	gap: 16px;
+	border-radius: 10px;
+	padding: 10px 10px 10px 16px;
+	font-size: 15px;
+	font-weight: 500;
+	line-height: 1.2;
+	text-decoration: none;
+	border: 1px solid transparent;
+}
+.wp-block-button[class*="is-style-neotisse-"] .wp-block-button__link::after {
+	content: "↗";
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 10px;
+	flex-shrink: 0;
+}
+.wp-block-button.is-style-neotisse-or .wp-block-button__link { background: #d9aa3d; color: #2a211b; }
+.wp-block-button.is-style-neotisse-or .wp-block-button__link::after { background: #2a211b; color: #f5efe3; }
+.wp-block-button.is-style-neotisse-sombre .wp-block-button__link { background: #2a211b; color: #f5efe3; border-color: #d9aa3d; }
+.wp-block-button.is-style-neotisse-sombre .wp-block-button__link::after { background: #d9aa3d; color: #2a211b; }
+.wp-block-button.is-style-neotisse-creme .wp-block-button__link { background: #f5efe3; color: #2a211b; }
+.wp-block-button.is-style-neotisse-creme .wp-block-button__link::after { background: #2a211b; color: #f5efe3; }
+.wp-block-button.is-style-neotisse-clair .wp-block-button__link { background: #faf7f0; color: #2a211b; border-color: #cfc8bd; padding: 6px 6px 6px 22px; }
+.wp-block-button.is-style-neotisse-clair .wp-block-button__link::after { background: #2a211b; color: #f5efe3; }
+.wp-block-button[class*="is-style-neotisse-"] .wp-block-button__link:hover { filter: brightness(1.08); }
+
+.is-style-neotisse-serif {
+	font-family: Gloock, Georgia, "Times New Roman", serif;
+	font-weight: 400 !important;
+	letter-spacing: -0.02em;
+	line-height: 1;
+}
+.is-style-neotisse-surtitre {
+	color: #d9aa3d;
+	font-size: 13px !important;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	margin-bottom: 8px;
+}
+
+/* ---------- Actualités (articles) ---------- */
+.neotisse-article {
+	color: #2a211b;
+	font-size: 18px;
+	line-height: 1.7;
+}
+.neotisse-article h2,
+.neotisse-article h3 {
+	font-family: Gloock, Georgia, "Times New Roman", serif;
+	font-weight: 400;
+	letter-spacing: -0.02em;
+	line-height: 1.1;
+	margin-top: 1.6em;
+}
+.neotisse-actus .wp-block-post-title a {
+	color: #2a211b;
+	text-decoration: none;
+}
+.neotisse-actus .wp-block-post-title a:hover {
+	color: #b8892e;
+}
+.neotisse-actus .wp-block-post-excerpt__more-link {
+	color: #2a211b;
+	font-weight: 600;
+}
+
+/* Sections « photo + texte » : la colonne de texte colorée occupe toute la
+   hauteur (pas de bandes blanches), son contenu reste centré verticalement. */
+.neotisse-atelier > .wp-block-column.has-background {
+	align-self: stretch !important;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.neotisse-atelier > .wp-block-column.has-background > * {
+	margin-block-start: 0;
+}
+.neotisse-atelier > .wp-block-column.has-background > * + * {
+	margin-block-start: var(--wp--style--block-gap, 1.2rem);
+}
+
+/* Sections « photo + texte » : la photo occupe toute la hauteur de la section */
+.neotisse-atelier > .wp-block-column:not(.has-background) {
+	display: flex;
+}
+.neotisse-atelier > .wp-block-column:not(.has-background) > .wp-block-cover {
+	flex: 1;
+	min-height: 480px !important;
+}
+@media (max-width: 781px) {
+	.neotisse-atelier > .wp-block-column:not(.has-background) > .wp-block-cover {
+		min-height: 320px !important;
+	}
+	/* Sur mobile, la photo passe toujours au-dessus du texte */
+	.neotisse-atelier.is-reversed {
+		flex-direction: column-reverse;
+	}
+}
+
+/* Largeur mobile : marges réduites pour toutes les sections pleine largeur */
+@media (max-width: 781px) {
+	.wp-site-blocks main .alignfull.has-background,
+	.wp-site-blocks main .wp-block-cover.alignfull,
+	.wp-site-blocks main .wp-block-column.has-background {
+		padding-left: 16px !important;
+		padding-right: 16px !important;
+	}
+	.wp-site-blocks main .is-style-neotisse-serif {
+		font-size: clamp(38px, 10vw, 56px) !important;
+	}
+}
+
+/* ---------- Bandeau des partenaires ----------
+   « multiply » fond le blanc des logos JPG dans le beige texturé. */
+.neotisse-partenaires .neotisse-logo {
+	margin: 0;
+}
+.neotisse-partenaires .neotisse-logo img {
+	mix-blend-mode: multiply;
+	max-width: 100%;
+}
+@media (max-width: 781px) {
+	.neotisse-partenaires {
+		justify-content: center !important;
+		gap: 24px 32px;
+		padding-left: 16px !important;
+		padding-right: 16px !important;
+	}
+	.neotisse-partenaires .neotisse-logo img {
+		height: 56px !important;
+	}
+}
+
+/* ---------- Pied de page ---------- */
+.wp-site-blocks > footer.wp-block-template-part {
+	margin-block-start: 0;
+}
+.neotisse-footer__cols {
+	padding-left: 120px;
+	padding-right: 120px;
+	margin-bottom: 110px;
+}
+.neotisse-footer .wp-block-image {
+	margin: 0;
+}
+.neotisse-footer__title {
+	color: #d9aa3d;
+	font-size: 13px;
+	font-weight: 600;
+	margin: 0 0 10px;
+}
+.neotisse-footer__links {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	font-size: 15px;
+	line-height: 2;
+}
+.neotisse-footer__links li {
+	margin: 0;
+}
+.neotisse-footer__links a {
+	color: #f5efe3;
+	text-decoration: none;
+}
+.neotisse-footer__links a:hover,
+.neotisse-footer__links a:focus {
+	color: #d9aa3d;
+}
+.neotisse-footer__wordmark {
+	margin: 0 !important;
+	line-height: 0;
+}
+.neotisse-footer__wordmark img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+/* ---------- Formulaire « Parlez-nous de votre projet » ---------- */
+.neotisse-form {
+	color: #2a211b;
+	font-size: 15px;
+}
+.neotisse-form__hp {
+	position: absolute !important;
+	left: -9999px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+.neotisse-form__grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	column-gap: 20px;
+	row-gap: 22px;
+}
+.neotisse-form__field {
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+}
+.neotisse-form__field.is-wide {
+	grid-column: 1 / -1;
+}
+.neotisse-form__field label {
+	font-size: 13px;
+	font-weight: 600;
+	margin-bottom: 6px;
+}
+.neotisse-form input[type="text"],
+.neotisse-form input[type="email"],
+.neotisse-form input[type="tel"],
+.neotisse-form textarea {
+	font: inherit;
+	font-size: 15px;
+	color: #2a211b;
+	background: transparent;
+	border: 0;
+	border-bottom: 1px solid #cfc8bd;
+	border-radius: 0;
+	padding: 4px 0 10px;
+	width: 100%;
+	resize: vertical;
+	min-height: 0;
+}
+.neotisse-form textarea {
+	min-height: 32px;
+	field-sizing: content;
+}
+.neotisse-form input::placeholder,
+.neotisse-form textarea::placeholder {
+	color: #9c9186;
+	opacity: 1;
+}
+.neotisse-form input:focus,
+.neotisse-form textarea:focus {
+	outline: none;
+	border-bottom-color: #d9aa3d;
+	box-shadow: 0 1px 0 #d9aa3d;
+}
+.neotisse-form__footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-top: 26px;
+	flex-wrap: wrap;
+}
+.neotisse-form__consent {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 13px;
+	cursor: pointer;
+}
+.neotisse-form__consent input {
+	width: 16px;
+	height: 16px;
+	accent-color: #2a211b;
+	margin: 0;
+}
+.neotisse-form__consent a {
+	color: inherit;
+}
+.neotisse-form__submit {
+	display: inline-flex;
+	align-items: center;
+	gap: 16px;
+	font: inherit;
+	font-size: 16px;
+	font-weight: 500;
+	color: #2a211b;
+	background: #d9aa3d;
+	border: 0;
+	border-radius: 10px;
+	padding: 10px 10px 10px 16px;
+	cursor: pointer;
+}
+.neotisse-form__submit span {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 10px;
+	background: #2a211b;
+	color: #d9aa3d;
+}
+.neotisse-form__submit:hover {
+	background: #c99a30;
+}
+.neotisse-form__notice {
+	padding: 14px 16px;
+	border-radius: 10px;
+	margin-bottom: 20px;
+	font-size: 15px;
+	line-height: 1.5;
+}
+.neotisse-form__notice--ok {
+	background: #eef3e4;
+	color: #33461f;
+}
+.neotisse-form__notice--err {
+	background: #f8e5df;
+	color: #7a2a17;
+}
+@media (max-width: 600px) {
+	.neotisse-form__grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* ---------- Accueil : liste « Nos ateliers » (accordéon au survol) ---------- */
+.neotisse-ateliers-liste > .neotisse-atelier-item {
+	margin-block-start: 0;
+}
+.neotisse-atelier-item__tete p {
+	margin: 0;
+}
+.neotisse-atelier-item__titre a {
+	color: #a89c8f;
+	text-decoration: none;
+	transition: color 0.25s ease;
+}
+.neotisse-atelier-item__fleche a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background-color: #4a3d32;
+	color: #f5efe3;
+	text-decoration: none;
+	transition: background-color 0.25s ease, color 0.25s ease;
+}
+.neotisse-atelier-item.is-open .neotisse-atelier-item__titre a,
+.neotisse-atelier-item__titre a:hover,
+.neotisse-atelier-item__titre a:focus-visible {
+	color: #f5efe3;
+}
+.neotisse-atelier-item.is-open .neotisse-atelier-item__fleche a {
+	background-color: #d9aa3d;
+	color: #2a211b;
+}
+.neotisse-atelier-item__detail {
+	display: grid;
+	grid-template-rows: 1fr;
+	margin-block-start: 0 !important;
+	transition: grid-template-rows 0.35s ease, opacity 0.35s ease;
+}
+.neotisse-atelier-item__detail > * {
+	overflow: hidden;
+	min-height: 0;
+	transition: padding 0.35s ease;
+}
+/* Fermés seulement sur le site (classe ajoutée par assets/ateliers.js) :
+   dans l'éditeur, tout reste déplié pour pouvoir modifier images et textes. */
+.is-accordeon .neotisse-atelier-item:not(.is-open) .neotisse-atelier-item__detail {
+	grid-template-rows: 0fr;
+	opacity: 0;
+}
+.is-accordeon .neotisse-atelier-item:not(.is-open) .neotisse-atelier-item__detail > * {
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+}
+@media (prefers-reduced-motion: reduce) {
+	.neotisse-atelier-item__detail,
+	.neotisse-atelier-item__detail > * { transition: none; }
+}
+
+/* ---------- FAQ (blocs « Détails » dans un groupe .neotisse-faq) ---------- */
+.neotisse-faq .wp-block-details {
+	border-bottom: 1px solid #cfc8bd;
+	padding: 22px 0;
+	margin: 0;
+}
+.neotisse-faq .wp-block-details summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	font-size: 20px;
+	font-weight: 500;
+	color: #2a211b;
+	cursor: pointer;
+	list-style: none;
+}
+.neotisse-faq .wp-block-details summary::-webkit-details-marker {
+	display: none;
+}
+.neotisse-faq .wp-block-details summary::after {
+	content: "+";
+	flex-shrink: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: #2a211b;
+	color: #f5efe3;
+	font-size: 20px;
+}
+.neotisse-faq .wp-block-details[open] summary::after {
+	content: "–";
+	background: #d9aa3d;
+	color: #2a211b;
+}
+.neotisse-faq .wp-block-details p {
+	color: #4a3f36;
+	font-size: 16px;
+	line-height: 1.65;
+	margin: 14px 0 0;
+	max-width: 760px;
+}
+.neotisse-faq .wp-block-details a {
+	color: #2a211b;
+	font-weight: 600;
+}
+
+/* ---------- Livre d'or ---------- */
+.neotisse-avis__filtres {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+	margin: 0 0 40px;
+}
+.neotisse-avis__filtres button {
+	font: inherit;
+	font-size: 15px;
+	font-weight: 500;
+	color: #2a211b;
+	background: #faf7f0;
+	border: 1px solid #cfc8bd;
+	border-radius: 999px;
+	padding: 10px 22px;
+	cursor: pointer;
+}
+.neotisse-avis__filtres button.is-actif {
+	background: #2a211b;
+	border-color: #2a211b;
+	color: #f5efe3;
+}
+.neotisse-avis {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 24px;
+	align-items: start;
+}
+.neotisse-avis__carte {
+	margin: 0;
+	background: #faf7f0;
+	border-radius: 24px;
+	padding: 32px 32px 28px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	color: #2a211b;
+}
+.neotisse-avis__carte[hidden] {
+	display: none;
+}
+.neotisse-avis__carte.is-partenaire {
+	background: #d9aa3d;
+	border-top-right-radius: 80px;
+}
+.neotisse-avis__haut {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+}
+.neotisse-avis__note {
+	color: #b8892e;
+	font-size: 18px;
+	letter-spacing: 2px;
+}
+.neotisse-avis__note .is-vide {
+	color: #d8cfc4;
+}
+.is-partenaire .neotisse-avis__note,
+.is-partenaire .neotisse-avis__note .is-vide {
+	color: #2a211b;
+}
+.is-partenaire .neotisse-avis__note .is-vide {
+	opacity: 0.25;
+}
+.neotisse-avis__badge {
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	border: 1px solid currentColor;
+	border-radius: 999px;
+	padding: 4px 12px;
+	margin-left: auto;
+}
+.neotisse-avis__texte {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 18px;
+	line-height: 1.55;
+	font-weight: 500;
+}
+.neotisse-avis__texte p {
+	margin: 0 0 0.8em;
+}
+.neotisse-avis__texte p:first-child::before { content: "“"; }
+.neotisse-avis__texte p:last-child { margin-bottom: 0; }
+.neotisse-avis__texte p:last-child::after { content: "”"; }
+.neotisse-avis__auteur {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	font-size: 15px;
+	line-height: 1.35;
+}
+.neotisse-avis__initiales {
+	flex-shrink: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	background: #2a211b;
+	color: #d9aa3d;
+	font-family: Gloock, Georgia, serif;
+	font-size: 19px;
+}
+.neotisse-avis__detail {
+	display: block;
+	font-size: 14px;
+	opacity: 0.75;
+}
+.neotisse-avis__vide {
+	text-align: center;
+	font-size: 18px;
+	color: #4a3f36;
+	max-width: 620px;
+	margin: 0 auto;
+}
+.neotisse-avis__vide a {
+	color: #2a211b;
+	font-weight: 600;
+}
+/* Formulaire d'avis */
+.neotisse-avis-form__profil {
+	border: 0;
+	padding: 0;
+	margin: 0 0 26px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+.neotisse-avis-form__profil legend {
+	font-size: 13px;
+	font-weight: 600;
+	margin-bottom: 10px;
+	padding: 0;
+}
+.neotisse-avis-form__profil label {
+	cursor: pointer;
+}
+.neotisse-avis-form__profil input {
+	position: absolute;
+	opacity: 0;
+}
+.neotisse-avis-form__profil span {
+	display: inline-block;
+	font-size: 15px;
+	border: 1px solid #cfc8bd;
+	border-radius: 999px;
+	padding: 9px 20px;
+}
+.neotisse-avis-form__profil input:checked + span {
+	background: #2a211b;
+	border-color: #2a211b;
+	color: #f5efe3;
+}
+.neotisse-avis-form__profil input:focus-visible + span {
+	outline: 2px solid #d9aa3d;
+	outline-offset: 2px;
+}
+.neotisse-avis-form__label {
+	font-size: 13px;
+	font-weight: 600;
+	margin-bottom: 6px;
+}
+.neotisse-avis-form__etoiles {
+	display: inline-flex;
+	flex-direction: row-reverse;
+	justify-content: flex-end;
+	gap: 4px;
+}
+.neotisse-avis-form__etoiles input {
+	position: absolute;
+	opacity: 0;
+}
+.neotisse-avis-form__etoiles label {
+	font-size: 30px;
+	line-height: 1;
+	color: #d8cfc4;
+	cursor: pointer;
+}
+.neotisse-avis-form__etoiles input:checked ~ label,
+.neotisse-avis-form__etoiles label:hover,
+.neotisse-avis-form__etoiles label:hover ~ label {
+	color: #d9aa3d;
+}
+.neotisse-avis-form__etoiles input:focus-visible + label {
+	outline: 2px solid #2a211b;
+	border-radius: 4px;
+}
+.neotisse-form__field label small {
+	font-weight: 400;
+	opacity: 0.7;
+}
+
+/* ---------- Barre de navigation fixe au défilement ----------
+   Toutes les pages : la barre reste collée en haut (sous la barre
+   d'administration WordPress quand on est connecté). */
+.wp-site-blocks > header.wp-block-template-part {
+	position: sticky;
+	top: var(--wp-admin--admin-bar--height, 0px);
+	z-index: 50;
+}
+.neotisse-header {
+	transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+.neotisse-scrolled .neotisse-header {
+	box-shadow: 0 4px 18px rgba(20, 14, 10, 0.25);
+}
+
+/* Toutes les pages : la barre se pose sur l'accroche, brun translucide
+   avec flou ; un peu plus dense après défilement (assets/header.js). */
+.wp-site-blocks > header.wp-block-template-part {
+	position: fixed;
+	left: 0;
+	right: 0;
+}
+.neotisse-header {
+	background-color: rgba(42, 33, 27, 0.55) !important;
+	background-image: none !important;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+.neotisse-scrolled .neotisse-header {
+	background-color: rgba(42, 33, 27, 0.7) !important;
+}
+.wp-site-blocks > main {
+	margin-block-start: 0;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+	/* Sur mobile, la barre d'administration n'est pas fixe : on colle en haut. */
+	.wp-site-blocks > header.wp-block-template-part {
+		top: 0;
+	}
+}
+@media (max-width: 781px) {
+	.neotisse-header {
+		padding-left: 16px !important;
+		padding-right: 16px !important;
+	}
+	.neotisse-header .wp-block-buttons {
+		display: none;
+	}
+	.neotisse-footer__cols {
+		padding-left: 16px;
+		padding-right: 16px;
+		margin-bottom: 60px;
+	}
+	.home .wp-block-cover.alignfull {
+		padding-left: 16px !important;
+		padding-right: 16px !important;
+	}
+}
