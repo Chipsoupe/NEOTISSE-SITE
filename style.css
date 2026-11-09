@@ -507,9 +507,12 @@ body {
 }
 .hero h1 {
   font-size: clamp(3.25rem, 7vw, 6.5rem);
+  white-space: nowrap;
 }
 .hero__content p {
   max-width: 390px;
+  margin: 0 0 32px;
+  line-height: 1.65;
   font-size: clamp(14px, 1.2vw, 18px);
 }
 .button {
@@ -822,6 +825,57 @@ body {
 
 .dates-list > .button {
   margin-top: 24px;
+}
+
+.homepage .intro {
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
+.homepage .intro p {
+  line-height: 1.65;
+}
+.homepage .image-card {
+  padding: 36px;
+}
+.homepage .image-card h2 {
+  margin-bottom: 16px;
+}
+.homepage .image-card p {
+  margin: 0;
+  line-height: 1.55;
+}
+.homepage .image-card .button {
+  margin-top: 24px;
+}
+.homepage .partners {
+  padding-top: 44px;
+  padding-bottom: 44px;
+}
+.homepage .atelier-feature__content {
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
+.homepage .atelier-list {
+  margin-top: 12px;
+}
+.homepage .publics {
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+.homepage .dates {
+  padding-top: 112px;
+  padding-bottom: 112px;
+}
+.homepage .dates > h2 {
+  margin-bottom: 44px;
+}
+.homepage .testimonial {
+  padding-top: 88px;
+  padding-bottom: 88px;
+}
+.homepage .contact-section {
+  padding-top: 112px;
+  padding-bottom: 112px;
 }
 
 .event-card {
