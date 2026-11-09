@@ -640,10 +640,33 @@ body {
 }
 .partners {
   padding: 34px 5vw;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 24px;
+}
+.partners h2 {
+  margin: 0;
+  margin-bottom: 44px;
+  text-align: center;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+}
+.partners__logos {
+  overflow: hidden;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+.partners__track {
+  display: flex;
+  width: max-content;
+  animation: partners-scroll-right 34s linear infinite;
+}
+.partners__group {
+  display: flex;
+  flex: 0 0 100vw;
+  align-items: center;
+  justify-content: space-around;
+  gap: 80px;
+  padding: 0 32px;
 }
 .partners img {
   max-width: 130px;
@@ -651,6 +674,19 @@ body {
   -o-object-fit: contain;
   object-fit: contain;
   mix-blend-mode: multiply;
+}
+@keyframes partners-scroll-right {
+  from {
+    transform: translateX(-100vw);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .partners__track {
+    animation: none;
+  }
 }
 .atelier-feature {
   display: grid;
@@ -894,8 +930,8 @@ body {
   font-size: 13px;
 }
 .testimonial {
-  min-height: 430px;
-  padding: 70px max(24px, 16vw);
+  min-height: 520px;
+  padding: 70px max(24px, 8vw);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -903,7 +939,7 @@ body {
 .testimonial > div {
   position: relative;
   z-index: 1;
-  max-width: 700px;
+  width: 100%;
 }
 .testimonial h2 {
   text-align: center;
@@ -911,16 +947,38 @@ body {
   margin-bottom: 40px;
 }
 .testimonial blockquote {
+  flex: 0 0 min(420px, 78vw);
   margin: 0;
-  padding: 45px 60px;
+  padding: 32px 36px;
   border-radius: 32px 120px 32px 32px;
   background: #d9aa3d;
   color: #2a211b;
-  font-size: clamp(18px, 2vw, 28px);
+  font-size: clamp(17px, 1.5vw, 22px);
   font-weight: 500;
 }
-.testimonial p {
-  margin-left: 24px;
+.testimonial-track {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  width: 100%;
+  max-width: none;
+  padding: 0 4px 20px;
+  scroll-snap-type: x mandatory;
+  scrollbar-color: #d9aa3d #2a211b;
+}
+.testimonial-track blockquote {
+  scroll-snap-align: start;
+}
+.testimonial blockquote cite {
+  display: block;
+  margin-top: 28px;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.45;
+}
+.testimonial blockquote cite strong {
+  font-weight: 700;
 }
 .contact-section {
   min-height: 760px;
@@ -1183,6 +1241,10 @@ body {
     min-height: 360px;
   }
   .partners {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .partners__logos {
     flex-wrap: wrap;
     justify-content: center;
   }
