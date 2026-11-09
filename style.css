@@ -583,18 +583,22 @@ body {
   align-items: center;
   gap: 5rem;
 }
+
 .intro img {
   width: 290px;
 }
+
 .intro p {
   max-width: 900px;
   font-size: clamp(16px, 1.5vw, 24px);
   font-weight: 500;
 }
+
 .promises {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
+
 .image-card {
   min-height: 460px;
   position: relative;
@@ -733,6 +737,10 @@ body {
   border-radius: 50%;
   background: #4a3d32;
   color: #f5efe3;
+  transition:
+    background-color 220ms ease,
+    color 220ms ease,
+    transform 220ms ease;
 }
 .atelier-list details[open] summary {
   color: #f5efe3;
@@ -741,6 +749,42 @@ body {
   background: #d9aa3d;
   color: #2a211b;
 }
+@media (hover: hover) and (pointer: fine) {
+  .homepage .atelier-list .atelier-detail {
+    max-height: 0;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition:
+      max-height 320ms ease,
+      padding 320ms ease,
+      opacity 220ms ease,
+      transform 320ms ease;
+  }
+
+  .homepage .atelier-list details[open] .atelier-detail,
+  .homepage .atelier-list details:hover .atelier-detail {
+    max-height: 140px;
+    display: flex;
+    padding-top: 16px;
+    padding-bottom: 6px;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .homepage .atelier-list details:hover summary {
+    color: #f5efe3;
+  }
+  .homepage .atelier-list details:hover summary span {
+    background: #d9aa3d;
+    color: #2a211b;
+    transform: rotate(45deg);
+  }
+  .homepage .atelier-list details[open] summary span {
+    transform: rotate(45deg);
+  }
+}
 .atelier-detail {
   display: flex;
   align-items: center;
@@ -748,6 +792,12 @@ body {
   padding: 16px 0 6px;
   color: #d8cfc4;
   font-size: 14px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .homepage .atelier-list .atelier-detail,
+  .atelier-list summary span {
+    transition: none;
+  }
 }
 .atelier-detail img {
   width: 120px;

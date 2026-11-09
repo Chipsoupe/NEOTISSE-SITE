@@ -30,4 +30,27 @@ document.addEventListener("DOMContentLoaded", () => {
     ?.addEventListener("click", () => {
       if (banner) banner.hidden = false;
     });
+
+  const homepageAteliers = document.querySelectorAll(
+    ".homepage .atelier-list details",
+  );
+  const supportsHover = window.matchMedia(
+    "(hover: hover) and (pointer: fine)",
+  ).matches;
+
+  if (supportsHover) {
+    homepageAteliers.forEach((atelier) => {
+      const summary = atelier.querySelector("summary");
+
+      atelier.addEventListener("mouseenter", () => {
+        atelier.open = true;
+      });
+      atelier.addEventListener("mouseleave", () => {
+        atelier.open = false;
+      });
+      summary?.addEventListener("click", (event) => {
+        if (event.detail > 0) event.preventDefault();
+      });
+    });
+  }
 });
