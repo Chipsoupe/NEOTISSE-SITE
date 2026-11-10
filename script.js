@@ -64,6 +64,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   ).matches;
+  const supportsScrollCards =
+    !reducedMotion && !window.matchMedia("(max-width: 800px)").matches;
+  const introSection = document.querySelector(".homepage .intro");
+  const promisesSection = document.querySelector(".homepage .promises");
+  const promiseCards =
+    promisesSection?.querySelectorAll(".image-card") || [];
+  let scrollCardsFrame = 0;
   const savedParallaxIntensity = Number.parseInt(
     window.localStorage.getItem(parallaxStorageKey) || "56",
     10,
@@ -113,6 +120,40 @@ document.addEventListener("DOMContentLoaded", () => {
     updateParallax();
   });
   updateParallaxControl();
+
+  const updateScrollCards = () => {
+    scrollCardsFrame = 0;
+    if (!introSection || !promisesSection || !promiseCards.length) return;
+
+    const promisesTop = promisesSection.getBoundingClientRect().top;
+    const introBottom = introSection.getBoundingClientRect().bottom;
+    const animationDistance = window.innerHeight + 300;
+    const progress = Math.max(
+      0,
+      Math.min(1, (window.innerHeight - promisesTop) / animationDistance),
+    );
+    const startTop = window.innerHeight + 120;
+    const targetTop = startTop - progress * (startTop - introBottom);
+    const offset = targetTop - promisesTop;
+
+    promiseCards.forEach((card) => {
+      card.style.setProperty("--card-enter-offset", `${offset}px`);
+    });
+  };
+
+  if (supportsScrollCards && promiseCards.length) {
+    const requestScrollCardsUpdate = () => {
+      if (!scrollCardsFrame) {
+        scrollCardsFrame = window.requestAnimationFrame(updateScrollCards);
+      }
+    };
+
+    window.addEventListener("scroll", requestScrollCardsUpdate, {
+      passive: true,
+    });
+    window.addEventListener("resize", requestScrollCardsUpdate);
+    requestScrollCardsUpdate();
+  }
 
   if (parallaxImages.length && !reducedMotion) {
     const requestParallaxUpdate = () => {

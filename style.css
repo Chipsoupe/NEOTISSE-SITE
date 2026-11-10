@@ -554,7 +554,7 @@ body {
 }
 .hero__content {
   position: relative;
-  z-index: 1;
+  z-index: auto;
   width: 100%;
   display: grid;
   grid-template-columns: 1.6fr 1fr;
@@ -633,7 +633,7 @@ body {
     linear-gradient(rgb(233 227 215 / 78%), rgb(233 227 215 / 78%)),
     url("/textures/laine.webp");
   background-repeat: repeat;
-  background-size: auto, 300px;
+  background-size: auto, 600px;
   background-blend-mode: normal, multiply;
 }
 .intro {
@@ -657,6 +657,9 @@ body {
 .promises {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+}
+.homepage .promises {
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .image-card {
@@ -697,10 +700,22 @@ body {
   text-align: right;
 }
 .image-card--science {
-  align-items: flex-end;
+  align-items: flex-start;
+  grid-column: 2;
+  grid-row: 1;
+  text-align: right;
+}
+.image-card--science > div {
+  width: min(100%, 520px);
+  margin-left: auto;
 }
 .image-card--sur-mesure {
-  align-items: flex-start;
+  align-items: flex-end;
+  grid-column: 1;
+  grid-row: 1;
+}
+.image-card--sur-mesure > div {
+  width: min(100%, 520px);
 }
 .partners {
   padding: 34px 5vw;
@@ -987,8 +1002,65 @@ body {
 }
 
 .homepage .intro {
-  padding-top: 96px;
-  padding-bottom: 96px;
+  min-height: 520px;
+  background-color: #e9e3d7;
+  background-image:
+    linear-gradient(rgb(233 227 215 / 78%), rgb(233 227 215 / 78%)),
+    url("/textures/laine.webp");
+  background-repeat: repeat;
+  background-size: auto, 600px;
+  background-blend-mode: normal, multiply;
+  padding: 84px max(24px, 7vw) 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  transition:
+    background 320ms ease,
+    color 320ms ease;
+}
+.homepage .intro {
+  position: sticky;
+  top: 102px;
+  z-index: auto;
+  background: transparent;
+}
+.homepage .intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: #e9e3d7;
+  background-image:
+    linear-gradient(rgb(233 227 215 / 78%), rgb(233 227 215 / 78%)),
+    url("/textures/laine.webp");
+  background-repeat: repeat;
+  background-size: auto, 600px;
+  background-blend-mode: normal, multiply;
+}
+.homepage .intro__content {
+  position: relative;
+  z-index: 3;
+}
+.home-scroll-sequence {
+  position: relative;
+}
+.homepage .intro__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: min(100%, 850px);
+  text-align: center;
+}
+.homepage .intro__content img {
+  width: clamp(112px, 14vw, 156px);
+  height: auto;
+  object-fit: contain;
+}
+.homepage .intro__content p {
+  max-width: 760px;
 }
 .homepage .intro p {
   line-height: 1.65;
@@ -1003,8 +1075,41 @@ body {
   margin: 0;
   line-height: 1.55;
 }
+.homepage .image-card h2,
+.homepage .image-card p {
+  text-shadow: 0 3px 12px rgb(30 22 17 / 90%);
+}
 .homepage .image-card .button {
   margin-top: 24px;
+}
+.homepage .promises {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  min-height: calc(100vh + 920px);
+  background-color: #e9e3d7;
+  background-image:
+    linear-gradient(rgb(233 227 215 / 78%), rgb(233 227 215 / 78%)),
+    url("/textures/laine.webp");
+  background-repeat: repeat;
+  background-size: auto, 600px;
+  background-blend-mode: normal, multiply;
+  z-index: 2;
+}
+.homepage .promises .image-card {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  min-height: min(460px, 62vh);
+  transform: translateY(var(--card-enter-offset, 100vh));
+  will-change: transform;
+}
+.homepage .promises .image-card--science {
+  grid-column: 1;
+}
+.homepage .promises .image-card--sur-mesure {
+  grid-column: 2;
 }
 .homepage .partners {
   padding-top: 44px;
@@ -1359,9 +1464,34 @@ body {
     gap: 20px;
   }
   .promises,
+  .homepage .promises,
   .atelier-feature,
   .dates-grid {
     grid-template-columns: 1fr;
+  }
+  .homepage .intro {
+    position: static;
+  }
+  .homepage .promises {
+    min-height: 0;
+    display: grid;
+  }
+  .home-scroll-sequence {
+    padding-bottom: 0;
+  }
+  .homepage .promises .image-card {
+    position: relative;
+    inset: auto;
+    left: auto;
+    width: auto;
+    min-height: 360px;
+    transform: none;
+    will-change: auto;
+  }
+  .image-card--science,
+  .image-card--sur-mesure {
+    grid-column: auto;
+    grid-row: auto;
   }
   .image-card {
     min-height: 360px;
@@ -1556,6 +1686,29 @@ body {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .homepage .intro {
+    position: static;
+  }
+
+  .homepage .promises {
+    min-height: 0;
+    display: grid;
+  }
+
+  .home-scroll-sequence {
+    padding-bottom: 0;
+  }
+
+  .homepage .promises .image-card {
+    position: relative;
+    inset: auto;
+    left: auto;
+    width: auto;
+    min-height: 460px;
+    transform: none;
+    will-change: auto;
   }
 }
 .atelier-hero {
