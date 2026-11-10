@@ -57,6 +57,75 @@ document.addEventListener("DOMContentLoaded", () => {
     "(hover: hover) and (pointer: fine)",
   ).matches;
 
+  const parallaxImages = document.querySelectorAll("[data-parallax]");
+  const parallaxSlider = document.querySelector("#parallax-intensity");
+  const parallaxValue = document.querySelector("#parallax-intensity-value");
+  const parallaxStorageKey = "neotisse-parallax-intensity";
+  const reducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  const savedParallaxIntensity = Number.parseInt(
+    window.localStorage.getItem(parallaxStorageKey) || "56",
+    10,
+  );
+  let parallaxIntensity = Number.isFinite(savedParallaxIntensity)
+    ? Math.max(0, Math.min(100, savedParallaxIntensity))
+    : 56;
+  let parallaxFrame = 0;
+
+  if (parallaxSlider) {
+    parallaxSlider.value = String(parallaxIntensity);
+  }
+
+  const updateParallaxControl = () => {
+    if (parallaxValue) {
+      parallaxValue.textContent = `${parallaxIntensity} px`;
+    }
+    if (parallaxSlider) {
+      parallaxSlider.setAttribute(
+        "aria-valuetext",
+        `${parallaxIntensity} pixels`,
+      );
+    }
+  };
+
+  const updateParallax = () => {
+    parallaxFrame = 0;
+    const viewportCenter = window.innerHeight / 2;
+
+    parallaxImages.forEach((image) => {
+      const bounds = image.getBoundingClientRect();
+      const distanceFromCenter =
+        (bounds.top + bounds.height / 2 - viewportCenter) / window.innerHeight;
+      const offset =
+        Math.max(-1, Math.min(1, distanceFromCenter)) * -parallaxIntensity;
+      image.style.setProperty("--parallax-offset", `${offset}px`);
+    });
+  };
+
+  parallaxSlider?.addEventListener("input", () => {
+    parallaxIntensity = Number(parallaxSlider.value);
+    window.localStorage.setItem(
+      parallaxStorageKey,
+      String(parallaxIntensity),
+    );
+    updateParallaxControl();
+    updateParallax();
+  });
+  updateParallaxControl();
+
+  if (parallaxImages.length && !reducedMotion) {
+    const requestParallaxUpdate = () => {
+      if (!parallaxFrame) {
+        parallaxFrame = window.requestAnimationFrame(updateParallax);
+      }
+    };
+
+    window.addEventListener("scroll", requestParallaxUpdate, { passive: true });
+    window.addEventListener("resize", requestParallaxUpdate);
+    requestParallaxUpdate();
+  }
+
   if (supportsHover) {
     homepageAteliers.forEach((atelier) => {
       const summary = atelier.querySelector("summary");

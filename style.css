@@ -505,6 +505,44 @@ body {
   -o-object-fit: cover;
   object-fit: cover;
 }
+.homepage [data-parallax] {
+  --parallax-offset: 0px;
+  transform: translate3d(0, var(--parallax-offset), 0) scale(1.18);
+  transform-origin: center;
+  will-change: transform;
+}
+.parallax-control {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 20;
+  width: min(230px, calc(100vw - 48px));
+  padding: 14px 16px;
+  border: 1px solid rgb(245 239 227 / 35%);
+  border-radius: 12px;
+  color: #f5efe3;
+  background: rgb(42 33 27 / 92%);
+  box-shadow: 0 8px 24px rgb(30 22 17 / 22%);
+  backdrop-filter: blur(8px);
+}
+.parallax-control label {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.parallax-control output {
+  color: #F3DFA2;
+  white-space: nowrap;
+}
+.parallax-control input {
+  display: block;
+  width: 100%;
+  accent-color: #F3DFA2;
+  cursor: pointer;
+}
 .hero > img {
   -o-object-position: 50% 69%;
   object-position: 50% 69%;
@@ -824,6 +862,11 @@ body {
   font-size: 14px;
 }
 @media (prefers-reduced-motion: reduce) {
+  .homepage [data-parallax] {
+    transform: none;
+    will-change: auto;
+  }
+
   .homepage .atelier-list .atelier-detail,
   .atelier-list summary span {
     transition: none;

@@ -52,9 +52,26 @@
         >Organiser un atelier <span aria-hidden="true">↗</span></a
       >
     </header>
+    <aside class="parallax-control" aria-label="Réglage du parallax">
+      <label for="parallax-intensity">
+        Intensité du parallax
+        <output id="parallax-intensity-value" for="parallax-intensity"
+          >56 px</output
+        >
+      </label>
+      <input
+        id="parallax-intensity"
+        type="range"
+        min="0"
+        max="100"
+        value="56"
+        step="1"
+      />
+    </aside>
     <main id="main-content">
       <section class="hero">
         <img
+          data-parallax
           src="/images/Tissage-fleche-_XP-ceinture-statues-menhirs__IJXv.jpg"
           alt=""
           fetchpriority="high"
@@ -92,6 +109,7 @@
       <section class="promises" aria-label="Les engagements de Néotisse">
         <article class="image-card image-card--montpellier">
           <img
+            data-parallax
             src="/images/Atelier-explicatif_IJXv.png"
             alt="Public réuni autour d’un atelier explicatif"
             loading="lazy"
@@ -103,6 +121,7 @@
         </article>
         <article class="image-card image-card--science">
           <img
+            data-parallax
             src="/images/Presentation-materiel-scaled_IJXv.jpg"
             alt="Présentation du matériel : outils, pesons et fils sur une table"
             loading="lazy"
@@ -116,6 +135,7 @@
         </article>
         <article class="image-card image-card--sur-mesure">
           <img
+            data-parallax
             src="/images/Atelier-enfant_IJXv.jpg"
             alt="Enfant tissant des fils rouges et jaunes sur un carton"
             loading="lazy"
@@ -196,6 +216,7 @@
       <section class="atelier-feature">
         <div class="atelier-feature__image">
           <img
+            data-parallax
             src="/images/Atelier-explicatif-2_IJXv.jpg"
             alt="Atelier de médiation textile"
             loading="lazy"
@@ -313,6 +334,7 @@
       </section>
       <section class="publics">
         <img
+          data-parallax
           src="/images/Atelier-enfant_IJXv.jpg"
           alt="Atelier ouvert à tous les publics"
           loading="lazy"
@@ -374,6 +396,7 @@
       </section>
       <section class="testimonial">
         <img
+          data-parallax
           src="/images/Tissage-aux-tablettes-_XP-ceinture-statues-menhirs__IJXv.jpg"
           alt=""
           loading="lazy"
@@ -426,6 +449,7 @@
       </section>
       <section class="contact-section" id="organiser">
         <img
+          data-parallax
           src="/images/Jean-Vaquer_-Michel-Maille-et-une-statue-menhir_IJXv.jpg"
           alt="Jean Vaquer et Michel Maillé devant une statue-menhir"
           loading="lazy"
