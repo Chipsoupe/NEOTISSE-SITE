@@ -66,18 +66,29 @@
       <section class="calendar-upcoming paper-section">
         <div class="calendar-grid">
           <div class="calendar-card">
-            <h2>Prochaines dates du calendrier</h2>
-            <div class="calendar-event">
-              <strong>9-10<small>OCT. 2027</small></strong>
-              <p>
-                <b>Festival d’Archéologie Expérimentale d’Occitanie</b
-                ><small>Musée de l’Aurignacien – Tout public</small>
-              </p>
-              <a href="/actualites/">En savoir plus</a>
+            <div class="calendar-heading">
+              <h2 id="calendar-title">Octobre 2027</h2>
+              <div class="calendar-controls" aria-label="Navigation du calendrier">
+                <button type="button" data-calendar-prev aria-label="Mois précédent">
+                  <span aria-hidden="true">←</span>
+                </button>
+                <button type="button" data-calendar-next aria-label="Mois suivant">
+                  <span aria-hidden="true">→</span>
+                </button>
+              </div>
             </div>
-            <p class="muted">
-              D’autres dates seront ajoutées au calendrier prochainement.
-            </p>
+            <div class="calendar-weekdays" aria-hidden="true">
+              <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span
+              ><span>Ven</span><span>Sam</span><span>Dim</span>
+            </div>
+            <div
+              class="calendar-days"
+              data-calendar-days
+              role="grid"
+              aria-labelledby="calendar-title"
+            ></div>
+            <p class="calendar-status" data-calendar-status aria-live="polite"></p>
+            <article class="calendar-event-detail" data-calendar-detail hidden></article>
           </div>
           <div class="calendar-welcome">
             <h2>Vous souhaitez nous accueillir ?</h2>
