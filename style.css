@@ -352,6 +352,10 @@ video {
 html {
   scroll-behavior: smooth;
 }
+/* Lenis handles smoothing itself; native smooth scroll would fight it. */
+html.lenis {
+  scroll-behavior: auto;
+}
 body {
   margin: 0;
   overflow-x: hidden;
@@ -989,6 +993,9 @@ body {
   padding-top: 112px;
   padding-bottom: 112px;
 }
+.homepage .contact-copy {
+  top: -160px;
+}
 
 .event-card {
   min-height: 300px;
@@ -1338,6 +1345,9 @@ body {
   }
   .contact-section {
     padding: 80px 24px;
+  }
+  .homepage .contact-copy {
+    top: 0;
   }
   .contact-form {
     grid-column: auto;
@@ -1747,6 +1757,15 @@ body {
 .calendar-upcoming {
   padding: 100px max(24px, 9vw);
 }
+.calendar-section-title {
+  margin: 0 0 40px;
+  font-family: Georgia, serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.96;
+  text-align: center;
+}
 .calendar-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -1844,12 +1863,6 @@ body {
   border-radius: 50%;
   background: #b69a69;
   transform: translateX(-50%);
-}
-.calendar-status {
-  min-height: 20px;
-  margin: 18px 0 0;
-  color: #6b6157;
-  font-size: 13px;
 }
 .calendar-event-detail {
   margin-top: 20px;
@@ -2296,30 +2309,14 @@ body {
   font-weight: 600;
   text-decoration: none;
 }
-.news-explainer {
-  display: grid;
-  grid-template-columns: 42% 58%;
-  gap: 40px;
-  align-items: center;
-  margin-top: 90px;
-}
-.news-explainer h2 {
-  font-size: clamp(2rem, 4vw, 3.3rem);
-}
-.news-explainer p {
-  color: #4a3f36;
-  line-height: 1.65;
-}
-.news-explainer img {
-  width: 100%;
-  max-height: 420px;
-  object-fit: cover;
-  border-radius: 24px;
-}
 .news-contact {
   padding: 100px 24px;
   text-align: center;
   background: #362b22;
+  background-image: url("/textures/laine.webp");
+  background-repeat: repeat;
+  background-size: 300px 300px;
+  background-position: center;
   color: #f5efe3;
 }
 .news-contact h2 {
@@ -2343,8 +2340,7 @@ body {
 .calendar-welcome,
 .commitments,
 .team-contact,
-.news-heading,
-.news-contact {
+.news-heading {
   background-image:
     linear-gradient(rgb(54 43 34 / 60%), rgb(54 43 34 / 60%)),
     url("/textures/pepier%20marron.webp");
@@ -2392,6 +2388,21 @@ body {
   color: #4a3f36;
 }
 
+main > .news-contact {
+  background-color: #faf7f0 !important;
+  background-image: url("/textures/laine.webp") !important;
+  background-repeat: repeat !important;
+  background-size: 300px 300px !important;
+  background-position: center !important;
+  background-blend-mode: normal !important;
+  color: #2a211b;
+}
+
+main > .news-contact h2,
+main > .news-contact p {
+  color: #2a211b;
+}
+
 @media (max-width: 800px) {
   .news-heading {
     padding: 120px 24px 60px;
@@ -2399,14 +2410,137 @@ body {
   .news-list {
     padding: 70px 24px;
   }
-  .news-grid,
-  .news-explainer {
+  .news-grid {
     grid-template-columns: 1fr;
-  }
-  .news-explainer {
-    margin-top: 60px;
   }
   .news-card > a img {
     height: 250px;
+  }
+}
+
+/* Guestbook page */
+.guestbook-hero {
+  min-height: 570px;
+  padding: 150px max(24px, 9vw) 90px;
+  display: flex;
+  align-items: flex-end;
+  color: #f5efe3;
+  background:
+    linear-gradient(0deg, #2a211bd9, #2a211b52),
+    url("/images/Tissage-aux-tablettes-_XP-ceinture-statues-menhirs__IJXv.jpg")
+      center / cover;
+}
+.guestbook-hero > div {
+  max-width: 900px;
+}
+.guestbook-hero h1 {
+  margin: 12px 0 24px;
+  font-size: clamp(3.2rem, 7vw, 6.5rem);
+  line-height: 0.96;
+}
+.guestbook-hero > div > p:last-child {
+  max-width: 620px;
+  color: #e6ddd1;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  line-height: 1.6;
+}
+.guestbook-testimonials {
+  padding: 100px max(24px, 9vw) 115px;
+}
+.section-heading {
+  max-width: 760px;
+  margin: 0 auto 52px;
+  text-align: center;
+}
+.section-heading h2 {
+  margin-top: 12px;
+  color: #2a211b;
+  font-size: clamp(2.2rem, 4.5vw, 4rem);
+}
+.guestbook-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.guestbook-card {
+  min-height: 300px;
+  margin: 0;
+  padding: 36px;
+  border-radius: 28px 100px 28px 28px;
+  background: #faf7f0;
+  color: #2a211b;
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  font-weight: 500;
+}
+.guestbook-card--gold {
+  background: #f3dfa2;
+}
+.guestbook-card--dark {
+  background: #362b22;
+  color: #f5efe3;
+}
+.guestbook-card cite {
+  display: block;
+  margin-top: 34px;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.guestbook-form-section {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 7%;
+  align-items: center;
+  padding: 100px max(24px, 9vw);
+  background: #faf7f0;
+}
+.guestbook-form-intro h2 {
+  margin: 12px 0 20px;
+  color: #2a211b;
+  font-family: Georgia, serif;
+  font-size: clamp(2.2rem, 4vw, 3.8rem);
+  font-weight: 500;
+}
+.guestbook-form-intro > p:last-child {
+  color: #4a3f36;
+  line-height: 1.65;
+}
+.guestbook-form-card {
+  padding: 44px;
+  border-radius: 24px;
+  background: #e9e3d7;
+}
+.guestbook-form-card .form-note {
+  margin-bottom: 24px;
+}
+.guestbook-contact {
+  padding: 95px 24px;
+  text-align: center;
+  color: #f5efe3;
+  background: #362b22;
+}
+.guestbook-contact h2 {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+}
+.guestbook-contact p {
+  margin: 14px auto 22px;
+  color: #d8cfc4;
+}
+@media (max-width: 800px) {
+  .guestbook-hero {
+    min-height: 500px;
+    padding: 120px 24px 70px;
+  }
+  .guestbook-grid,
+  .guestbook-form-section {
+    grid-template-columns: 1fr;
+  }
+  .guestbook-testimonials,
+  .guestbook-form-section {
+    padding: 70px 24px;
+  }
+  .guestbook-form-card {
+    padding: 30px 20px;
   }
 }

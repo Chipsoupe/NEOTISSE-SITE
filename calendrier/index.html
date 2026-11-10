@@ -16,6 +16,7 @@
     <meta property="og:url" content="https://neotisse.fr/calendrier/" />
     <meta property="og:site_name" content="Neotisse" />
     <title>Calendrier - Neotisse</title>
+    <link rel="stylesheet" href="/vendor/lenis/lenis.css" />
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
@@ -64,6 +65,7 @@
         </div>
       </section>
       <section class="calendar-upcoming paper-section">
+        <h2 class="calendar-section-title">Nos prochaines dates</h2>
         <div class="calendar-grid">
           <div class="calendar-card">
             <div class="calendar-heading">
@@ -87,7 +89,6 @@
               role="grid"
               aria-labelledby="calendar-title"
             ></div>
-            <p class="calendar-status" data-calendar-status aria-live="polite"></p>
             <article class="calendar-event-detail" data-calendar-detail hidden></article>
           </div>
           <div class="calendar-welcome">
@@ -101,103 +102,6 @@
               >Organiser un atelier <span class="button__arrow">↗</span></a
             >
           </div>
-        </div>
-      </section>
-      <section class="past-events">
-        <h2>Nos interventions passées</h2>
-        <p class="section-intro">
-          Depuis 2024, le calendrier de Neotisse s’est rempli d’ateliers
-          d’archéologie textile dans les musées, les sites archéologiques, les
-          universités et les festivals, en Occitanie, en Auvergne et ailleurs en
-          France : démonstrations de filage, de tissage et de teinture végétale,
-          ateliers participatifs, ateliers enfants et conférences. Voici
-          quelques-uns des lieux qui nous ont accueillies.
-        </p>
-        <div class="references-grid">
-          <ul>
-            <li>
-              <b>Musée de Gergovie</b> — La Roche-Blanche (Puy-de-Dôme)<br />Atelier
-              « Teinture en folie », 31 octobre et 1er novembre : teintures et
-              impressions végétales. Fête de Beltaine : atelier démonstratif,
-              explicatif et participatif.
-            </li>
-            <li>
-              <b>Site archéologique Lattara – Musée Henri Prades</b> — Lattes
-              (Hérault)<br />Journée du 25 octobre, à l’invitation du
-              laboratoire ASM : atelier démonstratif et explicatif.
-            </li>
-            <li>
-              <b>Musée de Tautavel</b> — Tautavel (Pyrénées-Orientales)<br />Fête
-              de la préhistoire : atelier démonstratif, explicatif et ateliers
-              enfants.
-            </li>
-            <li>
-              <b>Université Paul-Valéry Montpellier 3</b> — Montpellier
-              (Hérault)<br />Forum régional de l’archéologie : atelier
-              démonstratif et explicatif.
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <b>Oppidum de Ruscino</b> — Perpignan (Pyrénées-Orientales)<br />Atelier
-              démonstratif, explicatif et ateliers enfants.
-            </li>
-            <li>
-              <b>Maison des menhirs des Bondons</b> — Les Bondons (Lozère)<br />Atelier
-              démonstratif, explicatif et participatif.
-            </li>
-            <li>
-              <b>Muséum de Toulouse</b> — Toulouse (Haute-Garonne)<br />Formation
-              des médiatrices.
-            </li>
-            <li>
-              <b>Sauveterre-de-Guyenne</b> (Gironde)<br />Conférence et ateliers
-              enfants avec l’Association des Anciens combattants.
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <b>Festival du Lin et de la fibre artistique</b><br />Ateliers
-              participatifs et conférence.
-            </li>
-            <li>
-              <b>CERAC</b><br />Forum de l’archéologie : atelier démonstratif et
-              explicatif.
-            </li>
-            <li>
-              <b>Jean Vaquer et Michel Maillé</b>, archéologues et
-              préhistoriens<br />Expérimentation archéologique.
-            </li>
-            <li><b>SDAO</b><br />Expérimentation archéologique.</li>
-          </ul>
-        </div>
-        <div class="booking-copy">
-          <h2>Réserver une date dans notre calendrier</h2>
-          <p>
-            Notre calendrier se construit avec les structures qui nous
-            accueillent. Musée, site archéologique, collectivité ou festival :
-            nous vous conseillons de nous contacter plusieurs mois à l’avance,
-            en particulier pour les périodes très demandées comme les vacances
-            scolaires, les week-ends de printemps et d’été, ou les grands
-            rendez-vous nationaux tels que les Journées européennes de
-            l’archéologie, les Journées européennes du patrimoine et la Fête de
-            la science.
-          </p>
-          <p>
-            Pour fixer les dates d’une intervention, nous échangeons avec vous
-            sur le format souhaité (atelier démonstratif, atelier participatif,
-            atelier enfants ou conférence), le public attendu, la durée et
-            l’espace disponible. Chaque intervention est conçue sur mesure, puis
-            la date retenue est ajoutée à notre calendrier pour que vos
-            visiteurs puissent la retrouver facilement.
-          </p>
-          <p>
-            Vous souhaitez participer à l’un de nos ateliers ? Le plus souvent,
-            les réservations se font directement auprès du lieu qui nous
-            accueille : pensez à consulter son site ou à le contacter. Pour
-            connaître nos prochaines dates dès qu’elles sont fixées, suivez
-            aussi <a href="/actualites/">nos actualités</a>.
-          </p>
         </div>
       </section>
     </main>
@@ -279,6 +183,7 @@
         </button>
       </div>
     </div>
+    <script src="/vendor/lenis/lenis.min.js" defer></script>
     <script src="/script.js" defer></script>
   </body>
 </html>

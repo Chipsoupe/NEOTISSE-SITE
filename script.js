@@ -1,4 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Smooth scroll (Lenis).
+  // The anchor offset leaves room for the fixed header.
+  if (typeof window.Lenis === "function") {
+    window.lenis = new window.Lenis({
+      autoRaf: true,
+      lerp: 0.12,
+      respectReducedMotion: false,
+      anchors: { offset: -102 },
+    });
+  }
+
   const menuToggle = document.querySelector(".menu-toggle");
   const menu = document.querySelector("#site-menu");
 
@@ -6,6 +17,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
     menuToggle.setAttribute("aria-expanded", String(!isOpen));
     menu?.classList.toggle("is-open", !isOpen);
+  });
+
+  // Close the mobile menu after an in-page link is followed.
+  menu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      menuToggle?.setAttribute("aria-expanded", "false");
+      menu.classList.remove("is-open");
+    });
   });
 
   const banner = document.querySelector("[data-cookie-banner]");
@@ -58,12 +77,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const calendar = document.querySelector("[data-calendar-days]");
   const calendarTitle = document.querySelector("#calendar-title");
-  const calendarStatus = document.querySelector("[data-calendar-status]");
   const calendarDetail = document.querySelector("[data-calendar-detail]");
   const previousMonth = document.querySelector("[data-calendar-prev]");
   const nextMonth = document.querySelector("[data-calendar-next]");
 
-  if (calendar && calendarTitle && calendarStatus && calendarDetail) {
+  if (calendar && calendarTitle && calendarDetail) {
     const events = [
       {
         start: "2027-10-09",
@@ -121,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p class="eyebrow">Événement sélectionné</p>
         <h3>${event.title}</h3>
         <p><strong>${formatEventDates(event)}</strong><br>
-          ${event.location} · ${event.audience}</p>
+          ${event.location}, ${event.audience}</p>
         <a href="${event.url}">En savoir plus <span aria-hidden="true">↗</span></a>
       `;
     };
@@ -164,13 +182,6 @@ document.addEventListener("DOMContentLoaded", () => {
         cells.push(cell);
       }
       calendar.replaceChildren(...cells);
-      const visibleEvents = events.filter((event) => {
-        const eventDate = parseDate(event.start);
-        return eventDate.getFullYear() === year && eventDate.getMonth() === month;
-      });
-      calendarStatus.textContent = visibleEvents.length
-        ? `${visibleEvents.length} événement${visibleEvents.length > 1 ? "s" : ""} ce mois-ci. Sélectionnez une date pour afficher le détail.`
-        : "Aucun événement prévu ce mois-ci.";
       showEvent(undefined);
     };
 
