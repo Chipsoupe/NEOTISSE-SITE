@@ -426,9 +426,16 @@ body {
   justify-content: space-between;
   gap: 24px;
   color: #f5efe3;
-  background: rgb(42 33 27 / 84%);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+  /* En haut de page : voile léger + flou, l'image du hero transparaît.
+     Après défilement (.is-scrolled, ajoutée par script.js) : un peu plus
+     opaque pour rester lisible au-dessus des sections claires. */
+  background: rgb(42 33 27 / 18%);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+  backdrop-filter: blur(16px) saturate(1.15);
+  transition: background-color 320ms ease;
+}
+.site-header.is-scrolled {
+  background: rgb(42 33 27 / 62%);
 }
 .site-logo img {
   width: 68px;
@@ -451,11 +458,15 @@ body {
 .site-nav a:focus-visible {
   color: #F3DFA2;
 }
+/* CTA principal (rempli jaune), dans un jaune plus doux que .button--gold. */
 .header-cta {
-  border: 1px solid #FFE436;
+  border: 1px solid #ecd27e;
   border-radius: 10px;
   padding: 8px 8px 8px 14px;
   font-size: 13px;
+  font-weight: 500;
+  background: #ecd27e;
+  color: #2a211b;
   transition: filter 180ms ease;
 }
 .header-cta:hover,
@@ -470,8 +481,8 @@ body {
   width: 32px;
   height: 32px;
   border-radius: 9px;
-  background: #FFE436;
-  color: #2a211b;
+  background: #2a211b;
+  color: #ecd27e;
 }
 .menu-toggle {
   display: none;
@@ -1058,8 +1069,11 @@ body {
   width: min(100%, 850px);
   text-align: center;
 }
+/* --intro-logo-w est piloté par script.js : le logo part grand et rétrécit
+   jusqu'à sa taille normale au fil du défilement de la section. */
 .homepage .intro__content img {
-  width: clamp(112px, 14vw, 156px);
+  width: var(--intro-logo-w, clamp(112px, 14vw, 156px));
+  max-width: 100%;
   height: auto;
   object-fit: contain;
 }
@@ -1833,86 +1847,86 @@ body {
 .atelier-steps h2 {
   font-size: clamp(2rem, 4vw, 3.25rem);
 }
-.atelier-callout {
-  padding: 36px 36px 34px;
-  border-radius: 24px 110px 24px 24px;
-  background: #F3DFA2;
-}
-.atelier-callout h3 {
-  font-size: clamp(1.7rem, 3vw, 2.75rem);
-}
-.atelier-jumps {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 28px;
-}
-.atelier-jumps a {
-  padding: 10px 16px;
-  border: 1px solid #cfc8bd;
-  border-radius: 10px;
-  background: #faf7f0;
-  text-decoration: none;
-  font-size: 14px;
-}
+/* Sections photo | texte (page L'association) : photo (avec titre + CTA posés dessus) | texte.
+   Colonnes en liste explicite minmax(0, Xfr) pour que l'agrandissement
+   au survol soit animable (voir plus bas). */
 .atelier-detail-section {
   display: grid;
-  grid-template-columns: 45% 55%;
-  min-height: 0;
+  grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
+  min-height: 600px;
   align-items: stretch;
 }
 .atelier-detail-section--reverse {
-  grid-template-columns: 55% 45%;
+  grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
 }
 .atelier-detail-section--reverse .atelier-detail-image {
   order: 2;
 }
+.atelier-detail-image {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  color: #f5efe3;
+}
 .atelier-detail-image img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  min-height: 0;
   -o-object-fit: cover;
   object-fit: cover;
 }
-.atelier-detail-image {
+/* Titre + CTA sur la photo, avec un dégradé qui monte du bas. */
+.atelier-detail-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   display: flex;
-  height: 100%;
-  min-height: 0;
-  align-self: stretch;
-  overflow: hidden;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 48px max(28px, 4vw);
+  background: linear-gradient(
+    0deg,
+    rgb(30 22 17 / 88%) 0%,
+    rgb(30 22 17 / 50%) 35%,
+    rgb(30 22 17 / 0%) 70%
+  );
 }
-.atelier-detail-image img {
-  flex: 1;
-  display: block;
-  min-height: 0;
+.atelier-detail-overlay h2 {
+  max-width: 560px;
+  margin: 0;
+  color: #f5efe3;
+  font-size: clamp(2rem, 3.6vw, 3.25rem);
 }
-#demonstratifs .atelier-detail-image {
-  align-self: center;
-  max-height: 510px;
+.atelier-detail-overlay .button {
+  margin-top: 24px;
 }
-#accessibles .atelier-detail-image {
-  align-self: center;
-  max-height: 368px;
-}
-#enfants .atelier-detail-image {
-  align-self: center;
-  max-height: 620px;
-}
-#tablettes .atelier-detail-image {
-  align-self: center;
-  max-height: 505px;
-}
+/* Colonne texte : le bloc a une largeur fixe (liée à l'écran, pas à la
+   colonne), donc il ne se remet pas en forme quand la colonne s'anime. */
 .atelier-detail-copy {
-  align-self: center;
-  padding: 56px max(32px, 7vw);
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 32px;
   background: #faf7f0;
+}
+.atelier-detail-text {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(500px, calc(38vw - 64px));
+}
+.atelier-detail-text > p {
+  margin: 0;
+}
+.atelier-detail-text > .atelier-lead {
+  margin-bottom: 6px;
 }
 .atelier-detail-section--dark .atelier-detail-copy {
   background: #362b22;
   color: #f5efe3;
-}
-.atelier-detail-copy h2 {
-  font-size: clamp(2rem, 4vw, 3.25rem);
 }
 .atelier-detail-copy p {
   color: #4a3f36;
@@ -1926,8 +1940,11 @@ body {
   font-size: 19px;
   font-weight: 500;
 }
-.atelier-detail-copy .button {
-  margin-top: clamp(18px, 1.5vw, 20px);
+.atelier-detail-text > p:first-child {
+  margin-top: 0;
+}
+.atelier-detail-text > p:last-child {
+  margin-bottom: 0;
 }
 .atelier-steps {
   padding: 72px max(24px, 7vw);
@@ -1967,11 +1984,21 @@ body {
   .atelier-detail-section--reverse .atelier-detail-image {
     order: 0;
   }
+  .atelier-detail-section,
+  .atelier-detail-section--reverse {
+    min-height: 0;
+  }
   .atelier-detail-copy {
     padding: 44px 24px;
   }
-  .atelier-detail-image img {
-    height: 280px;
+  .atelier-detail-text {
+    width: 100%;
+  }
+  .atelier-detail-image {
+    min-height: 380px;
+  }
+  .atelier-detail-overlay {
+    padding: 32px 24px;
   }
   .atelier-hero {
     min-height: 420px;
@@ -2322,12 +2349,10 @@ body {
   grid-template-columns: 38% 62%;
   gap: 60px;
 }
-.team-origin h2,
-.team-method h2 {
+.team-origin h2 {
   font-size: clamp(2rem, 4vw, 3.5rem);
 }
-.team-origin p,
-.team-method p {
+.team-origin p {
   color: #4a3f36;
   font-size: 16px;
   line-height: 1.65;
@@ -2376,21 +2401,6 @@ body {
   color: #d8cfc4;
   line-height: 1.65;
 }
-.team-method {
-  display: grid;
-  grid-template-columns: 45% 55%;
-  min-height: 560px;
-}
-.team-method img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.team-method > div:last-child {
-  align-self: center;
-  padding: 80px max(32px, 7vw);
-  background: #faf7f0;
-}
 .team-members {
   padding: 100px max(24px, 9vw);
 }
@@ -2432,18 +2442,19 @@ body {
   padding: 100px max(24px, 9vw);
   background: #faf7f0;
 }
-.trust-logos {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 32px;
-  border-bottom: 1px solid #e3ddd2;
-  padding-bottom: 56px;
-}
-.trust-logos img {
-  max-width: 200px;
+/* « Ils nous ont fait confiance » : défilement repris du bandeau partenaires
+   de l'accueil (.partners__logos / __track / __group), mais sur le fond clair
+   d'origine et avec les logos en couleurs. */
+.trust-marquee .partners__group img {
+  max-width: 150px;
   max-height: 80px;
+  -o-object-fit: contain;
   object-fit: contain;
+}
+/* Le multiply est posé sur la bande animée (et non sur chaque logo) :
+   l'animation isole ses enfants, qui ne se mélangeraient plus au fond.
+   Les fonds blancs des logos disparaissent ainsi dans le fond clair. */
+.trust-marquee .partners__track {
   mix-blend-mode: multiply;
 }
 .team-testimonial {
@@ -2488,7 +2499,6 @@ body {
 }
 @media (max-width: 800px) {
   .team-origin,
-  .team-method,
   .member-grid {
     grid-template-columns: 1fr;
   }
@@ -2500,13 +2510,6 @@ body {
   .team-members,
   .trust-section {
     padding: 70px 24px;
-  }
-  .team-method > div:last-child {
-    padding: 60px 24px;
-  }
-  .trust-logos {
-    flex-wrap: wrap;
-    justify-content: center;
   }
   .team-testimonial {
     padding: 70px 24px;
@@ -2637,8 +2640,7 @@ body {
 .team-members,
 .trust-section,
 .news-list,
-.atelier-detail-copy:not(.atelier-detail-section--dark .atelier-detail-copy),
-.team-method > div:last-child {
+.atelier-detail-copy:not(.atelier-detail-section--dark .atelier-detail-copy) {
   background-color: #faf7f0;
   background-image:
     linear-gradient(rgb(250 247 240 / 76%), rgb(250 247 240 / 76%)),
@@ -2701,12 +2703,28 @@ main > .news-contact p {
   display: flex;
   align-items: flex-end;
   color: #f5efe3;
-  background:
-    linear-gradient(0deg, #2a211bd9, #2a211b52),
-    url("/images/Tissage-aux-tablettes-_XP-ceinture-statues-menhirs__IJXv.jpg")
-      center / cover;
+  position: relative;
+  overflow: hidden;
+  background: #2a211b;
+}
+/* Photo en <img> (et non en fond CSS) pour pouvoir lui appliquer le parallax. */
+.guestbook-hero > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+.guestbook-hero:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, #2a211bd9, #2a211b52);
 }
 .guestbook-hero > div {
+  position: relative;
+  z-index: 1;
   max-width: 900px;
 }
 .guestbook-hero h1 {
@@ -2819,4 +2837,611 @@ main > .news-contact p {
   .guestbook-form-card {
     padding: 30px 20px;
   }
+}
+
+/* ==========================================================================
+   Effets de la page d'accueil étendus aux autres pages
+   ========================================================================== */
+
+/* Texte d'introduction des héros : même taille et même rythme que l'accueil. */
+.atelier-hero p,
+.calendar-hero p,
+.team-hero p,
+.guestbook-hero > div > p:last-child,
+.news-heading p,
+.contact-intro p {
+  font-size: clamp(16px, 1.45vw, 21px);
+  line-height: 1.55;
+}
+
+/* Ombres en dégradé orientées vers le texte. */
+.atelier-hero:after,
+.calendar-hero:after,
+.team-hero:after {
+  background: linear-gradient(
+    0deg,
+    rgb(30 22 17 / 88%) 0%,
+    rgb(30 22 17 / 50%) 40%,
+    rgb(30 22 17 / 10%) 100%
+  );
+}
+.team-testimonial:after {
+  background: linear-gradient(
+    180deg,
+    rgb(30 22 17 / 85%) 0%,
+    rgb(30 22 17 / 45%) 35%,
+    rgb(30 22 17 / 10%) 70%
+  );
+}
+
+/* Photo de la page Contact : cadre arrondi qui coupe le parallax. */
+.contact-process__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 24px;
+}
+.contact-process__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  border-radius: 0;
+}
+
+/* Cartes d'actualités : zoom léger de la photo au survol. */
+.news-card > a:first-child {
+  display: block;
+  overflow: hidden;
+  border-radius: 16px;
+}
+.news-card > a img {
+  display: block;
+  border-radius: 0;
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.news-more {
+  transition: color 200ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .news-card:hover > a img,
+  .news-card:focus-within > a img {
+    transform: scale(1.06);
+  }
+  .news-card:hover .news-more {
+    color: #8a6d1f;
+  }
+}
+
+/* Sections photo | texte (Ateliers, L'association) : comme les cards
+   « Rigueur scientifique » / « Sur mesure » de l'accueil, la moitié survolée
+   s'élargit et le CTA posé sur la photo n'apparaît qu'au survol de la photo.
+   Sur mobile et tablette, tout reste visible, sans animation. */
+@media (hover: hover) and (pointer: fine) and (min-width: 801px) {
+  .atelier-detail-section {
+    transition: grid-template-columns 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .atelier-detail-section:not(.atelier-detail-section--reverse):has(.atelier-detail-image:hover),
+  .atelier-detail-section--reverse:has(.atelier-detail-copy:hover) {
+    grid-template-columns: minmax(0, 62fr) minmax(0, 38fr);
+  }
+  .atelier-detail-section:not(.atelier-detail-section--reverse):has(.atelier-detail-copy:hover),
+  .atelier-detail-section--reverse:has(.atelier-detail-image:hover) {
+    grid-template-columns: minmax(0, 38fr) minmax(0, 62fr);
+  }
+  .atelier-detail-overlay .button {
+    max-height: 0;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      max-height 420ms ease,
+      margin-top 420ms ease,
+      padding 420ms ease,
+      opacity 280ms ease,
+      transform 420ms ease,
+      filter 180ms ease;
+  }
+  .atelier-detail-image:hover .atelier-detail-overlay .button,
+  .atelier-detail-image:focus-within .atelier-detail-overlay .button {
+    max-height: 80px;
+    margin-top: 24px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    opacity: 1;
+    transform: none;
+    transition:
+      max-height 420ms ease,
+      margin-top 420ms ease,
+      padding 420ms ease,
+      opacity 280ms ease 120ms,
+      transform 420ms ease,
+      filter 180ms ease;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atelier-detail-section,
+  .atelier-detail-overlay .button,
+  .news-card > a img {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   Navbar transparente : le hero de chaque page passe sous la navbar.
+   Le body n'a plus de marge haute ; chaque première section ajoute la
+   hauteur de la navbar à son espace du haut.
+   ========================================================================== */
+:root {
+  --header-h: 102px;
+}
+body {
+  padding-top: 0;
+}
+.hero {
+  min-height: calc(720px + var(--header-h));
+  padding-top: calc(90px + var(--header-h));
+}
+.atelier-hero {
+  min-height: calc(500px + var(--header-h));
+  padding-top: calc(90px + var(--header-h));
+}
+.calendar-hero {
+  min-height: calc(520px + var(--header-h));
+  padding-top: calc(120px + var(--header-h));
+}
+.team-hero {
+  min-height: calc(600px + var(--header-h));
+  padding-top: calc(120px + var(--header-h));
+}
+.guestbook-hero {
+  min-height: calc(570px + var(--header-h));
+  padding-top: calc(150px + var(--header-h));
+}
+.contact-intro,
+.news-heading {
+  padding-top: calc(180px + var(--header-h));
+}
+@media (max-width: 800px) {
+  :root {
+    --header-h: 90px;
+  }
+  .hero {
+    min-height: calc(640px + var(--header-h));
+    padding-top: calc(60px + var(--header-h));
+  }
+  .atelier-hero {
+    min-height: calc(420px + var(--header-h));
+    padding-top: calc(80px + var(--header-h));
+  }
+  .guestbook-hero {
+    min-height: calc(500px + var(--header-h));
+    padding-top: calc(120px + var(--header-h));
+  }
+  .contact-intro,
+  .news-heading {
+    padding-top: calc(120px + var(--header-h));
+  }
+}
+
+/* ==========================================================================
+   Page Ateliers : « Le fil des ateliers » (voir fil-ateliers.js)
+   ========================================================================== */
+
+/* Intro seule (les liens rapides et l'encart ont quitté la page). */
+.atelier-intro--solo {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  text-align: center;
+}
+.atelier-intro--solo p {
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+.thread-journey {
+  --thread-gold: #c9a45c;
+  position: relative;
+  padding: 56px max(24px, 6vw) 0;
+  background-color: #faf7f0;
+  background-image:
+    linear-gradient(rgb(250 247 240 / 76%), rgb(250 247 240 / 76%)),
+    url("/textures/soie.webp");
+  background-repeat: no-repeat, repeat;
+  background-size:
+    100% 100%,
+    900px 620px;
+  background-blend-mode: normal, multiply;
+}
+
+/* En-tête : fuseau + titre. */
+.thread-journey__head {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.thread-journey__head .eyebrow {
+  margin: 0 0 10px;
+  padding: 0;
+  border: 0;
+  color: #8a6d1f;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.thread-journey__head h2 {
+  font-size: clamp(2.2rem, 4.5vw, 3.75rem);
+}
+.thread-journey__spindle {
+  display: block;
+  margin-top: 28px;
+  width: 96px;
+  height: auto;
+  overflow: visible;
+}
+.spindle__shaft {
+  stroke: #6b4a2b;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.spindle__hook {
+  fill: none;
+  stroke: #6b4a2b;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+.spindle__cop {
+  fill: #dcc187;
+  stroke: #a5813f;
+  stroke-width: 1.5;
+}
+.spindle__wraps line {
+  stroke: #a5813f;
+  stroke-width: 1.4;
+  opacity: 0.75;
+}
+.spindle__whorl {
+  fill: #8a5a33;
+}
+.spindle__marks line {
+  stroke: #5e3c20;
+  stroke-width: 2;
+  opacity: 0.6;
+}
+
+/* Le fil : SVG posé sur toute la section, sous les cards. */
+.thread-journey__thread {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.thread-layer,
+.thread-mask {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.thread-mask {
+  stroke: #fff;
+  stroke-width: 16;
+}
+.thread-layer--shadow {
+  stroke: rgb(42 33 27 / 22%);
+  stroke-width: 6;
+  transform: translate(1.5px, 2.5px);
+}
+.thread-layer--body {
+  stroke: var(--thread-gold);
+  stroke-width: 4.5;
+}
+/* Torsion : petits traits sombres en travers du fil, comme des brins. */
+.thread-layer--ply {
+  stroke: #8c6a32;
+  stroke-width: 4.5;
+  stroke-linecap: butt;
+  stroke-dasharray: 1.6 3.4;
+  opacity: 0.7;
+}
+.thread-layer--sheen {
+  stroke: #f4e2b0;
+  stroke-width: 1.2;
+  stroke-dasharray: 5 4;
+  opacity: 0.85;
+}
+
+/* Cards alternées de part et d'autre du fil. */
+.thread-journey__list {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 150px;
+  margin: 0;
+  padding: 110px 0 0;
+  list-style: none;
+}
+.thread-card {
+  --from-x: 48px;
+  width: min(540px, 48%);
+  margin-left: auto;
+  scroll-margin-top: 130px;
+  transition: width 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.thread-card[data-side="left"] {
+  --from-x: -48px;
+  margin-left: 0;
+  margin-right: auto;
+}
+.thread-card.is-open {
+  width: min(760px, 64%);
+}
+.thread-card__inner {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #fffdf8;
+  box-shadow:
+    0 1px 2px rgb(42 33 27 / 8%),
+    0 18px 40px -18px rgb(42 33 27 / 35%);
+  transition:
+    opacity 600ms ease,
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 300ms ease;
+}
+.thread-journey--js .thread-card__inner {
+  opacity: 0;
+  transform: translate(var(--from-x), 28px);
+}
+.thread-journey--js .thread-card.is-visible .thread-card__inner {
+  opacity: 1;
+  transform: none;
+}
+.thread-card__media {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.thread-card__media img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.thread-card__body {
+  padding: 26px 32px 28px;
+}
+.thread-card__index {
+  margin: 0 0 6px;
+  color: #b08a3e;
+  font: 400 28px/1 Georgia, serif;
+}
+.thread-card__title {
+  font-size: clamp(1.55rem, 2.3vw, 2.15rem);
+}
+/* Le bouton couvre toute la card : un clic n'importe où l'ouvre. */
+.thread-card__toggle {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.thread-card__toggle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.thread-card__toggle:focus-visible {
+  outline: none;
+}
+.thread-card__inner:has(.thread-card__toggle:focus-visible) {
+  box-shadow:
+    0 0 0 3px #ecd27e,
+    0 18px 40px -18px rgb(42 33 27 / 35%);
+}
+.thread-card__hook {
+  margin: 14px 0 0;
+  color: #4a3f36;
+  line-height: 1.6;
+}
+/* Détail dépliable (une seule card ouverte à la fois). */
+.thread-card__detail {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.thread-card__detail-inner {
+  min-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  transition: visibility 0s linear 520ms;
+}
+.thread-card__detail-inner p {
+  margin: 14px 0 0;
+  color: #4a3f36;
+  line-height: 1.65;
+}
+.thread-card__detail-inner .button {
+  margin: 22px 0 4px;
+}
+.thread-card.is-open .thread-card__detail {
+  grid-template-rows: 1fr;
+}
+.thread-card.is-open .thread-card__detail-inner {
+  visibility: visible;
+  transition-delay: 0s;
+}
+.thread-card__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  color: #2a211b;
+  font-size: 14px;
+  font-weight: 600;
+}
+.thread-card__more-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ecd27e;
+  font-size: 18px;
+  line-height: 1;
+  transition: transform 320ms ease;
+}
+.thread-card.is-open .thread-card__more-icon {
+  transform: rotate(45deg);
+}
+@media (hover: hover) and (pointer: fine) {
+  .thread-card:not(.is-open) .thread-card__inner:hover {
+    box-shadow:
+      0 1px 2px rgb(42 33 27 / 8%),
+      0 26px 50px -20px rgb(42 33 27 / 45%);
+  }
+  .thread-card__inner:hover .thread-card__media img {
+    transform: scale(1.05);
+  }
+}
+
+/* Zone de trame : le fil s'y resserre avant le footer. */
+.thread-journey__weave {
+  height: 280px;
+  margin-top: 120px;
+}
+
+/* Footer tissé (page Ateliers) : étoffe sombre, avec en haut une bande de
+   trame dorée dans la continuité du fil. */
+.site-footer--woven {
+  background-color: #2f251d;
+  background-image:
+    repeating-linear-gradient(0deg, rgb(201 164 92 / 9%) 0 2px, transparent 2px 5px),
+    repeating-linear-gradient(90deg, rgb(0 0 0 / 22%) 0 2px, transparent 2px 5px),
+    linear-gradient(rgb(54 43 34 / 60%), rgb(54 43 34 / 60%)),
+    url("/textures/pepier%20marron.webp");
+  background-repeat: repeat, repeat, no-repeat, no-repeat;
+  background-size:
+    auto,
+    auto,
+    100% 100%,
+    100% 100%;
+  background-position: center;
+  background-blend-mode: normal, normal, normal, soft-light;
+  padding-top: 0;
+}
+.site-footer--woven::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  background: repeating-linear-gradient(
+    0deg,
+    #c9a45c 0 2px,
+    #8c6a32 2px 3px,
+    transparent 3px 5px
+  );
+  -webkit-mask-image: linear-gradient(#000, transparent);
+  mask-image: linear-gradient(#000, transparent);
+  pointer-events: none;
+}
+.footer-cta {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 130px 24px 90px;
+  text-align: center;
+}
+.footer-cta .eyebrow {
+  margin: 0 0 14px;
+  padding: 0;
+  border: 0;
+  color: #ecd27e;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.footer-cta h2 {
+  color: #f5efe3;
+  font-size: clamp(2.2rem, 4.5vw, 3.75rem);
+}
+.footer-cta p:not(.eyebrow) {
+  color: #d8cfc4;
+  line-height: 1.65;
+}
+.footer-cta .button {
+  margin-top: 12px;
+}
+
+@media (max-width: 800px) {
+  .thread-journey {
+    padding: 44px 16px 0;
+  }
+  .thread-journey__head {
+    align-items: flex-start;
+    padding-left: 40px;
+    text-align: left;
+  }
+  .thread-journey__spindle {
+    width: 64px;
+    margin-left: -40px;
+  }
+  .thread-journey__list {
+    gap: 56px;
+    padding: 64px 0 0 40px;
+  }
+  .thread-card,
+  .thread-card[data-side="left"],
+  .thread-card.is-open {
+    --from-x: 24px;
+    width: 100%;
+    margin: 0;
+  }
+  .thread-card__body {
+    padding: 22px 22px 24px;
+  }
+  .thread-journey__weave {
+    height: 200px;
+    margin-top: 72px;
+  }
+  .footer-cta {
+    padding: 110px 20px 70px;
+  }
+}
+
+/* Moins d'animations : fil entièrement tracé, cards visibles, rien ne bouge. */
+.thread-journey--static .thread-card__inner,
+.thread-journey--static .thread-card,
+.thread-journey--static .thread-card__detail,
+.thread-journey--static .thread-card__detail-inner,
+.thread-journey--static .thread-card__media img {
+  transition: none;
+}
+.thread-journey--static.thread-journey--js .thread-card__inner {
+  opacity: 1;
+  transform: none;
 }

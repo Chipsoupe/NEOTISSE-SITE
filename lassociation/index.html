@@ -133,27 +133,32 @@
         </div>
       </section>
 
-      <section class="team-method">
-        <div>
+      <section class="atelier-detail-section">
+        <div class="atelier-detail-image">
           <img
+            data-parallax
             src="/images/Metier-a-tisser-a-pesons-scaled_aBCG.jpg"
             alt="Métier à tisser à pesons"
             loading="lazy"
           />
+          <div class="atelier-detail-overlay">
+            <h2>Une médiation par le geste et la matière</h2>
+            <a class="button button--gold" href="/ateliers/"
+              >Découvrir nos ateliers <span class="button__arrow">↗</span></a
+            >
+          </div>
         </div>
-        <div>
-          <h2>Une médiation par le geste et la matière</h2>
-          <p>
-            Notre démarche est interdisciplinaire : elle associe archéologie,
-            expérimentation des techniques textiles et médiation culturelle. À
-            travers la manipulation des matières, la découverte des outils et
-            l’apprentissage des gestes, nous invitons les participants à
-            appréhender concrètement les réalités techniques des sociétés
-            passées.
-          </p>
-          <a class="button button--gold" href="/ateliers/"
-            >Découvrir nos ateliers <span class="button__arrow">↗</span></a
-          >
+        <div class="atelier-detail-copy" data-parallax-bg>
+          <div class="atelier-detail-text">
+            <p>
+              Notre démarche est interdisciplinaire : elle associe archéologie,
+              expérimentation des techniques textiles et médiation culturelle. À
+              travers la manipulation des matières, la découverte des outils et
+              l’apprentissage des gestes, nous invitons les participants à
+              appréhender concrètement les réalités techniques des sociétés
+              passées.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -212,24 +217,42 @@
 
       <section class="trust-section" data-parallax-bg>
         <h2>Ils nous ont fait confiance</h2>
-        <div class="trust-logos">
-          <img
-            src="/images/Logo-musee-Tautavel-scaled_aBCG.png"
-            alt="Musée de Préhistoire de Tautavel"
-            loading="lazy"
-          /><img
-            src="/images/Logo-CERAC_IJXv.webp"
-            alt="CERAC"
-            loading="lazy"
-          /><img
-            src="/images/Logo-Festival-du-lin_IJXv.webp"
-            alt="Festival du Lin"
-            loading="lazy"
-          /><img
-            src="/images/Logo-Universite-Paul-Valery-Montpellier-3_IJXv.webp"
-            alt="Université Paul-Valéry Montpellier 3"
-            loading="lazy"
-          />
+        <!-- Même défilement que le bandeau « Nos partenaires » de l'accueil,
+             logos en couleurs d'origine. -->
+        <div class="partners__logos trust-marquee">
+          <div class="partners__track">
+            <div class="partners__group">
+              <img
+                src="/images/Logo-musee-Tautavel-scaled_aBCG.png"
+                alt="Musée de Préhistoire de Tautavel"
+                loading="lazy"
+              />
+              <img
+                src="/images/Logo-CERAC_IJXv.webp"
+                alt="CERAC"
+                loading="lazy"
+              />
+              <img
+                src="/images/Logo-Festival-du-lin_IJXv.webp"
+                alt="Festival du Lin"
+                loading="lazy"
+              />
+              <img
+                src="/images/Logo-Universite-Paul-Valery-Montpellier-3_IJXv.webp"
+                alt="Université Paul-Valéry Montpellier 3"
+                loading="lazy"
+              />
+            </div>
+            <div class="partners__group" aria-hidden="true">
+              <img src="/images/Logo-musee-Tautavel-scaled_aBCG.png" alt="" />
+              <img src="/images/Logo-CERAC_IJXv.webp" alt="" />
+              <img src="/images/Logo-Festival-du-lin_IJXv.webp" alt="" />
+              <img
+                src="/images/Logo-Universite-Paul-Valery-Montpellier-3_IJXv.webp"
+                alt=""
+              />
+            </div>
+          </div>
         </div>
       </section>
 
