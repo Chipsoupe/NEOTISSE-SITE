@@ -505,43 +505,24 @@ body {
   -o-object-fit: cover;
   object-fit: cover;
 }
-.homepage [data-parallax] {
+/* Parallax des textures (toutes les pages) : seule la couche texture
+   (2e calque) bouge, le voile de couleur (1er calque) reste fixe.
+   !important : les règles de texture plus bas fixent `background-position`
+   avec des sélecteurs plus spécifiques. Le papier marron est agrandi
+   verticalement (voir « Texture papier ») pour ne jamais laisser de bord vide. */
+[data-parallax-bg] {
+  --bg-parallax-offset: 0px;
+  background-position:
+    center,
+    center calc(50% + var(--bg-parallax-offset)) !important;
+}
+/* Parallax des photos (toutes les pages). Le parent doit couper ce qui
+   dépasse (overflow: hidden). */
+[data-parallax] {
   --parallax-offset: 0px;
   transform: translate3d(0, var(--parallax-offset), 0) scale(1.18);
   transform-origin: center;
   will-change: transform;
-}
-.parallax-control {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
-  z-index: 20;
-  width: min(230px, calc(100vw - 48px));
-  padding: 14px 16px;
-  border: 1px solid rgb(245 239 227 / 35%);
-  border-radius: 12px;
-  color: #f5efe3;
-  background: rgb(42 33 27 / 92%);
-  box-shadow: 0 8px 24px rgb(30 22 17 / 22%);
-  backdrop-filter: blur(8px);
-}
-.parallax-control label {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
-  font-size: 12px;
-  font-weight: 600;
-}
-.parallax-control output {
-  color: #F3DFA2;
-  white-space: nowrap;
-}
-.parallax-control input {
-  display: block;
-  width: 100%;
-  accent-color: #F3DFA2;
-  cursor: pointer;
 }
 .hero > img {
   -o-object-position: 50% 69%;
@@ -566,10 +547,10 @@ body {
   white-space: nowrap;
 }
 .hero__content p {
-  max-width: 390px;
-  margin: 0 0 32px;
-  line-height: 1.65;
-  font-size: clamp(14px, 1.2vw, 18px);
+  max-width: 430px;
+  margin: 0 0 18px;
+  line-height: 1.55;
+  font-size: clamp(16px, 1.45vw, 21px);
 }
 .button {
   display: inline-flex;
@@ -626,7 +607,6 @@ body {
   background-size: 7px 7px;
 }
 .intro,
-.partners,
 .atelier-intro,
 .paper-wool-section {
   background-image:
@@ -717,17 +697,30 @@ body {
 .image-card--sur-mesure > div {
   width: min(100%, 520px);
 }
+/* Bandeau partenaires : même fond papier marron que « Nos ateliers ». */
 .partners {
   padding: 34px 5vw;
   display: grid;
   grid-template-columns: 1fr;
   gap: 24px;
+  color: #f5efe3;
+  background-color: #362b22;
+  background-image:
+    linear-gradient(rgb(54 43 34 / 60%), rgb(54 43 34 / 60%)),
+    url("/textures/pepier%20marron.webp");
+  background-repeat: no-repeat;
+  background-size:
+    100% 100%,
+    100% calc(100% + 200px);
+  background-position: center;
+  background-blend-mode: normal, soft-light;
 }
 .partners h2 {
   margin: 0;
   margin-bottom: 44px;
   text-align: center;
   font-size: clamp(2rem, 4vw, 3.25rem);
+  color: #f3dfa2;
 }
 .partners__logos {
   overflow: hidden;
@@ -752,7 +745,6 @@ body {
   max-height: 70px;
   -o-object-fit: contain;
   object-fit: contain;
-  mix-blend-mode: multiply;
 }
 @keyframes partners-scroll-right {
   from {
@@ -774,6 +766,12 @@ body {
   min-height: 0;
   background: #362b22;
   color: #f5efe3;
+}
+.atelier-feature__image {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 .atelier-feature__image img {
   width: 100%;
@@ -877,7 +875,7 @@ body {
   font-size: 14px;
 }
 @media (prefers-reduced-motion: reduce) {
-  .homepage [data-parallax] {
+  [data-parallax] {
     transform: none;
     will-change: auto;
   }
@@ -907,6 +905,10 @@ body {
   position: absolute;
   inset: 0;
   background: linear-gradient(0deg, #1e161199, #1e161114 60%);
+}
+.publics > img {
+  -o-object-position: 50% 40%;
+  object-position: 50% 40%;
 }
 .publics > div {
   position: relative;
@@ -1020,17 +1022,13 @@ body {
     background 320ms ease,
     color 320ms ease;
 }
-.homepage .intro {
-  position: sticky;
-  top: 102px;
-  z-index: auto;
-  background: transparent;
-}
-.homepage .intro::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
+/* Séquence logo + cards (desktop) :
+   la piste a la hauteur de l'écran sous le header. Le logo y est sticky :
+   il reste bloqué sous la navbar pendant que les cards, placées juste après
+   la piste, montent depuis le bas de l'écran. Quand elles touchent le logo,
+   la piste se termine et l'ensemble reprend un défilement normal. */
+.home-scroll-sequence {
+  position: relative;
   background-color: #e9e3d7;
   background-image:
     linear-gradient(rgb(233 227 215 / 78%), rgb(233 227 215 / 78%)),
@@ -1039,12 +1037,18 @@ body {
   background-size: auto, 600px;
   background-blend-mode: normal, multiply;
 }
+.home-scroll-sequence__intro {
+  position: relative;
+  z-index: 2;
+  min-height: calc(100vh - 102px);
+}
+.homepage .intro {
+  position: sticky;
+  top: 102px;
+}
 .homepage .intro__content {
   position: relative;
-  z-index: 3;
-}
-.home-scroll-sequence {
-  position: relative;
+  z-index: 1;
 }
 .homepage .intro__content {
   display: flex;
@@ -1075,35 +1079,71 @@ body {
   margin: 0;
   line-height: 1.55;
 }
-.homepage .image-card h2,
-.homepage .image-card p {
-  text-shadow: 0 3px 12px rgb(30 22 17 / 90%);
+.homepage .image-card--science:after {
+  background: linear-gradient(
+    180deg,
+    rgb(30 22 17 / 85%) 0%,
+    rgb(30 22 17 / 45%) 35%,
+    rgb(30 22 17 / 0%) 65%
+  );
+}
+.homepage .publics:after {
+  background: linear-gradient(
+    90deg,
+    rgb(30 22 17 / 88%) 0%,
+    rgb(30 22 17 / 75%) 45%,
+    rgb(30 22 17 / 35%) 75%,
+    rgb(30 22 17 / 5%) 100%
+  );
+}
+.homepage .event-card {
+  background:
+    linear-gradient(
+      180deg,
+      rgb(42 33 27 / 95%) 0%,
+      rgb(42 33 27 / 70%) 40%,
+      rgb(42 33 27 / 10%) 100%
+    ),
+    url(/images/Atelier-explicatif_IJXv.png) center/cover;
+}
+.homepage .testimonial:after {
+  background: linear-gradient(
+    180deg,
+    rgb(30 22 17 / 85%) 0%,
+    rgb(30 22 17 / 45%) 35%,
+    rgb(30 22 17 / 10%) 70%
+  );
+}
+.homepage .contact-section:after {
+  background: linear-gradient(
+    90deg,
+    rgb(30 22 17 / 70%) 0%,
+    rgb(30 22 17 / 50%) 40%,
+    rgb(30 22 17 / 15%) 70%,
+    rgb(30 22 17 / 0%) 100%
+  );
+}
+.homepage .image-card--sur-mesure:after {
+  background: linear-gradient(
+    0deg,
+    rgb(30 22 17 / 85%) 0%,
+    rgb(30 22 17 / 45%) 35%,
+    rgb(30 22 17 / 0%) 65%
+  );
 }
 .homepage .image-card .button {
   margin-top: 24px;
 }
 .homepage .promises {
   position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
-  min-height: calc(100vh + 920px);
-  background-color: #e9e3d7;
-  background-image:
-    linear-gradient(rgb(233 227 215 / 78%), rgb(233 227 215 / 78%)),
-    url("/textures/laine.webp");
-  background-repeat: repeat;
-  background-size: auto, 600px;
-  background-blend-mode: normal, multiply;
-  z-index: 2;
+  align-items: stretch;
 }
 .homepage .promises .image-card {
-  position: absolute;
-  top: 0;
-  width: 100%;
+  grid-row: 1;
   min-height: min(460px, 62vh);
-  transform: translateY(var(--card-enter-offset, 100vh));
-  will-change: transform;
 }
 .homepage .promises .image-card--science {
   grid-column: 1;
@@ -1111,9 +1151,68 @@ body {
 .homepage .promises .image-card--sur-mesure {
   grid-column: 2;
 }
+/* Cards « Rigueur scientifique » / « Sur mesure » :
+   au survol, la card s'élargit et l'autre se resserre, et son CTA apparaît.
+   Sans souris (mobile, tablette), les CTA sont masqués. */
+.homepage .promises .image-card .button {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) and (min-width: 801px) {
+  /* Même syntaxe (liste explicite, sans repeat()) au repos et au survol :
+     sinon certains navigateurs n'interpolent pas et sautent directement. */
+  .homepage .promises {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    transition: grid-template-columns 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .homepage .promises:has(.image-card--science:hover) {
+    grid-template-columns: minmax(0, 1.85fr) minmax(0, 1fr);
+  }
+  .homepage .promises:has(.image-card--sur-mesure:hover) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.85fr);
+  }
+  .homepage .promises .image-card .button {
+    display: inline-flex;
+    max-height: 0;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      max-height 420ms ease,
+      margin-top 420ms ease,
+      padding 420ms ease,
+      opacity 280ms ease,
+      transform 420ms ease,
+      filter 180ms ease;
+  }
+  .homepage .promises .image-card:hover .button,
+  .homepage .promises .image-card:focus-within .button {
+    max-height: 80px;
+    margin-top: 24px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    opacity: 1;
+    transform: none;
+    transition:
+      max-height 420ms ease,
+      margin-top 420ms ease,
+      padding 420ms ease,
+      opacity 280ms ease 120ms,
+      transform 420ms ease,
+      filter 180ms ease;
+  }
+}
+@media (hover: hover) and (pointer: fine) and (min-width: 801px) and (prefers-reduced-motion: reduce) {
+  .homepage .promises,
+  .homepage .promises .image-card .button {
+    transition: none;
+  }
+}
 .homepage .partners {
-  padding-top: 44px;
-  padding-bottom: 44px;
+  padding-top: 88px;
+  padding-bottom: 88px;
 }
 .homepage .atelier-feature__content {
   padding-top: 56px;
@@ -1334,11 +1433,12 @@ body {
 }
 .footer-links h2 {
   color: #F3DFA2;
-  font-family: Arial, sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-family: Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  text-transform: none;
 }
 .footer-links ul {
   list-style: none;
@@ -1472,21 +1572,13 @@ body {
   .homepage .intro {
     position: static;
   }
-  .homepage .promises {
+  .home-scroll-sequence__intro {
     min-height: 0;
-    display: grid;
-  }
-  .home-scroll-sequence {
-    padding-bottom: 0;
   }
   .homepage .promises .image-card {
-    position: relative;
-    inset: auto;
-    left: auto;
-    width: auto;
+    grid-column: auto;
+    grid-row: auto;
     min-height: 360px;
-    transform: none;
-    will-change: auto;
   }
   .image-card--science,
   .image-card--sur-mesure {
@@ -1692,23 +1784,8 @@ body {
     position: static;
   }
 
-  .homepage .promises {
+  .home-scroll-sequence__intro {
     min-height: 0;
-    display: grid;
-  }
-
-  .home-scroll-sequence {
-    padding-bottom: 0;
-  }
-
-  .homepage .promises .image-card {
-    position: relative;
-    inset: auto;
-    left: auto;
-    width: auto;
-    min-height: 460px;
-    transform: none;
-    will-change: auto;
   }
 }
 .atelier-hero {
@@ -2541,7 +2618,10 @@ body {
     linear-gradient(rgb(54 43 34 / 60%), rgb(54 43 34 / 60%)),
     url("/textures/pepier%20marron.webp");
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  /* Papier plus haut que la section : marge pour le parallax des textures. */
+  background-size:
+    100% 100%,
+    100% calc(100% + 200px);
   background-position: center;
   background-blend-mode: normal, soft-light;
 }

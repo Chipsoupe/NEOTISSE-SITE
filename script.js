@@ -58,104 +58,44 @@ document.addEventListener("DOMContentLoaded", () => {
   ).matches;
 
   const parallaxImages = document.querySelectorAll("[data-parallax]");
-  const parallaxSlider = document.querySelector("#parallax-intensity");
-  const parallaxValue = document.querySelector("#parallax-intensity-value");
-  const parallaxStorageKey = "neotisse-parallax-intensity";
+  const parallaxBackgrounds = document.querySelectorAll("[data-parallax-bg]");
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   ).matches;
-  const supportsScrollCards =
-    !reducedMotion && !window.matchMedia("(max-width: 800px)").matches;
-  const introSection = document.querySelector(".homepage .intro");
-  const promisesSection = document.querySelector(".homepage .promises");
-  const promiseCards =
-    promisesSection?.querySelectorAll(".image-card") || [];
-  let scrollCardsFrame = 0;
-  const savedParallaxIntensity = Number.parseInt(
-    window.localStorage.getItem(parallaxStorageKey) || "56",
-    10,
-  );
-  let parallaxIntensity = Number.isFinite(savedParallaxIntensity)
-    ? Math.max(0, Math.min(100, savedParallaxIntensity))
-    : 56;
+  const parallaxIntensity = 90;
   let parallaxFrame = 0;
-
-  if (parallaxSlider) {
-    parallaxSlider.value = String(parallaxIntensity);
-  }
-
-  const updateParallaxControl = () => {
-    if (parallaxValue) {
-      parallaxValue.textContent = `${parallaxIntensity} px`;
-    }
-    if (parallaxSlider) {
-      parallaxSlider.setAttribute(
-        "aria-valuetext",
-        `${parallaxIntensity} pixels`,
-      );
-    }
-  };
 
   const updateParallax = () => {
     parallaxFrame = 0;
     const viewportCenter = window.innerHeight / 2;
 
     parallaxImages.forEach((image) => {
-      const bounds = image.getBoundingClientRect();
+      // Mesure sur le cadre (non transformé) plutôt que sur l'image déplacée.
+      const frame = image.parentElement || image;
+      const bounds = frame.getBoundingClientRect();
+      const distanceFromCenter =
+        (bounds.top + bounds.height / 2 - viewportCenter) / window.innerHeight;
+      // Le zoom CSS de 1.18 laisse 9 % de marge en haut et en bas :
+      // on ne décale jamais plus, pour ne pas faire apparaître de bord vide.
+      const maxOffset = Math.min(
+        parallaxIntensity,
+        Math.max(0, image.offsetHeight * 0.09 - 1),
+      );
+      const offset = Math.max(-1, Math.min(1, distanceFromCenter)) * -maxOffset;
+      image.style.setProperty("--parallax-offset", `${offset}px`);
+    });
+
+    parallaxBackgrounds.forEach((section) => {
+      const bounds = section.getBoundingClientRect();
       const distanceFromCenter =
         (bounds.top + bounds.height / 2 - viewportCenter) / window.innerHeight;
       const offset =
         Math.max(-1, Math.min(1, distanceFromCenter)) * -parallaxIntensity;
-      image.style.setProperty("--parallax-offset", `${offset}px`);
+      section.style.setProperty("--bg-parallax-offset", `${offset}px`);
     });
   };
 
-  parallaxSlider?.addEventListener("input", () => {
-    parallaxIntensity = Number(parallaxSlider.value);
-    window.localStorage.setItem(
-      parallaxStorageKey,
-      String(parallaxIntensity),
-    );
-    updateParallaxControl();
-    updateParallax();
-  });
-  updateParallaxControl();
-
-  const updateScrollCards = () => {
-    scrollCardsFrame = 0;
-    if (!introSection || !promisesSection || !promiseCards.length) return;
-
-    const promisesTop = promisesSection.getBoundingClientRect().top;
-    const introBottom = introSection.getBoundingClientRect().bottom;
-    const animationDistance = window.innerHeight + 300;
-    const progress = Math.max(
-      0,
-      Math.min(1, (window.innerHeight - promisesTop) / animationDistance),
-    );
-    const startTop = window.innerHeight + 120;
-    const targetTop = startTop - progress * (startTop - introBottom);
-    const offset = targetTop - promisesTop;
-
-    promiseCards.forEach((card) => {
-      card.style.setProperty("--card-enter-offset", `${offset}px`);
-    });
-  };
-
-  if (supportsScrollCards && promiseCards.length) {
-    const requestScrollCardsUpdate = () => {
-      if (!scrollCardsFrame) {
-        scrollCardsFrame = window.requestAnimationFrame(updateScrollCards);
-      }
-    };
-
-    window.addEventListener("scroll", requestScrollCardsUpdate, {
-      passive: true,
-    });
-    window.addEventListener("resize", requestScrollCardsUpdate);
-    requestScrollCardsUpdate();
-  }
-
-  if (parallaxImages.length && !reducedMotion) {
+  if ((parallaxImages.length || parallaxBackgrounds.length) && !reducedMotion) {
     const requestParallaxUpdate = () => {
       if (!parallaxFrame) {
         parallaxFrame = window.requestAnimationFrame(updateParallax);
