@@ -17,6 +17,20 @@
     <meta property="og:site_name" content="Neotisse" />
     <title>Livre d’or - Neotisse</title>
     <link rel="stylesheet" href="/vendor/lenis/lenis.css" />
+    <link
+      rel="preload"
+      href="/fonts/caveat-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/gloock-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
@@ -39,70 +53,152 @@
     </header>
 
     <main id="main-content">
-      <section class="guestbook-hero">
-        <img
-          data-parallax
-          src="/images/Tissage-aux-tablettes-_XP-ceinture-statues-menhirs__IJXv.jpg"
-          alt=""
-        />
-        <div>
-          <p class="eyebrow">Vos retours</p>
-          <h1>Le livre d’or<br />de Néotisse</h1>
-          <p>
-            Chaque atelier est une rencontre. Merci à celles et ceux qui
-            prennent le temps de partager ce qu’ils ont appris, fabriqué et
-            ressenti.
+      <!-- Le livre d'or : un livre en cuir qui s'ouvre au défilement
+           (livre-dor.js). Page de gauche : l'invitation ; page de droite :
+           le formulaire, sur des lignes d'écriture. -->
+      <section class="book-scene" aria-labelledby="book-title" data-book-scene>
+        <div class="book-stage">
+          <header class="book-stage__head">
+            <h1 id="book-title">Le livre d’or de Néotisse</h1>
+            <p>
+              Chaque atelier est une rencontre. Merci à celles et ceux qui
+              prennent le temps de partager ce qu’ils ont appris, fabriqué et
+              ressenti.
+            </p>
+          </header>
+
+          <div class="book" data-book>
+            <!-- Dos du livre (plat arrière), sous la page de droite. -->
+            <div class="book__board" aria-hidden="true"></div>
+
+            <!-- Page de gauche : l'invitation. -->
+            <div class="book__page book__page--left">
+              <h2>Laissez un mot dans notre livre d’or</h2>
+              <p>
+                Vous avez participé à un atelier ou accueilli Néotisse ? Votre
+                témoignage nous aide à faire connaître la médiation textile.
+              </p>
+              <!-- Tampon à l'encre : double cercle, texte en arc, logo au centre. -->
+              <div class="book__stamp" aria-hidden="true">
+                <svg viewBox="0 0 200 200" focusable="false">
+                  <defs>
+                    <path id="stamp-arc" d="M100 100 m-72 0 a72 72 0 1 1 144 0 a72 72 0 1 1 -144 0" />
+                    <filter id="stamp-ink" x="-10%" y="-10%" width="120%" height="120%">
+                      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="noise" />
+                      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" />
+                    </filter>
+                  </defs>
+                  <g filter="url(#stamp-ink)">
+                    <circle cx="100" cy="100" r="94" class="book__stamp-ring" />
+                    <circle cx="100" cy="100" r="88" class="book__stamp-ring book__stamp-ring--thin" />
+                    <circle cx="100" cy="100" r="56" class="book__stamp-ring book__stamp-ring--thin" />
+                    <text class="book__stamp-text">
+                      <textPath href="#stamp-arc" startOffset="0" textLength="440">LIVRE D’OR · NÉOTISSE · LIVRE D’OR · NÉOTISSE ·</textPath>
+                    </text>
+                  </g>
+                </svg>
+                <img src="/images/neotisse-logo-noir_IJXv.png" alt="" width="310" height="252" />
+              </div>
+            </div>
+
+            <!-- Page de droite : le formulaire. -->
+            <div class="book__page book__page--right">
+              <form class="book-form" data-book-form novalidate>
+                <label class="book-form__field">
+                  <span>Votre nom</span>
+                  <input type="text" name="nom" autocomplete="name" required />
+                </label>
+                <label class="book-form__field">
+                  <span>Structure ou ville <em>(facultatif)</em></span>
+                  <input type="text" name="structure" />
+                </label>
+                <label class="book-form__field book-form__field--text">
+                  <span>Votre mot</span>
+                  <textarea name="temoignage" rows="3" required></textarea>
+                </label>
+                <label class="book-form__consent">
+                  <input type="checkbox" name="consentement" required />
+                  <span>
+                    J’accepte la
+                    <a href="/confidentialite/" target="_blank" rel="noopener"
+                      >politique de confidentialité<span class="sr-only">
+                        (s’ouvre dans un nouvel onglet)</span
+                      ></a
+                    >
+                  </span>
+                </label>
+                <p class="book-form__error" data-book-error role="alert" hidden>
+                  Merci d’indiquer votre nom, votre mot et d’accepter la
+                  politique de confidentialité.
+                </p>
+                <button class="book-form__submit" type="submit">
+                  <span class="book-form__nib" aria-hidden="true">✒</span>
+                  Signer le livre d’or
+                </button>
+                <p class="book-form__note">
+                  Le formulaire sera prochainement relié à Formspree.
+                </p>
+              </form>
+              <!-- Remerciement affiché à la place du formulaire après envoi. -->
+              <div class="book-thanks" data-book-thanks hidden tabindex="-1">
+                <p class="book-thanks__word">Merci !</p>
+                <p>Votre mot a rejoint les feuilles du livre d’or, juste en dessous.</p>
+                <button class="book-thanks__again" type="button" data-book-again>
+                  Écrire un autre mot
+                </button>
+              </div>
+            </div>
+
+            <!-- Couverture : elle tourne autour du dos pour ouvrir le livre. -->
+            <div class="book__cover" aria-hidden="true">
+              <div class="book__cover-front">
+                <div class="book__cover-frame">
+                  <p class="book__cover-title">Livre d’or</p>
+                  <img
+                    class="book__cover-mark"
+                    src="/images/neotisse-wordmark-or_IJXv.png"
+                    alt=""
+                    width="1440"
+                    height="212"
+                  />
+                </div>
+              </div>
+              <div class="book__cover-back"></div>
+            </div>
+          </div>
+
+          <p class="book-stage__hint" aria-hidden="true">
+            Faites défiler pour ouvrir le livre
           </p>
         </div>
       </section>
 
-      <section class="guestbook-testimonials paper-section" aria-labelledby="guestbook-title">
-        <div class="section-heading">
-          <p class="eyebrow">Témoignages</p>
-          <h2 id="guestbook-title">Ils ont remonté le fil du temps avec nous</h2>
-        </div>
-        <div class="guestbook-grid">
-          <blockquote class="guestbook-card guestbook-card--gold">
-            <p>« Des activités très originales et flexibles, qui plaisent à tous types de public. Je recommande ! »</p>
-            <cite><strong>Directrice de musée</strong><br />Musée partenaire</cite>
-          </blockquote>
-          <blockquote class="guestbook-card guestbook-card--dark">
-            <p>« Une médiation vivante et passionnante. Les participants sont repartis avec l’envie de continuer à expérimenter. »</p>
-            <cite><strong>Responsable des publics</strong><br />Site archéologique partenaire</cite>
-          </blockquote>
-          <blockquote class="guestbook-card">
-            <p>« On a adoré toucher les matières et comprendre comment les personnes tissaient autrefois. Merci pour cet atelier ! »</p>
-            <cite><strong>Une participante</strong><br />Atelier tout public</cite>
-          </blockquote>
-        </div>
+      <!-- Les avis, comme des feuilles posées sur une table. -->
+      <section class="guestbook-sheets" aria-labelledby="guestbook-title">
+        <h2 id="guestbook-title">Ils ont remonté le fil du temps avec nous</h2>
+        <ul class="sheets" data-sheets>
+          <li class="sheet" style="--tilt: -3deg">
+            <blockquote>
+              <p>« Des activités très originales et flexibles, qui plaisent à tous types de public. Je recommande ! »</p>
+              <cite><strong>Directrice de musée</strong> · Musée partenaire</cite>
+            </blockquote>
+          </li>
+          <li class="sheet" style="--tilt: 2deg">
+            <blockquote>
+              <p>« Une médiation vivante et passionnante. Les participants sont repartis avec l’envie de continuer à expérimenter. »</p>
+              <cite><strong>Responsable des publics</strong> · Site archéologique partenaire</cite>
+            </blockquote>
+          </li>
+          <li class="sheet" style="--tilt: -1.5deg">
+            <blockquote>
+              <p>« On a adoré toucher les matières et comprendre comment les personnes tissaient autrefois. Merci pour cet atelier ! »</p>
+              <cite><strong>Une participante</strong> · Atelier tout public</cite>
+            </blockquote>
+          </li>
+        </ul>
       </section>
 
-      <section class="guestbook-form-section" aria-labelledby="guestbook-form-title">
-        <div class="guestbook-form-intro">
-          <p class="eyebrow">À votre tour</p>
-          <h2 id="guestbook-form-title">Laissez un mot dans notre livre d’or</h2>
-          <p>
-            Vous avez participé à un atelier ou accueilli Néotisse ? Votre
-            témoignage nous aide à faire connaître la médiation textile.
-          </p>
-        </div>
-        <div class="guestbook-form-card">
-          <p class="form-note">Le formulaire sera prochainement relié à Formspree.</p>
-          <form onsubmit="return false;">
-            <div class="form-grid">
-              <label>Prénom ou nom<input type="text" name="nom" placeholder="Votre nom" required /></label>
-              <label>Structure ou ville<input type="text" name="structure" placeholder="Facultatif" /></label>
-              <label class="wide">Votre témoignage<textarea name="temoignage" rows="5" placeholder="Racontez-nous votre expérience…" required></textarea></label>
-            </div>
-            <div class="form-footer">
-              <label><input type="checkbox" required /><span>J’accepte la <a href="/confidentialite/">politique de confidentialité</a></span></label>
-              <button class="button button--gold" type="submit">Envoyer <span aria-hidden="true">↗</span></button>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <section class="guestbook-contact">
+      <section class="guestbook-contact" data-parallax-bg>
         <h2>Un projet à partager ?</h2>
         <p>Écrivez-nous pour imaginer un atelier adapté à votre lieu et à vos publics.</p>
         <a class="button button--gold" href="/contact/">Nous contacter <span class="button__arrow" aria-hidden="true">↗</span></a>
@@ -131,5 +227,6 @@
     </div>
     <script src="/vendor/lenis/lenis.min.js" defer></script>
     <script src="/script.js" defer></script>
+    <script src="/livre-dor.js" defer></script>
   </body>
 </html>

@@ -1,4 +1,13 @@
 /*
+ * Le fil (utilisé par la page Ateliers).
+ *
+ * Options disponibles (attributs sur la section [data-thread]), pour le
+ * réutiliser sur une autre page :
+ * - data-thread-dates : un nœud doré daté sur le fil avant chaque card
+ *   (date lue dans le <time> de la card) ;
+ * - data-thread-unfold="click" : les cards se déplient au clic sur tous les
+ *   écrans (sinon : au survol sur ordinateur, au toucher sur mobile).
+ *
  * Page Ateliers : « Le fil des ateliers ».
  *
  * Un fil entre par le bord droit de la page puis descend en vagues en
@@ -102,6 +111,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const progress = 1 - (1 - linear) ** 1.8;
       const inkT = smoothstep(palette.pivot - 0.08, palette.pivot + 0.08, progress);
       scrollBg.style.setProperty("--journey-bg", mix(palette.from, palette.to, progress));
+      // Avancement brut (0 → 1), utilisé par le halo jaune de fin de page.
+      scrollBg.style.setProperty("--journey-progress", linear.toFixed(4));
       scrollBg.style.setProperty(
         "--journey-ink",
         mix(palette.inkFrom, palette.inkTo, inkT),
@@ -164,6 +175,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const layers = ["body"].map((name) =>
     make("path", { class: `thread-layer thread-layer--${name}` }, threadGroup),
   );
+
+  // Nœuds datés (option data-thread-dates) : une perle dorée + la date.
+  const showDates = section.hasAttribute("data-thread-dates");
+  const knots = showDates
+    ? rows.map((row) => {
+        const group = make("g", { class: "thread-knot" });
+        const bead = make("circle", { class: "thread-knot__bead", r: 7 }, group);
+        const label = make("text", { class: "thread-knot__label" }, group);
+        const time = row.querySelector("time");
+        label.textContent = time?.dataset.short || time?.textContent.trim() || "";
+        return { group, bead, label };
+      })
+    : [];
 
   /* ---------- Géométrie ---------- */
 
@@ -276,12 +300,22 @@ document.addEventListener("DOMContentLoaded", () => {
       pushWave(main, anchors[i - 1], anchors[i]);
     }
 
-    // Fin : une dernière vague jusque juste au-dessus du titre du CTA final.
-    const ctaTitle = finalCta.querySelector("h2") || finalCta;
-    pushWave(main, anchors[anchors.length - 1], {
-      x: width / 2,
-      y: layoutBox(ctaTitle).top - (isMobile ? 28 : 40),
-    });
+    // Fin : une dernière vague jusque juste au-dessus du titre du CTA final
+    // (ou, sans CTA, un peu sous la dernière card).
+    const last = anchors[anchors.length - 1];
+    if (finalCta) {
+      const ctaTitle = finalCta.querySelector("h2") || finalCta;
+      pushWave(main, last, {
+        x: width / 2,
+        y: layoutBox(ctaTitle).top - (isMobile ? 28 : 40),
+      });
+    } else {
+      const lastBox = layoutBox(rows[rows.length - 1]);
+      pushWave(main, last, {
+        x: isMobile ? last.x : width / 2,
+        y: Math.min(height - 20, lastBox.bottom + (isMobile ? 48 : 90)),
+      });
+    }
 
     const mainLengths = cumulativeLengths(main);
     // Hauteurs croissantes pour retrouver la longueur à une hauteur donnée.
@@ -299,11 +333,29 @@ document.addEventListener("DOMContentLoaded", () => {
     const mainTotal = mainLengths[mainLengths.length - 1];
     maskMain.style.strokeDasharray = `${mainTotal} ${mainTotal}`;
 
+    // Nœuds : sur le fil, juste au-dessus de chaque card (là où il est visible).
+    const knotLengths = knots.map((knot, index) => {
+      const cardBox = layoutBox(rows[index].querySelector(".thread-card") || rows[index]);
+      const target = cardBox.top - (isMobile ? 18 : 34);
+      let i = main.findIndex((p) => p.y >= target);
+      if (i < 0) i = main.length - 1;
+      const p = main[i];
+      knot.bead.setAttribute("cx", p.x.toFixed(1));
+      knot.bead.setAttribute("cy", p.y.toFixed(1));
+      // Date du côté où il y a de la place.
+      const toLeft = !isMobile && p.x > width / 2;
+      knot.label.setAttribute("x", (p.x + (toLeft ? -16 : 16)).toFixed(1));
+      knot.label.setAttribute("y", (p.y + 5).toFixed(1));
+      knot.label.setAttribute("text-anchor", toLeft ? "end" : "start");
+      return mainLengths[i];
+    });
+
     geometry = {
       mainY,
       mainLengths,
       mainTotal,
       cardMarks: anchors.map((a) => a.mark),
+      knotLengths,
     };
   };
 
@@ -343,6 +395,12 @@ document.addEventListener("DOMContentLoaded", () => {
     rows.forEach((row, index) => {
       row.classList.toggle("is-visible", reading >= geometry.cardMarks[index]);
     });
+    knots.forEach((knot, index) => {
+      knot.group.classList.toggle(
+        "is-visible",
+        mainDrawn >= geometry.knotLengths[index] - 1,
+      );
+    });
   };
 
   let frame = 0;
@@ -371,9 +429,10 @@ document.addEventListener("DOMContentLoaded", () => {
     else window.scrollTo(0, y);
   };
 
-  /* ---------- Dépliage au toucher (mobile, tablette) ---------- */
-  // Sur ordinateur, le texte complet se déplie au survol (CSS) et un clic ne
-  // fait rien. Sur écran tactile, toucher la card la déplie (une à la fois).
+  /* ---------- Dépliage des cards ---------- */
+  // Par défaut (Ateliers) : au survol sur ordinateur (CSS), au toucher sur
+  // écran tactile. Avec data-thread-unfold="click" (Actualités) : au clic
+  // partout. Une seule card ouverte à la fois.
   const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
 
   // Si une card ouverte plus haut se referme, la card touchée ne doit pas
@@ -389,13 +448,28 @@ document.addEventListener("DOMContentLoaded", () => {
     requestAnimationFrame(step);
   };
 
+  // data-thread-unfold="click" : dépliage au clic partout.
+  const unfoldOnClick = section.dataset.threadUnfold === "click";
+
+  const setOpen = (row, open) => {
+    row.classList.toggle("is-open", open);
+    const toggle = row.querySelector(".thread-card__toggle");
+    if (toggle) {
+      toggle.setAttribute("aria-expanded", String(open));
+      const label = toggle.querySelector("[data-toggle-label]");
+      if (label) label.textContent = open ? "Refermer" : "Lire l’article";
+    }
+  };
+
   rows.forEach((row) => {
     row.querySelector(".thread-card")?.addEventListener("click", (event) => {
-      if (hoverQuery.matches) return;
-      if (event.target.closest("a")) return; // le bouton flèche mène au contact
+      if (hoverQuery.matches && !unfoldOnClick) return;
+      if (event.target.closest("a")) return; // un lien garde son rôle
+      // Sélection de texte dans un article ouvert : on ne referme pas.
+      if (row.classList.contains("is-open") && !event.target.closest(".thread-card__toggle") && event.target.closest(".thread-card__detail")) return;
       const willOpen = !row.classList.contains("is-open");
-      rows.forEach((other) => other !== row && other.classList.remove("is-open"));
-      row.classList.toggle("is-open", willOpen);
+      rows.forEach((other) => other !== row && setOpen(other, false));
+      setOpen(row, willOpen);
       if (!reducedMotion) keepInPlace(row);
     });
   });

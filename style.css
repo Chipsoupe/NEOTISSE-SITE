@@ -2523,57 +2523,6 @@ body {
   font-size: clamp(14px, 1.4vw, 19px);
   line-height: 1.55;
 }
-.news-list {
-  padding: 90px max(24px, 7vw) 110px;
-}
-.news-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-.news-card {
-  border-radius: 24px;
-  background: #faf7f0;
-  padding: 16px 16px 32px;
-}
-.news-card > a img {
-  width: 100%;
-  height: 230px;
-  border-radius: 16px;
-  object-fit: cover;
-}
-.news-card > div {
-  padding: 0 12px;
-}
-.news-card time {
-  display: block;
-  margin-top: 22px;
-  color: #F3DFA2;
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-.news-card h2 {
-  margin-top: 12px;
-  font:
-    500 clamp(17px, 2vw, 26px)/1.15 Arial,
-    sans-serif;
-  letter-spacing: 0;
-}
-.news-card h2 a {
-  text-decoration: none;
-}
-.news-card p {
-  color: #4a3f36;
-  font-size: 15px;
-  line-height: 1.6;
-}
-.news-more {
-  color: #2a211b;
-  font-weight: 600;
-  text-decoration: none;
-}
 .news-contact {
   padding: 100px 24px;
   text-align: center;
@@ -2628,7 +2577,6 @@ body {
 .team-origin,
 .team-members,
 .trust-section,
-.news-list,
 .atelier-detail-copy:not(.atelier-detail-section--dark .atelier-detail-copy) {
   background-color: #faf7f0;
   background-image:
@@ -2674,134 +2622,25 @@ main > .news-contact p {
   .news-heading {
     padding: 120px 24px 60px;
   }
-  .news-list {
-    padding: 70px 24px;
-  }
-  .news-grid {
-    grid-template-columns: 1fr;
-  }
-  .news-card > a img {
-    height: 250px;
-  }
 }
 
-/* Guestbook page */
-.guestbook-hero {
-  min-height: 570px;
-  padding: 150px max(24px, 9vw) 90px;
-  display: flex;
-  align-items: flex-end;
-  color: #f5efe3;
-  position: relative;
-  overflow: hidden;
-  background: #2a211b;
-}
-/* Photo en <img> (et non en fond CSS) pour pouvoir lui appliquer le parallax. */
-.guestbook-hero > img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-  object-fit: cover;
-}
-.guestbook-hero:after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(0deg, #2a211bd9, #2a211b52);
-}
-.guestbook-hero > div {
-  position: relative;
-  z-index: 1;
-  max-width: 900px;
-}
-.guestbook-hero h1 {
-  margin: 12px 0 24px;
-  font-size: clamp(3.2rem, 7vw, 6.5rem);
-  line-height: 0.96;
-}
-.guestbook-hero > div > p:last-child {
-  max-width: 620px;
-  color: #e6ddd1;
-  font-size: clamp(1rem, 1.5vw, 1.25rem);
-  line-height: 1.6;
-}
-.guestbook-testimonials {
-  padding: 100px max(24px, 9vw) 115px;
-}
-.section-heading {
-  max-width: 760px;
-  margin: 0 auto 52px;
-  text-align: center;
-}
-.section-heading h2 {
-  margin-top: 12px;
-  color: #2a211b;
-  font-size: clamp(2.2rem, 4.5vw, 4rem);
-}
-.guestbook-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-.guestbook-card {
-  min-height: 300px;
-  margin: 0;
-  padding: 36px;
-  border-radius: 28px 100px 28px 28px;
-  background: #faf7f0;
-  color: #2a211b;
-  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
-  font-weight: 500;
-}
-.guestbook-card--gold {
-  background: #f3dfa2;
-}
-.guestbook-card--dark {
-  background: #362b22;
-  color: #f5efe3;
-}
-.guestbook-card cite {
-  display: block;
-  margin-top: 34px;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.5;
-}
-.guestbook-form-section {
-  display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  gap: 7%;
-  align-items: center;
-  padding: 100px max(24px, 9vw);
-  background: #faf7f0;
-}
-.guestbook-form-intro h2 {
-  margin: 12px 0 20px;
-  color: #2a211b;
-  font-family: Georgia, serif;
-  font-size: clamp(2.2rem, 4vw, 3.8rem);
-  font-weight: 500;
-}
-.guestbook-form-intro > p:last-child {
-  color: #4a3f36;
-  line-height: 1.65;
-}
-.guestbook-form-card {
-  padding: 44px;
-  border-radius: 24px;
-  background: #e9e3d7;
-}
-.guestbook-form-card .form-note {
-  margin-bottom: 24px;
-}
+/* Livre d'or : bandeau de contact (le reste de la page est plus bas,
+   bloc « Page Livre d'or »). */
 .guestbook-contact {
   padding: 95px 24px;
   text-align: center;
   color: #f5efe3;
-  background: #362b22;
+  /* Même texture papier marron que le footer. */
+  background-color: #362b22;
+  background-image:
+    linear-gradient(rgb(54 43 34 / 60%), rgb(54 43 34 / 60%)),
+    url("/textures/pepier%20marron.webp");
+  background-repeat: no-repeat;
+  background-size:
+    100% 100%,
+    100% calc(100% + 200px);
+  background-position: center;
+  background-blend-mode: normal, soft-light;
 }
 .guestbook-contact h2 {
   font-size: clamp(2.4rem, 5vw, 4rem);
@@ -2809,23 +2648,6 @@ main > .news-contact p {
 .guestbook-contact p {
   margin: 14px auto 22px;
   color: #d8cfc4;
-}
-@media (max-width: 800px) {
-  .guestbook-hero {
-    min-height: 500px;
-    padding: 120px 24px 70px;
-  }
-  .guestbook-grid,
-  .guestbook-form-section {
-    grid-template-columns: 1fr;
-  }
-  .guestbook-testimonials,
-  .guestbook-form-section {
-    padding: 70px 24px;
-  }
-  .guestbook-form-card {
-    padding: 30px 20px;
-  }
 }
 
 /* ==========================================================================
@@ -2836,7 +2658,6 @@ main > .news-contact p {
 .atelier-hero p,
 .calendar-hero p,
 .team-hero p,
-.guestbook-hero > div > p:last-child,
 .news-heading p,
 .contact-intro p {
   font-size: clamp(16px, 1.45vw, 21px);
@@ -2877,31 +2698,6 @@ main > .news-contact p {
   height: 100%;
   aspect-ratio: auto;
   border-radius: 0;
-}
-
-/* Cartes d'actualités : zoom léger de la photo au survol. */
-.news-card > a:first-child {
-  display: block;
-  overflow: hidden;
-  border-radius: 16px;
-}
-.news-card > a img {
-  display: block;
-  border-radius: 0;
-  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.news-more {
-  transition: color 200ms ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .news-card:hover > a img,
-  .news-card:focus-within > a img {
-    transform: scale(1.06);
-  }
-  .news-card:hover .news-more {
-    color: #8a6d1f;
-  }
 }
 
 /* Sections photo | texte (Ateliers, L'association) : comme les cards
@@ -2956,8 +2752,7 @@ main > .news-contact p {
 
 @media (prefers-reduced-motion: reduce) {
   .atelier-detail-section,
-  .atelier-detail-overlay .button,
-  .news-card > a img {
+  .atelier-detail-overlay .button {
     transition: none;
   }
 }
@@ -2989,10 +2784,6 @@ body {
   min-height: calc(600px + var(--header-h));
   padding-top: calc(120px + var(--header-h));
 }
-.guestbook-hero {
-  min-height: calc(570px + var(--header-h));
-  padding-top: calc(150px + var(--header-h));
-}
 .contact-intro,
 .news-heading {
   padding-top: calc(180px + var(--header-h));
@@ -3009,10 +2800,6 @@ body {
     min-height: calc(420px + var(--header-h));
     padding-top: calc(80px + var(--header-h));
   }
-  .guestbook-hero {
-    min-height: calc(500px + var(--header-h));
-    padding-top: calc(120px + var(--header-h));
-  }
   .contact-intro,
   .news-heading {
     padding-top: calc(120px + var(--header-h));
@@ -3020,20 +2807,46 @@ body {
 }
 
 /* ==========================================================================
-   Page Ateliers : « Le fil des ateliers » (voir fil-ateliers.js)
+   Page Ateliers : « Le fil des ateliers » (voir fil.js)
    ========================================================================== */
 
 /* Intro seule (les liens rapides et l'encart ont quitté la page). */
 /* Fond qui évolue au défilement (page Ateliers) : de l'intro jusqu'au
    footer, la couleur passe du beige crème au marron foncé du footer.
    Pour changer les couleurs, il suffit de modifier ces 4 variables
-   (formats acceptés : #rgb, #rrggbb ou rgb()). fil-ateliers.js les lit et
+   (formats acceptés : #rgb, #rrggbb ou rgb()). fil.js les lit et
    calcule --journey-bg (fond) et --journey-ink (texte) selon le défilement. */
 [data-scroll-bg] {
   --journey-from: #efe6d6; /* départ : beige crème */
   --journey-to: #ecd27e; /* arrivée : jaune (celui du CTA de la navbar) */
   --journey-ink-from: #2a211b; /* texte sur fond clair */
   --journey-ink-to: #f5efe3; /* texte sur fond sombre (si l'arrivée est sombre) */
+  --journey-halo: #f2c230; /* halo de fin de page : jaune intense */
+}
+
+/* Halo en demi-cercle qui monte du bas de la section : il s'intensifie à
+   mesure qu'on approche de la fin (--journey-progress, posé par
+   fil.js), jusqu'à un jaune franc derrière le CTA final. */
+.thread-journey::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  z-index: 0;
+  width: max(1500px, 140vw);
+  height: min(1200px, 120vh);
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse 50% 100% at 50% 100%,
+    var(--journey-halo) 0%,
+    color-mix(in srgb, var(--journey-halo) 85%, transparent) 30%,
+    color-mix(in srgb, var(--journey-halo) 40%, transparent) 62%,
+    transparent 100%
+  );
+  opacity: calc(
+    var(--journey-progress, 0) * var(--journey-progress, 0) * 1.1
+  );
+  pointer-events: none;
 }
 
 /* Les bords restent crème (--journey-from) ; seul le centre de la page
@@ -3111,16 +2924,11 @@ body {
 .thread-row[data-side="left"] {
   --from-x: -48px;
 }
-/* Card à droite : le texte passe dans la colonne de gauche. */
+/* Cards en zigzag : à droite, puis à gauche. */
 .thread-row[data-side="right"] .thread-card {
   grid-column: 2;
   grid-row: 1;
   justify-self: start;
-}
-.thread-row[data-side="right"] .thread-row__text {
-  grid-column: 1;
-  grid-row: 1;
-  justify-self: end;
 }
 .thread-row[data-side="left"] .thread-card {
   justify-self: end;
@@ -3207,34 +3015,14 @@ body {
   outline-offset: 3px;
 }
 
-/* Mini description, posée directement sur le fond en face de la card. */
-.thread-row__text {
-  position: relative;
-  z-index: 0;
-  max-width: 400px;
-  margin: 0;
-  font-size: clamp(18px, 1.55vw, 23px);
-  font-weight: 500;
-  line-height: 1.5;
-  transition:
-    opacity 700ms ease 120ms,
-    transform 700ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
-}
-
-/* Apparition quand le fil arrive : la card glisse depuis son côté, le texte
-   depuis l'autre. */
-.thread-journey--js .thread-card,
-.thread-journey--js .thread-row__text {
+/* Apparition quand le fil arrive : la card glisse depuis son côté. */
+.thread-journey--js .thread-card {
   opacity: 0;
 }
 .thread-journey--js .thread-card {
   transform: translate(var(--from-x), 28px);
 }
-.thread-journey--js .thread-row__text {
-  transform: translate(calc(var(--from-x) * -0.6), 20px);
-}
-.thread-journey--js .thread-row.is-visible .thread-card,
-.thread-journey--js .thread-row.is-visible .thread-row__text {
+.thread-journey--js .thread-row.is-visible .thread-card {
   opacity: 1;
   transform: none;
 }
@@ -3335,7 +3123,6 @@ body {
     gap: 24px;
   }
   .thread-row[data-side="right"] .thread-card,
-  .thread-row[data-side="right"] .thread-row__text,
   .thread-row[data-side="left"] .thread-card {
     grid-column: 1;
     grid-row: auto;
@@ -3343,11 +3130,6 @@ body {
   }
   .thread-card {
     width: 100%;
-  }
-  .thread-row__text {
-    max-width: none;
-    padding: 0 6px;
-    font-size: 17px;
   }
   .thread-card__body {
     padding: 22px 84px 24px 22px;
@@ -3363,13 +3145,1116 @@ body {
 
 /* Moins d'animations : fil entièrement tracé, tout visible, rien ne bouge. */
 .thread-journey--static .thread-card,
-.thread-journey--static .thread-row__text,
 .thread-journey--static .thread-card__detail,
 .thread-journey--static .thread-card__media img {
   transition: none;
 }
-.thread-journey--static.thread-journey--js .thread-card,
-.thread-journey--static.thread-journey--js .thread-row__text {
+.thread-journey--static.thread-journey--js .thread-card {
   opacity: 1;
   transform: none;
+}
+
+/* ==========================================================================
+   Page Livre d'or (voir livre-dor.js)
+   ========================================================================== */
+
+/* Écriture manuscrite, hébergée sur le site (pas d'appel à Google Fonts).
+   Caveat — licence SIL Open Font License. */
+@font-face {
+  font-family: "Caveat";
+  src: url("/fonts/caveat-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Caveat";
+  src: url("/fonts/caveat-latin-600-normal.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+/* Gloock : police du logotype NEOTISSE (et des titres de l'ancien site).
+   Licence SIL Open Font License. */
+@font-face {
+  font-family: "Gloock";
+  src: url("/fonts/gloock-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- Scène : le livre posé sous un éclairage chaud --- */
+.book-scene {
+  --open: 0;
+  --leather: #5a2817;
+  --leather-dark: #3b190e;
+  --gilt: #d4af5f;
+  --paper: #f8f1e2;
+  --ink: #233056;
+  position: relative;
+  height: 260vh;
+  color: #f5efe3;
+  background: #2c2219;
+}
+/* Fond de la scène : texture papier marron (comme le footer) sous un
+   éclairage chaud centré sur le livre. Posé sur la scène collée à l'écran
+   pour que la texture ne soit pas étirée sur toute la hauteur de défilement. */
+.book-stage {
+  background-color: #2c2219;
+  background-image:
+    radial-gradient(
+      ellipse 70% 60% at 50% 58%,
+      rgb(77 59 43 / 45%) 0%,
+      rgb(44 34 25 / 62%) 55%,
+      rgb(29 22 16 / 82%) 100%
+    ),
+    url("/textures/pepier%20marron.webp");
+  background-repeat: no-repeat;
+  background-size:
+    100% 100%,
+    cover;
+  background-position: center;
+  background-blend-mode: normal, soft-light;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 640px;
+  padding: calc(var(--header-h) + 20px) 24px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  overflow: hidden;
+}
+.book-stage__head {
+  max-width: 640px;
+  text-align: center;
+}
+.book-stage__head h1 {
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+}
+.book-stage__head p {
+  margin: 14px auto 0;
+  color: #d8cfc4;
+  line-height: 1.6;
+}
+.book-stage__hint {
+  margin: 0;
+  color: #d8cfc4;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  opacity: calc(1 - var(--open) * 3);
+}
+
+/* --- Le livre --- */
+.book {
+  --page-h: clamp(520px, calc(100vh - var(--header-h) - 230px), 620px);
+  --page-w: calc(var(--page-h) * 0.74);
+  position: relative;
+  width: calc(var(--page-w) * 2);
+  height: var(--page-h);
+  perspective: 2400px;
+  /* Fermé, seule la couverture (moitié droite) est visible : on la centre. */
+  transform: translateX(calc((1 - var(--open)) * -25%))
+    scale(calc(0.9 + var(--open) * 0.1));
+  color: #2a211b;
+}
+
+/* Cuir : base sombre + reflets et grain discret. */
+.book__board,
+.book__cover-front,
+.book__cover-back {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgb(255 220 180 / 12%), transparent 55%),
+    repeating-linear-gradient(35deg, rgb(0 0 0 / 5%) 0 2px, transparent 2px 5px),
+    linear-gradient(160deg, var(--leather), var(--leather-dark));
+}
+/* Plat arrière, sous la page de droite. */
+.book__board {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: calc(50% + 12px);
+  height: calc(100% + 20px);
+  border-radius: 0 12px 12px 0;
+  box-shadow: 0 40px 70px -30px rgb(0 0 0 / 70%);
+}
+
+.book__page {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  padding: 30px 38px;
+}
+/* Page de gauche : son papier est celui de l'intérieur de la couverture ;
+   le texte apparaît quand la couverture finit de tourner. */
+.book__page--left {
+  left: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 48px;
+  opacity: clamp(0, calc((var(--open) - 0.82) * 6), 1);
+  pointer-events: none;
+}
+.book-scene.is-open .book__page--left {
+  pointer-events: auto;
+}
+.book__page--left h2 {
+  font-size: clamp(1.8rem, 2.6vw, 2.5rem);
+}
+.book__page--left p {
+  color: #4a3f36;
+  line-height: 1.65;
+}
+/* Tampon à l'encre : double cercle, texte en arc et logo noir au centre. */
+.book__stamp {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  margin-top: 30px;
+  color: #1f1a17;
+  opacity: 0.82;
+  transform: rotate(-10deg);
+  mix-blend-mode: multiply;
+}
+.book__stamp svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.book__stamp-ring {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.5;
+}
+.book__stamp-ring--thin {
+  stroke-width: 1.6;
+}
+.book__stamp-text {
+  fill: currentColor;
+  font: 700 13.5px Georgia, serif;
+  letter-spacing: 0.08em;
+}
+.book__stamp img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 66px;
+  height: auto;
+  transform: translate(-50%, -52%);
+}
+/* Page de droite : le formulaire. */
+.book__page--right {
+  left: 50%;
+  z-index: 1;
+  border-radius: 0 6px 6px 0;
+  background:
+    linear-gradient(90deg, rgb(60 40 20 / 18%), transparent 9%),
+    var(--paper);
+  overflow: auto;
+}
+
+/* Couverture : tourne autour du dos (bord gauche = milieu du livre). */
+.book__cover {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  z-index: 2;
+  width: calc(50% + 12px);
+  height: calc(100% + 20px);
+  transform-origin: 0 50%;
+  transform: rotateY(calc(var(--open) * -180deg));
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+.book__cover-front,
+.book__cover-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 0 12px 12px 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.book__cover-front {
+  display: grid;
+  padding: 26px;
+  box-shadow:
+    inset 6px 0 10px rgb(0 0 0 / 35%),
+    0 40px 70px -30px rgb(0 0 0 / 70%);
+}
+/* Double filet doré. */
+.book__cover-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  border: 2px solid var(--gilt);
+  outline: 1px solid rgb(212 175 95 / 55%);
+  outline-offset: -9px;
+  border-radius: 6px;
+}
+.book__cover-title {
+  margin: 0;
+  color: var(--gilt);
+  font: 400 clamp(2rem, 3.4vw, 2.9rem) / 1 "Gloock", Georgia, serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgb(0 0 0 / 45%);
+}
+.book__cover-mark {
+  width: 62%;
+  height: auto;
+}
+/* Intérieur de la couverture : cuir + papier (= fond de la page de gauche). */
+.book__cover-back {
+  transform: rotateY(180deg);
+  border-radius: 12px 0 0 12px;
+}
+.book__cover-back::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 12px;
+  right: 0;
+  border-radius: 6px 0 0 6px;
+  background:
+    linear-gradient(270deg, rgb(60 40 20 / 18%), transparent 9%),
+    var(--paper);
+}
+
+/* --- Formulaire écrit dans le livre --- */
+.book-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+}
+.book-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.book-form__field > span,
+.book-form__consent {
+  color: #6b5a48;
+  font: italic 14px Georgia, serif;
+}
+.book-form__field em {
+  font-size: 12px;
+}
+.book-form input[type="text"],
+.book-form textarea {
+  width: 100%;
+  padding: 0 2px;
+  border: 0;
+  border-bottom: 1.5px solid rgb(90 70 50 / 35%);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font: 600 26px/1.3 "Caveat", "Segoe Script", cursive;
+}
+/* Zone de texte en lignes d'écriture. */
+.book-form textarea {
+  --line: 32px;
+  flex: 1 1 auto;
+  height: calc(var(--line) * 3);
+  min-height: calc(var(--line) * 3);
+  border-bottom: 0;
+  resize: none;
+  line-height: var(--line);
+  font-size: 24px;
+  background: repeating-linear-gradient(
+    transparent 0 calc(var(--line) - 1px),
+    rgb(90 70 50 / 30%) calc(var(--line) - 1px) var(--line)
+  );
+  background-attachment: local;
+}
+/* Le champ texte prend la place libre mais ne rétrécit jamais sous sa
+   hauteur minimale : la case à cocher reste toujours en dessous. */
+.book-form__field--text {
+  flex: 1 1 auto;
+  min-height: calc(32px * 3 + 22px);
+}
+.book-form input[type="text"]:focus,
+.book-form textarea:focus {
+  outline: none;
+  border-color: #a8823a;
+}
+.book-form textarea:focus {
+  background: repeating-linear-gradient(
+    transparent 0 calc(var(--line) - 1px),
+    rgb(168 130 58 / 60%) calc(var(--line) - 1px) var(--line)
+  );
+  background-attachment: local;
+}
+.book-form__consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 13px;
+}
+.book-form__consent input {
+  margin-top: 2px;
+  accent-color: #5a2817;
+}
+.book-form__error {
+  margin: 0;
+  color: #9b2c1f;
+  font-size: 13px;
+}
+/* Bouton façon reliure : cuir, double filet doré, capitales gravées. */
+.book-form__submit {
+  position: relative;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+  padding: 13px 24px 12px 18px;
+  overflow: hidden;
+  border: 1px solid var(--gilt);
+  border-radius: 6px;
+  background: linear-gradient(160deg, #6b311c, var(--leather-dark));
+  box-shadow:
+    inset 0 0 0 3px var(--leather-dark),
+    inset 0 0 0 4px rgb(212 175 95 / 55%),
+    0 10px 20px -10px rgb(42 20 10 / 70%);
+  color: var(--gilt);
+  font: 400 14px/1 "Gloock", Georgia, serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    transform 250ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 250ms ease;
+}
+/* Reflet doré qui passe au survol. */
+.book-form__submit::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgb(255 236 180 / 28%) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  transition: transform 700ms ease;
+}
+.book-form__submit:hover,
+.book-form__submit:focus-visible {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 0 0 3px var(--leather-dark),
+    inset 0 0 0 4px rgb(212 175 95 / 80%),
+    0 16px 26px -12px rgb(42 20 10 / 75%);
+}
+.book-form__submit:hover::after,
+.book-form__submit:focus-visible::after {
+  transform: translateX(120%);
+}
+.book-form__submit:focus-visible {
+  outline: 2px solid var(--gilt);
+  outline-offset: 3px;
+}
+/* Plume dans une pastille dorée. */
+.book-form__nib {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--gilt);
+  color: var(--leather-dark);
+  font-size: 15px;
+  letter-spacing: 0;
+}
+.book-form__note {
+  margin: 0;
+  color: #8a7a68;
+  font-size: 11px;
+}
+/* Remerciement après envoi. */
+.book-thanks {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 26px;
+  height: 100%;
+  outline: none;
+}
+.book-thanks[hidden],
+.book-form[hidden] {
+  display: none;
+}
+.book-thanks__word {
+  margin: 0;
+  color: var(--ink);
+  font: 600 64px/1 "Caveat", "Segoe Script", cursive;
+  transform: rotate(-4deg);
+}
+.book-thanks p:not(.book-thanks__word) {
+  margin: 0;
+  color: #4a3f36;
+  line-height: 1.6;
+}
+.book-thanks__again {
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #5a2817;
+  font: italic 15px Georgia, serif;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* --- Feuilles d'avis, posées sur une table --- */
+.guestbook-sheets {
+  padding: 110px max(24px, 7vw) 130px;
+  background-color: #e9e3d7;
+  background-image:
+    linear-gradient(rgb(233 227 215 / 78%), rgb(233 227 215 / 78%)),
+    url("/textures/laine.webp");
+  background-size: auto, 600px;
+  background-blend-mode: normal, multiply;
+}
+.guestbook-sheets > h2 {
+  max-width: 760px;
+  margin: 0 auto 64px;
+  text-align: center;
+  font-size: clamp(2.2rem, 4.5vw, 4rem);
+}
+.sheets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 56px 44px;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+.sheet {
+  --tilt: 0deg;
+  position: relative;
+  padding: 44px 34px 32px;
+  background:
+    repeating-linear-gradient(
+      transparent 0 33px,
+      rgb(70 90 140 / 14%) 33px 34px
+    ),
+    #fffaf0;
+  background-position: 0 70px;
+  box-shadow:
+    0 1px 1px rgb(42 33 27 / 10%),
+    0 18px 34px -18px rgb(42 33 27 / 45%);
+  transform: rotate(var(--tilt));
+  transition:
+    transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 500ms ease,
+    box-shadow 300ms ease;
+  transition-delay: calc(var(--i, 0) * 110ms);
+}
+/* Petit morceau de ruban adhésif en haut de la feuille. */
+.sheet::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 92px;
+  height: 26px;
+  background: rgb(236 210 126 / 55%);
+  transform: translateX(-50%) rotate(calc(var(--tilt) * -1.5));
+}
+.sheet blockquote {
+  margin: 0;
+}
+.sheet p {
+  margin: 0;
+  color: var(--ink, #233056);
+  font: 400 clamp(22px, 1.9vw, 27px) / 34px "Caveat", "Segoe Script", cursive;
+  /* Un mot très long sans espace revient quand même à la ligne. */
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+/* Texte limité à 6 lignes ; « Lire la suite » déplie la feuille. */
+.sheet p.is-clamped {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+  overflow: hidden;
+}
+.sheet.is-expanded p.is-clamped {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+}
+.sheet__more {
+  margin-top: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #5a2817;
+  font: italic 14px Georgia, serif;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.sheet cite {
+  display: block;
+  margin-top: 22px;
+  color: #4a3f36;
+  font: normal 13px/1.5 Georgia, serif;
+}
+/* Apparition : la feuille tombe en place (classe .sheets--js posée en JS). */
+.sheets--js .sheet:not(.is-in) {
+  opacity: 0;
+  transform: translateY(-50px) rotate(calc(var(--tilt) * 3));
+}
+@media (hover: hover) and (pointer: fine) {
+  .sheet.is-in:hover,
+  .sheets:not(.sheets--js) .sheet:hover {
+    transform: translateY(-8px) rotate(0deg) scale(1.02);
+    box-shadow:
+      0 1px 1px rgb(42 33 27 / 10%),
+      0 28px 44px -20px rgb(42 33 27 / 50%);
+    transition-delay: 0s;
+  }
+}
+
+/* --- Mobile : la couverture s'ouvre sur une seule page --- */
+@media (max-width: 800px) {
+  .book-scene {
+    height: auto;
+  }
+  .book-stage {
+    position: static;
+    height: auto;
+    min-height: 0;
+    padding: calc(var(--header-h) + 36px) 16px 56px;
+  }
+  .book {
+    --page-h: auto;
+    width: min(100%, 460px);
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    transform: none;
+    border-radius: 6px;
+    background: var(--paper);
+    box-shadow: 0 0 0 10px var(--leather-dark), 0 30px 60px -30px rgb(0 0 0 / 70%);
+  }
+  .book__board,
+  .book__cover-back {
+    display: none;
+  }
+  .book__page {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 30px 24px;
+  }
+  .book__page--left {
+    z-index: 1; /* sous la couverture tant qu'elle n'est pas ouverte */
+    padding-bottom: 0;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .book__stamp {
+    display: none;
+  }
+  .book__page--right {
+    background: none;
+    overflow: visible;
+  }
+  .book-form textarea {
+    min-height: calc(var(--line) * 5);
+  }
+  /* La couverture tourne puis s'efface, en dévoilant la page. */
+  .book__cover {
+    inset: -10px;
+    width: auto;
+    height: auto;
+    opacity: clamp(0, calc((1 - var(--open)) * 2.4), 1);
+  }
+  .book__cover-front {
+    border-radius: 12px;
+  }
+  /* Couverture très haute sur mobile : le titre se place en haut, dans la
+     partie visible à l'arrivée. */
+  .book__cover-frame {
+    justify-content: flex-start;
+    padding-top: 90px;
+  }
+  .book-stage__hint {
+    display: none;
+  }
+  .guestbook-sheets {
+    padding: 80px 20px 96px;
+  }
+}
+/* Écrans peu hauts : on gagne de la place pour le livre. */
+@media (min-width: 801px) and (max-height: 820px) {
+  .book-stage__head p {
+    display: none;
+  }
+  /* Page de gauche plus compacte pour que le tampon tienne. */
+  .book__stamp {
+    width: 96px;
+    height: 96px;
+    margin-top: 16px;
+  }
+  .book__stamp img {
+    width: 50px;
+  }
+}
+
+/* Moins d'animations : livre ouvert d'emblée, feuilles en place. */
+.book-scene--static {
+  height: auto;
+}
+.book-scene--static .book-stage {
+  position: static;
+  height: auto;
+  min-height: 0;
+  padding-bottom: 80px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sheet {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   Pages légales (Politique de confidentialité)
+   ========================================================================== */
+.legal-heading {
+  padding: calc(150px + var(--header-h)) max(24px, 7vw) 80px;
+  color: #f5efe3;
+  background-color: #362b22;
+  background-image:
+    linear-gradient(rgb(54 43 34 / 60%), rgb(54 43 34 / 60%)),
+    url("/textures/pepier%20marron.webp");
+  background-repeat: no-repeat;
+  background-size:
+    100% 100%,
+    100% calc(100% + 200px);
+  background-blend-mode: normal, soft-light;
+}
+.legal-heading h1 {
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+}
+.legal-heading p {
+  max-width: 720px;
+  color: #d8cfc4;
+  font-size: clamp(16px, 1.45vw, 21px);
+  line-height: 1.55;
+}
+.legal-content {
+  padding: 90px max(24px, 7vw) 120px;
+  background-color: #faf7f0;
+  background-image:
+    linear-gradient(rgb(250 247 240 / 76%), rgb(250 247 240 / 76%)),
+    url("/textures/soie.webp");
+  background-repeat: no-repeat, repeat;
+  background-size:
+    100% 100%,
+    900px 620px;
+  background-blend-mode: normal, multiply;
+}
+.legal-content > * {
+  max-width: 760px;
+  margin-inline: auto;
+}
+.legal-content h2 {
+  margin-top: 48px;
+  margin-bottom: 12px;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+}
+.legal-content p,
+.legal-content li {
+  color: #4a3f36;
+  line-height: 1.7;
+}
+.legal-content ul {
+  padding-left: 1.2em;
+}
+.legal-content a {
+  color: #5a2817;
+}
+/* Rappel : page modèle à compléter. */
+.legal-draft {
+  padding: 14px 18px;
+  border: 1px dashed #b08a3e;
+  border-radius: 12px;
+  background: rgb(236 210 126 / 25%);
+  font-size: 14px;
+}
+.legal-todo {
+  padding: 0 4px;
+  border-radius: 4px;
+  background: rgb(236 210 126 / 60%);
+  color: #2a211b;
+}
+@media (max-width: 800px) {
+  .legal-heading {
+    padding: calc(100px + var(--header-h)) 24px 56px;
+  }
+  .legal-content {
+    padding: 64px 24px 90px;
+  }
+}
+
+/* ==========================================================================
+   Page Actualités : frise chronologique (voir actualites.js)
+   Une ligne verticale droite se remplit au défilement ; les dates
+   s'allument quand elle les atteint ; les cards alternent gauche / droite
+   automatiquement (nth-child), il suffit d'ajouter des éléments.
+   ========================================================================== */
+.news-timeline {
+  padding: 110px max(24px, 6vw) 140px;
+  background-color: #faf7f0;
+  background-image:
+    linear-gradient(rgb(250 247 240 / 76%), rgb(250 247 240 / 76%)),
+    url("/textures/soie.webp");
+  background-repeat: no-repeat, repeat;
+  background-size:
+    100% 100%,
+    900px 620px;
+  background-blend-mode: normal, multiply;
+}
+.timeline {
+  --fill: 0px;
+  --gold: #d4af5f;
+  --gold-dark: #a8823a;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+/* La ligne : un rail pâle et, par-dessus, la partie remplie. */
+.timeline::before,
+.timeline::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 3px;
+  border-radius: 3px;
+  transform: translateX(-50%);
+}
+.timeline::before {
+  bottom: 0;
+  background: rgb(168 130 58 / 20%);
+}
+.timeline::after {
+  height: var(--fill);
+  background: linear-gradient(var(--gold), var(--gold-dark));
+  box-shadow: 0 0 12px rgb(212 175 95 / 55%);
+}
+.timeline:not(.timeline--js)::after {
+  height: 100%;
+}
+
+.timeline__item {
+  --from-x: 44px;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 110px;
+  align-items: start;
+  scroll-margin-top: 130px;
+}
+.timeline__item:nth-child(even) {
+  --from-x: -44px;
+}
+/* Pastille sur la ligne (à 40px du haut : DOT_OFFSET dans le JS). */
+.timeline__item::before {
+  content: "";
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgb(168 130 58 / 45%);
+  border-radius: 50%;
+  background: #faf7f0;
+  transform: translate(-50%, -50%) scale(0.8);
+  transition:
+    transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 350ms ease,
+    border-color 350ms ease,
+    box-shadow 350ms ease;
+}
+.timeline__item.is-reached::before,
+.timeline:not(.timeline--js) .timeline__item::before {
+  border-color: var(--gold-dark);
+  background: var(--gold);
+  box-shadow: 0 0 0 7px rgb(212 175 95 / 22%);
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Date, de l'autre côté de la ligne par rapport à la card. */
+.timeline__date {
+  grid-row: 1;
+  padding-top: 26px;
+  color: #a39482;
+  font: italic 18px/28px Georgia, serif;
+  transition: color 350ms ease;
+}
+.timeline__item.is-reached .timeline__date,
+.timeline:not(.timeline--js) .timeline__date {
+  color: #2a211b;
+}
+/* Impairs : card à droite, date à gauche. Pairs : l'inverse. */
+.timeline__item:nth-child(odd) .timeline__date {
+  grid-column: 1;
+  justify-self: end;
+  text-align: right;
+}
+.timeline__item:nth-child(odd) .timeline__card {
+  grid-column: 2;
+  justify-self: start;
+}
+.timeline__item:nth-child(even) .timeline__date {
+  grid-column: 2;
+  justify-self: start;
+}
+.timeline__item:nth-child(even) .timeline__card {
+  grid-column: 1;
+  justify-self: end;
+}
+
+/* Card d'actualité. */
+.timeline__card {
+  grid-row: 1;
+  position: relative;
+  z-index: 2;
+  width: min(500px, 100%);
+  overflow: hidden;
+  border-radius: 24px;
+  color: #2a211b;
+  background: #fffdf8;
+  box-shadow:
+    0 1px 2px rgb(42 33 27 / 8%),
+    0 18px 40px -18px rgb(42 33 27 / 35%);
+  cursor: pointer;
+  transition:
+    opacity 600ms ease,
+    transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 400ms ease;
+}
+.timeline--js .timeline__card {
+  opacity: 0;
+  transform: translate(var(--from-x), 26px);
+}
+.timeline--js .timeline__item.is-visible .timeline__card {
+  opacity: 1;
+  transform: none;
+}
+.timeline__item.is-open .timeline__card {
+  cursor: auto;
+}
+.timeline__media {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.timeline__media img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.timeline__body {
+  padding: 24px 32px 26px;
+}
+.timeline__title {
+  font-size: clamp(1.45rem, 2.1vw, 1.95rem);
+}
+.timeline__excerpt {
+  margin: 12px 0 0;
+  color: #4a3f36;
+  line-height: 1.6;
+}
+@media (hover: hover) and (pointer: fine) {
+  .timeline--js .timeline__item.is-visible:not(.is-open) .timeline__card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 1px 2px rgb(42 33 27 / 8%),
+      0 28px 52px -22px rgb(42 33 27 / 48%);
+  }
+  .timeline__card:hover .timeline__media img {
+    transform: scale(1.05);
+  }
+}
+
+/* Article complet, déplié au clic. */
+.timeline__article {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.timeline__article-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+.timeline__article-inner p {
+  margin: 14px 0 0;
+  color: #4a3f36;
+  line-height: 1.7;
+}
+.timeline__item.is-open .timeline__article {
+  grid-template-rows: 1fr;
+}
+/* Emplacement du texte complet (à remplacer par l'article). */
+.timeline__todo {
+  padding: 10px 14px;
+  border: 1px dashed #b08a3e;
+  border-radius: 10px;
+  background: rgb(236 210 126 / 25%);
+  font-size: 14px;
+}
+
+/* Bouton « Lire l'article » / « Refermer ». */
+.timeline__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #5a2817;
+  font: 600 14px Arial, sans-serif;
+  cursor: pointer;
+}
+.timeline__toggle-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #2a211b;
+  color: #ecd27e;
+  transition: transform 320ms ease;
+}
+.timeline__item.is-open .timeline__toggle-icon {
+  transform: rotate(180deg);
+}
+.timeline__toggle:focus-visible {
+  outline: 2px solid #2a211b;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Mobile : la ligne longe le bord gauche, date au-dessus de chaque card. */
+@media (max-width: 800px) {
+  .news-timeline {
+    padding: 72px 16px 96px;
+  }
+  .timeline {
+    gap: 64px;
+    padding-left: 34px;
+  }
+  .timeline::before,
+  .timeline::after {
+    left: 9px;
+  }
+  .timeline__item,
+  .timeline__item:nth-child(even) {
+    --from-x: 24px;
+    grid-template-columns: 1fr;
+    row-gap: 12px;
+  }
+  .timeline__item::before {
+    top: 14px;
+    left: -25px;
+  }
+  .timeline__item:nth-child(odd) .timeline__date,
+  .timeline__item:nth-child(even) .timeline__date,
+  .timeline__item:nth-child(odd) .timeline__card,
+  .timeline__item:nth-child(even) .timeline__card {
+    grid-column: 1;
+    justify-self: stretch;
+    text-align: left;
+  }
+  .timeline__date {
+    padding-top: 0;
+  }
+  .timeline__card {
+    grid-row: 2;
+    width: 100%;
+  }
+  .timeline__body {
+    padding: 20px 22px 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline__card,
+  .timeline__item::before,
+  .timeline__article,
+  .timeline__media img {
+    transition: none;
+  }
+}
+
+
+/* Actualités : hero en photo (au lieu du papier marron) et frise sur le
+   même fond laine que le bandeau « Suivez nos prochaines actualités ». */
+.news-heading {
+  position: relative;
+  overflow: hidden;
+  background: #2a211b;
+}
+.news-heading > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  -o-object-position: 50% 45%;
+  object-position: 50% 45%;
+}
+.news-heading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    0deg,
+    rgb(30 22 17 / 88%) 0%,
+    rgb(30 22 17 / 50%) 45%,
+    rgb(30 22 17 / 20%) 100%
+  );
+}
+.news-heading > h1,
+.news-heading > p {
+  position: relative;
+  z-index: 1;
+}
+.news-timeline {
+  background-color: #faf7f0;
+  background-image: url("/textures/laine.webp");
+  background-repeat: repeat;
+  background-size: 300px 300px;
+  background-position: center;
+  background-blend-mode: normal;
 }

@@ -49,7 +49,12 @@
       >
     </header>
     <main id="main-content">
-      <section class="news-heading" data-parallax-bg>
+      <section class="news-heading">
+        <img
+          data-parallax
+          src="/images/Metier-a-tisser-a-pesons-scaled_aBCG.jpg"
+          alt=""
+        />
         <h1>Actualités</h1>
         <p>
           Toutes les actualités de Neotisse : comptes rendus d’ateliers,
@@ -59,85 +64,152 @@
           filage, du tissage et de la teinture végétale.
         </p>
       </section>
-      <section class="news-list paper-section" data-parallax-bg>
-        <div class="news-grid">
-          <article class="news-card">
-            <a href="/festival-archeologie-experimentale-occitanie/"
-              ><img
-                src="/images/Table-ronde-archeologie-experimentale_Usqj.jpg"
-                alt="Un événement inédit : le premier Festival d’Archéologie Expérimentale d’Occitanie !"
-                loading="eager"
-            /></a>
-            <div>
-              <time datetime="2026-11-04">4 novembre 2026</time>
-              <h2>
-                <a href="/festival-archeologie-experimentale-occitanie/"
-                  >Un événement inédit : le premier Festival d’Archéologie
-                  Expérimentale d’Occitanie !</a
+      <!-- Frise des actualités (actualites.js) : une ligne verticale se
+           remplit au défilement ; chaque date s'allume quand la ligne
+           l'atteint. Un clic sur une card déplie l'article.
+
+           AJOUTER UNE ACTUALITÉ :
+           1. Copier le modèle ci-dessous et le coller EN HAUT de la liste
+              (la plus récente en premier).
+           2. Changer l'id, la date (datetime + texte), la photo, le titre,
+              l'extrait et le texte complet.
+           L'alternance gauche/droite et la ligne se font toutes seules.
+
+           <li class="timeline__item" id="mon-actualite">
+             <time class="timeline__date" datetime="2026-12-01">1er déc. 2026</time>
+             <article class="timeline__card">
+               <div class="timeline__media">
+                 <img src="/images/ma-photo.jpg" alt="Description de la photo" loading="lazy" />
+               </div>
+               <div class="timeline__body">
+                 <h2 class="timeline__title">Titre de l'actualité</h2>
+                 <p class="timeline__excerpt">Résumé en une ou deux phrases.</p>
+                 <div class="timeline__article" id="mon-actualite-article">
+                   <div class="timeline__article-inner">
+                     <p>Texte complet de l'article.</p>
+                   </div>
+                 </div>
+                 <button class="timeline__toggle" type="button" aria-expanded="false" aria-controls="mon-actualite-article">
+                   <span data-toggle-label>Lire l’article</span>
+                   <span class="timeline__toggle-icon" aria-hidden="true">↓</span>
+                 </button>
+               </div>
+             </article>
+           </li>
+      -->
+      <section class="news-timeline" aria-label="Toutes les actualités">
+        <ol class="timeline" data-timeline>
+          <li class="timeline__item" id="festival-occitanie">
+            <time class="timeline__date" datetime="2026-11-04">4 nov. 2026</time>
+            <article class="timeline__card">
+              <div class="timeline__media">
+                <img
+                  src="/images/Table-ronde-archeologie-experimentale_Usqj.jpg"
+                  alt="Table ronde d’archéologie expérimentale"
+                  loading="eager"
+                />
+              </div>
+              <div class="timeline__body">
+                <h2 class="timeline__title">
+                  Un événement inédit : le premier Festival d’Archéologie
+                  Expérimentale d’Occitanie !
+                </h2>
+                <p class="timeline__excerpt">
+                  Les 9 et 10 octobre 2027, Neotisse et le musée de l’Aurignacien
+                  s’associent pour le tout premier Festival d’Archéologie
+                  Expérimentale d’Occitanie.
+                </p>
+                <div class="timeline__article" id="festival-occitanie-article">
+                  <div class="timeline__article-inner">
+                    <p class="timeline__todo">Texte complet de l’article à venir.</p>
+                  </div>
+                </div>
+                <button
+                  class="timeline__toggle"
+                  type="button"
+                  aria-expanded="false"
+                  aria-controls="festival-occitanie-article"
                 >
-              </h2>
-              <p>
-                Les 9 et 10 octobre 2027, Neotisse et le musée de l’Aurignacien
-                s’associent pour le tout premier Festival d’Archéologie
-                Expérimentale d’Occitanie.
-              </p>
-              <a
-                class="news-more"
-                href="/festival-archeologie-experimentale-occitanie/"
-                >Lire la suite →</a
-              >
-            </div>
-          </article>
-          <article class="news-card">
-            <a href="/teinture-en-folie-musee-gergovie/"
-              ><img
-                src="/images/Ceramique-pour-teinture-vegetale-scaled_Usqj.jpg"
-                alt="« Teinture en folie » au musée de Gergovie"
-                loading="lazy"
-            /></a>
-            <div>
-              <time datetime="2026-10-31">31 octobre 2026</time>
-              <h2>
-                <a href="/teinture-en-folie-musee-gergovie/"
-                  >« Teinture en folie » au musée de Gergovie</a
+                  <span data-toggle-label>Lire l’article</span>
+                  <span class="timeline__toggle-icon" aria-hidden="true">↓</span>
+                </button>
+              </div>
+            </article>
+          </li>
+
+          <li class="timeline__item" id="teinture-gergovie">
+            <time class="timeline__date" datetime="2026-10-31">31 oct. 2026</time>
+            <article class="timeline__card">
+              <div class="timeline__media">
+                <img
+                  src="/images/Ceramique-pour-teinture-vegetale-scaled_Usqj.jpg"
+                  alt="Céramique utilisée pour la teinture végétale"
+                  loading="lazy"
+                />
+              </div>
+              <div class="timeline__body">
+                <h2 class="timeline__title">« Teinture en folie » au musée de Gergovie</h2>
+                <p class="timeline__excerpt">
+                  Les 31 octobre et 1er novembre, Neotisse était de retour au
+                  musée de Gergovie pour un atelier « Teinture en folie » :
+                  teintures et impressions végétales.
+                </p>
+                <div class="timeline__article" id="teinture-gergovie-article">
+                  <div class="timeline__article-inner">
+                    <p class="timeline__todo">Texte complet de l’article à venir.</p>
+                  </div>
+                </div>
+                <button
+                  class="timeline__toggle"
+                  type="button"
+                  aria-expanded="false"
+                  aria-controls="teinture-gergovie-article"
                 >
-              </h2>
-              <p>
-                Les 31 octobre et 1er novembre, Neotisse était de retour au
-                musée de Gergovie pour un atelier « Teinture en folie » :
-                teintures et impressions végétales.
-              </p>
-              <a class="news-more" href="/teinture-en-folie-musee-gergovie/"
-                >Lire la suite →</a
-              >
-            </div>
-          </article>
-          <article class="news-card">
-            <a href="/journee-lattara-musee-henri-prades/"
-              ><img
-                src="/images/Presentation-materiel-scaled_Usqj.jpg"
-                alt="Retour sur notre journée au Site archéologique Lattara – Musée Henri Prades"
-                loading="lazy"
-            /></a>
-            <div>
-              <time datetime="2026-10-25">25 octobre 2026</time>
-              <h2>
-                <a href="/journee-lattara-musee-henri-prades/"
-                  >Retour sur notre journée au Site archéologique Lattara –
-                  Musée Henri Prades</a
+                  <span data-toggle-label>Lire l’article</span>
+                  <span class="timeline__toggle-icon" aria-hidden="true">↓</span>
+                </button>
+              </div>
+            </article>
+          </li>
+
+          <li class="timeline__item" id="journee-lattara">
+            <time class="timeline__date" datetime="2026-10-25">25 oct. 2026</time>
+            <article class="timeline__card">
+              <div class="timeline__media">
+                <img
+                  src="/images/Presentation-materiel-scaled_Usqj.jpg"
+                  alt="Présentation du matériel textile lors de la journée à Lattara"
+                  loading="lazy"
+                />
+              </div>
+              <div class="timeline__body">
+                <h2 class="timeline__title">
+                  Retour sur notre journée au Site archéologique Lattara – Musée
+                  Henri Prades
+                </h2>
+                <p class="timeline__excerpt">
+                  Le 25 octobre, Neotisse était au Site archéologique Lattara –
+                  Musée Henri Prades, à Lattes, pour une journée autour des
+                  savoir-faire textiles anciens. Merci à tous !
+                </p>
+                <div class="timeline__article" id="journee-lattara-article">
+                  <div class="timeline__article-inner">
+                    <p class="timeline__todo">Texte complet de l’article à venir.</p>
+                  </div>
+                </div>
+                <button
+                  class="timeline__toggle"
+                  type="button"
+                  aria-expanded="false"
+                  aria-controls="journee-lattara-article"
                 >
-              </h2>
-              <p>
-                Le 25 octobre, Neotisse était au Site archéologique Lattara –
-                Musée Henri Prades, à Lattes, pour une journée autour des
-                savoir-faire textiles anciens. Merci à tous !
-              </p>
-              <a class="news-more" href="/journee-lattara-musee-henri-prades/"
-                >Lire la suite →</a
-              >
-            </div>
-          </article>
-        </div>
+                  <span data-toggle-label>Lire l’article</span>
+                  <span class="timeline__toggle-icon" aria-hidden="true">↓</span>
+                </button>
+              </div>
+            </article>
+          </li>
+        </ol>
       </section>
       <section class="news-contact">
         <h2 style="color: #000000">
@@ -233,5 +305,6 @@
     </div>
     <script src="/vendor/lenis/lenis.min.js" defer></script>
     <script src="/script.js" defer></script>
+    <script src="/actualites.js" defer></script>
   </body>
 </html>
