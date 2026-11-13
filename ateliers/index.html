@@ -58,12 +58,12 @@
         >Organiser un atelier <span aria-hidden="true">↗</span></a
       >
     </header>
-    <main id="main-content">
+    <main id="main-content" data-scroll-bg>
       <section class="atelier-hero">
         <img
           data-parallax
-          src="/images/Atelier-explicatif_o1sC.jpg"
-          alt="Atelier explicatif autour d’une table de matériel textile"
+          src="/images/Atelier-explicatif-hero.jpg"
+          alt="Médiatrice présentant un atelier textile à un groupe de visiteurs"
         />
         <div>
           <h1>Nos ateliers</h1>
@@ -77,412 +77,221 @@
           </p>
         </div>
       </section>
-      <section class="atelier-intro atelier-intro--solo paper-section" data-parallax-bg>
-        <div>
-          <h2>Pour les musées, les sites et les collectivités</h2>
-          <p>
-            Nos ateliers s’adressent aux musées, aux sites archéologiques, aux
-            structures culturelles et aux collectivités. Ils peuvent être
-            adaptés aux publics, aux objectifs pédagogiques et aux contraintes
-            de chaque projet.
-          </p>
-        </div>
-      </section>
 
-      <!-- Parcours « Le fil des ateliers » : un fuseau file un fil qui descend
-           en vagues au fil du défilement (fil-ateliers.js). Les cards
-           apparaissent quand le fil les atteint ; le fil finit tissé dans
-           le footer. -->
+      <!-- Parcours « Le fil des ateliers » : un fil entre par la droite et
+           descend en vagues derrière les cards au fil du défilement
+           (fil-ateliers.js). Les cards apparaissent quand le fil les atteint ;
+           le fil s'arrête au-dessus du CTA final. -->
       <section
         class="thread-journey"
         aria-labelledby="thread-journey-title"
         data-thread
       >
         <div class="thread-journey__head">
-          <p class="eyebrow">Suivez le fil</p>
-          <h2 id="thread-journey-title">Six ateliers, un même fil</h2>
-          <svg
-            class="thread-journey__spindle"
-            viewBox="0 0 120 230"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <defs>
-              <clipPath id="spindle-cop-clip">
-                <path d="M60 40 C 94 62, 94 108, 60 128 C 26 108, 26 62, 60 40 Z" />
-              </clipPath>
-              <clipPath id="spindle-whorl-clip">
-                <ellipse cx="60" cy="158" rx="36" ry="10" />
-              </clipPath>
-            </defs>
-            <line class="spindle__shaft" x1="60" y1="8" x2="60" y2="218" />
-            <path class="spindle__hook" d="M60 8 q 8 -2 6 6" />
-            <path
-              class="spindle__cop"
-              d="M60 40 C 94 62, 94 108, 60 128 C 26 108, 26 62, 60 40 Z"
-            />
-            <g clip-path="url(#spindle-cop-clip)">
-              <g class="spindle__wraps" data-spindle-wraps></g>
-            </g>
-            <ellipse class="spindle__whorl" cx="60" cy="158" rx="36" ry="10" />
-            <g clip-path="url(#spindle-whorl-clip)">
-              <g class="spindle__marks" data-spindle-marks></g>
-            </g>
-          </svg>
+          <h2 id="thread-journey-title">Nos 6 ateliers</h2>
         </div>
 
         <svg class="thread-journey__thread" aria-hidden="true" focusable="false"></svg>
 
         <ol class="thread-journey__list">
-          <li class="thread-card" id="demonstratifs" data-side="right">
-            <article class="thread-card__inner">
+          <li class="thread-row" id="demonstratifs" data-side="right">
+            <article class="thread-card">
               <div class="thread-card__media">
-                <img
-                  src="/images/Filage-au-fuseau_o1sC.jpg"
-                  alt="Filage au fuseau lors d’un atelier démonstratif"
-                  loading="lazy"
-                />
+              <img
+              src="/images/Filage-au-fuseau_o1sC.jpg"
+              alt="Filage au fuseau lors d’un atelier démonstratif"
+              loading="lazy"
+              />
               </div>
               <div class="thread-card__body">
-                <p class="thread-card__index">01</p>
-                <h3 class="thread-card__title">
-                  <button
-                    class="thread-card__toggle"
-                    type="button"
-                    aria-expanded="false"
-                    aria-controls="demonstratifs-detail"
-                  >
-                    Filage, tissage et teinture végétale
-                  </button>
-                </h3>
-                <p class="thread-card__hook">
-                  Découvrez les grandes étapes de la production textile, de la
-                  transformation des fibres à la réalisation d’étoffes, en
-                  passant par la coloration des fils.
-                </p>
-                <div class="thread-card__detail" id="demonstratifs-detail">
+                <h3 class="thread-card__title">Filage, tissage et teinture végétale</h3>
+                <a
+                class="thread-card__go"
+                href="/contact/"
+                aria-label="Organiser cet atelier : Filage, tissage et teinture végétale"
+                ><span aria-hidden="true">↗</span></a
+                >
+                <!-- Texte complet : se déplie au survol (au toucher sur mobile). -->
+                <div class="thread-card__detail">
                   <div class="thread-card__detail-inner">
-                    <p>
-                      Une présentation démonstrative et explicative des
-                      techniques : à travers les outils, les matières premières
-                      et les gestes techniques, les participants découvrent les
-                      principes de fabrication des textiles. Chaque pôle aborde
-                      une étape de la chaîne opératoire textile, replacée dans
-                      son contexte historique et archéologique. Les outils sont
-                      reproduits à partir de résultats de fouilles.
-                    </p>
-                    <a class="button button--gold" href="/contact/">
-                      Organiser cet atelier
-                      <span class="button__arrow" aria-hidden="true">↗</span>
-                    </a>
+                    <p>Une présentation démonstrative et explicative des techniques : à travers les outils, les matières premières et les gestes techniques, les participants découvrent les principes de fabrication des textiles. Chaque pôle aborde une étape de la chaîne opératoire textile, replacée dans son contexte historique et archéologique. Les outils sont reproduits à partir de résultats de fouilles.</p>
                   </div>
                 </div>
-                <span class="thread-card__more" aria-hidden="true">
-                  <span class="thread-card__more-label">Découvrir l’atelier</span>
-                  <span class="thread-card__more-icon">+</span>
-                </span>
               </div>
             </article>
+            <!-- Mini description, en face de la card. -->
+            <p class="thread-row__text">Découvrez les grandes étapes de la production textile, de la transformation des fibres à la réalisation d’étoffes, en passant par la coloration des fils.</p>
           </li>
 
-          <li class="thread-card" id="tablettes" data-side="left">
-            <article class="thread-card__inner">
+          <li class="thread-row" id="tablettes" data-side="left">
+            <article class="thread-card">
               <div class="thread-card__media">
-                <img
-                  src="/images/Atelier-participatif-tissage-aux-tablettes-1536x2048_o1sC.jpg"
-                  alt="Participants d’un atelier de tissage aux tablettes"
-                  loading="lazy"
-                />
+              <img
+              src="/images/Atelier-participatif-tissage-aux-tablettes-1536x2048_o1sC.jpg"
+              alt="Participants d’un atelier de tissage aux tablettes"
+              loading="lazy"
+              />
               </div>
               <div class="thread-card__body">
-                <p class="thread-card__index">02</p>
-                <h3 class="thread-card__title">
-                  <button
-                    class="thread-card__toggle"
-                    type="button"
-                    aria-expanded="false"
-                    aria-controls="tablettes-detail"
-                  >
-                    Tissage aux tablettes
-                  </button>
-                </h3>
-                <p class="thread-card__hook">
-                  Initiez-vous au tissage aux tablettes et réalisez votre propre
-                  galon !
-                </p>
-                <div class="thread-card__detail" id="tablettes-detail">
+                <h3 class="thread-card__title">Tissage aux tablettes</h3>
+                <a
+                class="thread-card__go"
+                href="/contact/"
+                aria-label="Organiser cet atelier : Tissage aux tablettes"
+                ><span aria-hidden="true">↗</span></a
+                >
+                <!-- Texte complet : se déplie au survol (au toucher sur mobile). -->
+                <div class="thread-card__detail">
                   <div class="thread-card__detail-inner">
-                    <p>
-                      Cette technique ancienne permet de produire des bandes
-                      textiles étroites à l’aide de petites tablettes percées,
-                      qui organisent et manipulent les fils. Les participants
-                      découvrent le fonctionnement de l’outil, comprennent
-                      l’entrecroisement des fils et expérimentent les gestes
-                      nécessaires à la réalisation d’un galon. Accompagnés pas à
-                      pas, ils voient leur création prendre forme au fil du
-                      tissage.
-                    </p>
-                    <p>
-                      L’atelier associe apprentissage technique, manipulation et
-                      création, tout en abordant l’histoire des textiles et leurs
-                      usages dans les sociétés du passé. Chaque participant
-                      repart avec son propre galon.
-                    </p>
-                    <a class="button button--gold" href="/contact/">
-                      Organiser cet atelier
-                      <span class="button__arrow" aria-hidden="true">↗</span>
-                    </a>
+                    <p>Cette technique ancienne permet de produire des bandes textiles étroites à l’aide de petites tablettes percées, qui organisent et manipulent les fils. Les participants découvrent le fonctionnement de l’outil, comprennent l’entrecroisement des fils et expérimentent les gestes nécessaires à la réalisation d’un galon. Accompagnés pas à pas, ils voient leur création prendre forme au fil du tissage.</p>
+                    <p>L’atelier associe apprentissage technique, manipulation et création, tout en abordant l’histoire des textiles et leurs usages dans les sociétés du passé. Chaque participant repart avec son propre galon.</p>
                   </div>
                 </div>
-                <span class="thread-card__more" aria-hidden="true">
-                  <span class="thread-card__more-label">Découvrir l’atelier</span>
-                  <span class="thread-card__more-icon">+</span>
-                </span>
               </div>
             </article>
+            <!-- Mini description, en face de la card. -->
+            <p class="thread-row__text">Initiez-vous au tissage aux tablettes et réalisez votre propre galon !</p>
           </li>
 
-          <li class="thread-card" id="enfants" data-side="right">
-            <article class="thread-card__inner">
+          <li class="thread-row" id="enfants" data-side="right">
+            <article class="thread-card">
               <div class="thread-card__media">
-                <img
-                  src="/images/Atelier-enfant_o1sC.jpg"
-                  alt="Enfant tissant des fils de couleur sur un carton"
-                  loading="lazy"
-                />
+              <img
+              src="/images/Atelier-enfant_o1sC.jpg"
+              alt="Enfant tissant des fils de couleur sur un carton"
+              loading="lazy"
+              />
               </div>
               <div class="thread-card__body">
-                <p class="thread-card__index">03</p>
-                <h3 class="thread-card__title">
-                  <button
-                    class="thread-card__toggle"
-                    type="button"
-                    aria-expanded="false"
-                    aria-controls="enfants-detail"
-                  >
-                    Découvrir le textile en expérimentant
-                  </button>
-                </h3>
-                <p class="thread-card__hook">
-                  Parce que les savoir-faire textiles se découvrent aussi par le
-                  jeu et la manipulation, deux activités sont proposées selon
-                  l’âge des participants, le contexte et les objectifs de
-                  l’intervention.
-                </p>
-                <div class="thread-card__detail" id="enfants-detail">
+                <h3 class="thread-card__title">Découvrir le textile en expérimentant</h3>
+                <a
+                class="thread-card__go"
+                href="/contact/"
+                aria-label="Organiser cet atelier : Découvrir le textile en expérimentant"
+                ><span aria-hidden="true">↗</span></a
+                >
+                <!-- Texte complet : se déplie au survol (au toucher sur mobile). -->
+                <div class="thread-card__detail">
                   <div class="thread-card__detail-inner">
-                    <p>
-                      Sur un support en carton et avec des fils de couleur, les
-                      enfants passent alternativement le fil au-dessus et
-                      au-dessous des fils tendus et découvrent comment se
-                      construit une surface textile. Une activité ludique qui
-                      développe la motricité fine, la concentration et
-                      l’observation. Chaque enfant repart avec son tissage.
-                    </p>
-                    <p>
-                      Comment obtenir de la couleur à partir des plantes ? Les
-                      enfants découvrent les ingrédients, observent les couleurs
-                      et suivent les étapes de la teinture, une pratique ancienne
-                      qui associe matières naturelles, gestes techniques et
-                      expérimentation. Chaque enfant repart avec son écheveau
-                      teint.
-                    </p>
-                    <a class="button button--gold" href="/contact/">
-                      Organiser cet atelier
-                      <span class="button__arrow" aria-hidden="true">↗</span>
-                    </a>
+                    <p>Sur un support en carton et avec des fils de couleur, les enfants passent alternativement le fil au-dessus et au-dessous des fils tendus et découvrent comment se construit une surface textile. Une activité ludique qui développe la motricité fine, la concentration et l’observation. Chaque enfant repart avec son tissage.</p>
+                    <p>Comment obtenir de la couleur à partir des plantes ? Les enfants découvrent les ingrédients, observent les couleurs et suivent les étapes de la teinture, une pratique ancienne qui associe matières naturelles, gestes techniques et expérimentation. Chaque enfant repart avec son écheveau teint.</p>
                   </div>
                 </div>
-                <span class="thread-card__more" aria-hidden="true">
-                  <span class="thread-card__more-label">Découvrir l’atelier</span>
-                  <span class="thread-card__more-icon">+</span>
-                </span>
               </div>
             </article>
+            <!-- Mini description, en face de la card. -->
+            <p class="thread-row__text">Parce que les savoir-faire textiles se découvrent aussi par le jeu et la manipulation, deux activités sont proposées selon l’âge des participants, le contexte et les objectifs de l’intervention.</p>
           </li>
 
-          <li class="thread-card" id="experimentation" data-side="left">
-            <article class="thread-card__inner">
+          <li class="thread-row" id="experimentation" data-side="left">
+            <article class="thread-card">
               <div class="thread-card__media">
-                <img
-                  src="/images/Ceintures-realisees-pendant-les-XP-1536x1152_o1sC.jpg"
-                  alt="Ceintures à chevrons réalisées pendant l’expérimentation statues-menhirs"
-                  loading="lazy"
-                />
+              <img
+              src="/images/Ceintures-realisees-pendant-les-XP-1536x1152_o1sC.jpg"
+              alt="Ceintures à chevrons réalisées pendant l’expérimentation statues-menhirs"
+              loading="lazy"
+              />
               </div>
               <div class="thread-card__body">
-                <p class="thread-card__index">04</p>
-                <h3 class="thread-card__title">
-                  <button
-                    class="thread-card__toggle"
-                    type="button"
-                    aria-expanded="false"
-                    aria-controls="experimentation-detail"
-                  >
-                    Expérimentation archéologique
-                  </button>
-                </h3>
-                <p class="thread-card__hook">
-                  Des projets pour les archéologues, les chercheurs et les
-                  professionnels du patrimoine.
-                </p>
-                <div class="thread-card__detail" id="experimentation-detail">
+                <h3 class="thread-card__title">Expérimentation archéologique</h3>
+                <a
+                class="thread-card__go"
+                href="/contact/"
+                aria-label="Organiser cet atelier : Expérimentation archéologique"
+                ><span aria-hidden="true">↗</span></a
+                >
+                <!-- Texte complet : se déplie au survol (au toucher sur mobile). -->
+                <div class="thread-card__detail">
                   <div class="thread-card__detail-inner">
-                    <p>
-                      En s’appuyant sur les données archéologiques,
-                      iconographiques et documentaires, ces expérimentations
-                      explorent les gestes, les outils, les matériaux et les
-                      procédés de la production textile. Elles permettent de
-                      mettre à l’épreuve des hypothèses, d’identifier les
-                      contraintes techniques de certaines méthodes et de mieux
-                      appréhender les possibilités offertes par les techniques
-                      anciennes.
-                    </p>
-                    <p>
-                      Une première expérimentation, menée avec les archéologues
-                      Jean Vaquer et Michel Maillé, a porté sur la réalisation de
-                      ceintures à motifs de chevrons inspirées des
-                      statues-menhirs : un travail qui confronte les indices
-                      iconographiques aux contraintes de la pratique.
-                    </p>
-                    <a class="button button--gold" href="/contact/">
-                      Organiser cet atelier
-                      <span class="button__arrow" aria-hidden="true">↗</span>
-                    </a>
+                    <p>En s’appuyant sur les données archéologiques, iconographiques et documentaires, ces expérimentations explorent les gestes, les outils, les matériaux et les procédés de la production textile. Elles permettent de mettre à l’épreuve des hypothèses, d’identifier les contraintes techniques de certaines méthodes et de mieux appréhender les possibilités offertes par les techniques anciennes.</p>
+                    <p>Une première expérimentation, menée avec les archéologues Jean Vaquer et Michel Maillé, a porté sur la réalisation de ceintures à motifs de chevrons inspirées des statues-menhirs : un travail qui confronte les indices iconographiques aux contraintes de la pratique.</p>
                   </div>
                 </div>
-                <span class="thread-card__more" aria-hidden="true">
-                  <span class="thread-card__more-label">Découvrir l’atelier</span>
-                  <span class="thread-card__more-icon">+</span>
-                </span>
               </div>
             </article>
+            <!-- Mini description, en face de la card. -->
+            <p class="thread-row__text">Des projets pour les archéologues, les chercheurs et les professionnels du patrimoine.</p>
           </li>
 
-          <li class="thread-card" id="conferences" data-side="right">
-            <article class="thread-card__inner">
+          <li class="thread-row" id="conferences" data-side="right">
+            <article class="thread-card">
               <div class="thread-card__media">
-                <img
-                  src="/images/Conference-communication_o1sC.jpg"
-                  alt="Conférence devant un public"
-                  loading="lazy"
-                />
+              <img
+              src="/images/Conference-communication_o1sC.jpg"
+              alt="Conférence devant un public"
+              loading="lazy"
+              />
               </div>
               <div class="thread-card__body">
-                <p class="thread-card__index">05</p>
-                <h3 class="thread-card__title">
-                  <button
-                    class="thread-card__toggle"
-                    type="button"
-                    aria-expanded="false"
-                    aria-controls="conferences-detail"
-                  >
-                    Conférences : à la découverte de l’archéologie des textiles
-                  </button>
-                </h3>
-                <p class="thread-card__hook">
-                  Des conférences consacrées aux textiles anciens, à leurs
-                  techniques de fabrication et à leur place dans les sociétés du
-                  passé.
-                </p>
-                <div class="thread-card__detail" id="conferences-detail">
+                <h3 class="thread-card__title">Conférences : à la découverte de l’archéologie des textiles</h3>
+                <a
+                class="thread-card__go"
+                href="/contact/"
+                aria-label="Organiser cet atelier : Conférences : à la découverte de l’archéologie des textiles"
+                ><span aria-hidden="true">↗</span></a
+                >
+                <!-- Texte complet : se déplie au survol (au toucher sur mobile). -->
+                <div class="thread-card__detail">
                   <div class="thread-card__detail-inner">
-                    <p>
-                      En s’appuyant sur les découvertes archéologiques, les
-                      sources iconographiques et la recherche, elles abordent la
-                      production des fibres, le filage, le tissage, la teinture,
-                      les outils, les structures textiles et les usages des
-                      étoffes.
-                    </p>
-                    <p>
-                      Le contenu s’adapte aux thématiques souhaitées, au niveau de
-                      spécialisation du public et au contexte : institutions
-                      culturelles, associations, étudiants, professionnels du
-                      patrimoine, communautés scientifiques et grand public.
-                    </p>
-                    <a class="button button--gold" href="/contact/">
-                      Organiser cet atelier
-                      <span class="button__arrow" aria-hidden="true">↗</span>
-                    </a>
+                    <p>En s’appuyant sur les découvertes archéologiques, les sources iconographiques et la recherche, elles abordent la production des fibres, le filage, le tissage, la teinture, les outils, les structures textiles et les usages des étoffes.</p>
+                    <p>Le contenu s’adapte aux thématiques souhaitées, au niveau de spécialisation du public et au contexte : institutions culturelles, associations, étudiants, professionnels du patrimoine, communautés scientifiques et grand public.</p>
                   </div>
                 </div>
-                <span class="thread-card__more" aria-hidden="true">
-                  <span class="thread-card__more-label">Découvrir l’atelier</span>
-                  <span class="thread-card__more-icon">+</span>
-                </span>
               </div>
             </article>
+            <!-- Mini description, en face de la card. -->
+            <p class="thread-row__text">Des conférences consacrées aux textiles anciens, à leurs techniques de fabrication et à leur place dans les sociétés du passé.</p>
           </li>
 
-          <li class="thread-card" id="accessibles" data-side="left">
-            <article class="thread-card__inner">
+          <li class="thread-row" id="accessibles" data-side="left">
+            <article class="thread-card">
               <div class="thread-card__media">
-                <img
-                  src="/images/Atelier-explicatif-_2__o1sC.jpg"
-                  alt="Médiatrice présentant des textiles au public"
-                  loading="lazy"
-                />
+              <img
+              src="/images/Atelier-explicatif-_2__o1sC.jpg"
+              alt="Médiatrice présentant des textiles au public"
+              loading="lazy"
+              />
               </div>
               <div class="thread-card__body">
-                <p class="thread-card__index">06</p>
-                <h3 class="thread-card__title">
-                  <button
-                    class="thread-card__toggle"
-                    type="button"
-                    aria-expanded="false"
-                    aria-controls="accessibles-detail"
-                  >
-                    Des ateliers accessibles
-                  </button>
-                </h3>
-                <p class="thread-card__hook">
-                  Les visiteurs aveugles ou malvoyants découvrent fibres et tissus
-                  par le toucher.
-                </p>
-                <div class="thread-card__detail" id="accessibles-detail">
+                <h3 class="thread-card__title">Des ateliers accessibles</h3>
+                <a
+                class="thread-card__go"
+                href="/contact/"
+                aria-label="Organiser cet atelier : Des ateliers accessibles"
+                ><span aria-hidden="true">↗</span></a
+                >
+                <!-- Texte complet : se déplie au survol (au toucher sur mobile). -->
+                <div class="thread-card__detail">
                   <div class="thread-card__detail-inner">
-                    <p>
-                      Pour les enfants autistes, nous choisissons des matières
-                      douces et un rythme plus calme.
-                    </p>
-                    <p>
-                      Parlez-nous de votre public : nous adaptons le déroulé, les
-                      supports et la manipulation à chaque projet.
-                    </p>
-                    <a class="button button--gold" href="/contact/">
-                      Organiser cet atelier
-                      <span class="button__arrow" aria-hidden="true">↗</span>
-                    </a>
+                    <p>Pour les enfants autistes, nous choisissons des matières douces et un rythme plus calme.</p>
+                    <p>Parlez-nous de votre public : nous adaptons le déroulé, les supports et la manipulation à chaque projet.</p>
                   </div>
                 </div>
-                <span class="thread-card__more" aria-hidden="true">
-                  <span class="thread-card__more-label">Découvrir l’atelier</span>
-                  <span class="thread-card__more-icon">+</span>
-                </span>
               </div>
             </article>
+            <!-- Mini description, en face de la card. -->
+            <p class="thread-row__text">Les visiteurs aveugles ou malvoyants découvrent fibres et tissus par le toucher.</p>
           </li>
         </ol>
 
-        <!-- Zone où le fil se resserre en trame avant de devenir le footer. -->
-        <div class="thread-journey__weave" aria-hidden="true"></div>
+        <!-- Fin du parcours : le fil s'arrête au-dessus de ce CTA. -->
+        <div class="thread-journey__cta">
+          <h2>Tissons ensemble votre atelier</h2>
+          <p>
+            Chaque intervention peut être adaptée en fonction du public, de la
+            durée souhaitée, du contexte historique et des objectifs de
+            médiation. Les différents pôles peuvent être proposés
+            indépendamment ou combinés pour construire un parcours de
+            découverte plus complet.
+          </p>
+          <a class="button button--dark" href="/contact/">
+            Organiser mon atelier
+            <span class="button__arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
       </section>
     </main>
-    <footer class="site-footer site-footer--woven">
-      <div class="footer-cta">
-        <p class="eyebrow">Un atelier sur mesure</p>
-        <h2>Tissons ensemble votre atelier</h2>
-        <p>
-          Chaque intervention peut être adaptée en fonction du public, de la
-          durée souhaitée, du contexte historique et des objectifs de médiation.
-          Les différents pôles peuvent être proposés indépendamment ou combinés
-          pour construire un parcours de découverte plus complet.
-        </p>
-        <a class="button button--gold" href="/contact/">
-          Organiser mon atelier
-          <span class="button__arrow" aria-hidden="true">↗</span>
-        </a>
-      </div>
+    <footer class="site-footer" data-parallax-bg>
       <div class="footer-inner">
         <div class="footer-about">
           <a href="/"

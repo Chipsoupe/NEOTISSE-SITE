@@ -618,7 +618,6 @@ body {
   background-size: 7px 7px;
 }
 .intro,
-.atelier-intro,
 .paper-wool-section {
   background-image:
     linear-gradient(rgb(233 227 215 / 78%), rgb(233 227 215 / 78%)),
@@ -1818,6 +1817,9 @@ body {
   height: 100%;
   -o-object-fit: cover;
   object-fit: cover;
+  /* Photo en hauteur : cadrage centré sur la médiatrice et le groupe. */
+  -o-object-position: 50% 38%;
+  object-position: 50% 38%;
 }
 .atelier-hero:after {
   content: "";
@@ -1836,14 +1838,6 @@ body {
 .atelier-hero p {
   font-size: clamp(14px, 1.4vw, 19px);
 }
-.atelier-intro {
-  padding: 64px max(24px, 7vw);
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 40px;
-  align-items: center;
-}
-.atelier-intro h2,
 .atelier-steps h2 {
   font-size: clamp(2rem, 4vw, 3.25rem);
 }
@@ -1976,7 +1970,6 @@ body {
   letter-spacing: 0;
 }
 @media (max-width: 800px) {
-  .atelier-intro,
   .atelier-detail-section,
   .atelier-detail-section--reverse {
     grid-template-columns: 1fr;
@@ -2003,10 +1996,6 @@ body {
   .atelier-hero {
     min-height: 420px;
     padding: 80px 24px 44px;
-  }
-  .atelier-intro {
-    padding: 52px 24px;
-    gap: 28px;
   }
   .atelier-steps {
     padding: 56px 24px;
@@ -3035,91 +3024,45 @@ body {
    ========================================================================== */
 
 /* Intro seule (les liens rapides et l'encart ont quitté la page). */
-.atelier-intro--solo {
-  grid-template-columns: 1fr;
-  justify-items: center;
-  text-align: center;
-}
-.atelier-intro--solo p {
-  max-width: 720px;
-  margin-inline: auto;
+/* Fond qui évolue au défilement (page Ateliers) : de l'intro jusqu'au
+   footer, la couleur passe du beige crème au marron foncé du footer.
+   Pour changer les couleurs, il suffit de modifier ces 4 variables
+   (formats acceptés : #rgb, #rrggbb ou rgb()). fil-ateliers.js les lit et
+   calcule --journey-bg (fond) et --journey-ink (texte) selon le défilement. */
+[data-scroll-bg] {
+  --journey-from: #efe6d6; /* départ : beige crème */
+  --journey-to: #ecd27e; /* arrivée : jaune (celui du CTA de la navbar) */
+  --journey-ink-from: #2a211b; /* texte sur fond clair */
+  --journey-ink-to: #f5efe3; /* texte sur fond sombre (si l'arrivée est sombre) */
 }
 
+/* Les bords restent crème (--journey-from) ; seul le centre de la page
+   prend la couleur qui évolue au défilement (--journey-bg). */
+.thread-journey {
+  background: linear-gradient(
+    90deg,
+    var(--journey-from) 0%,
+    var(--journey-bg, var(--journey-from)) 50%,
+    var(--journey-from) 100%
+  );
+  color: var(--journey-ink, var(--journey-ink-from));
+}
 .thread-journey {
   --thread-gold: #c9a45c;
   position: relative;
-  padding: 56px max(24px, 6vw) 0;
-  background-color: #faf7f0;
-  background-image:
-    linear-gradient(rgb(250 247 240 / 76%), rgb(250 247 240 / 76%)),
-    url("/textures/soie.webp");
-  background-repeat: no-repeat, repeat;
-  background-size:
-    100% 100%,
-    900px 620px;
-  background-blend-mode: normal, multiply;
+  overflow-x: clip;
+  padding: 72px max(24px, 6vw) 0;
 }
-
-/* En-tête : fuseau + titre. */
 .thread-journey__head {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
-}
-.thread-journey__head .eyebrow {
-  margin: 0 0 10px;
-  padding: 0;
-  border: 0;
-  color: #8a6d1f;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 .thread-journey__head h2 {
   font-size: clamp(2.2rem, 4.5vw, 3.75rem);
 }
-.thread-journey__spindle {
-  display: block;
-  margin-top: 28px;
-  width: 96px;
-  height: auto;
-  overflow: visible;
-}
-.spindle__shaft {
-  stroke: #6b4a2b;
-  stroke-width: 4;
-  stroke-linecap: round;
-}
-.spindle__hook {
-  fill: none;
-  stroke: #6b4a2b;
-  stroke-width: 2.5;
-  stroke-linecap: round;
-}
-.spindle__cop {
-  fill: #dcc187;
-  stroke: #a5813f;
-  stroke-width: 1.5;
-}
-.spindle__wraps line {
-  stroke: #a5813f;
-  stroke-width: 1.4;
-  opacity: 0.75;
-}
-.spindle__whorl {
-  fill: #8a5a33;
-}
-.spindle__marks line {
-  stroke: #5e3c20;
-  stroke-width: 2;
-  opacity: 0.6;
-}
 
-/* Le fil : SVG posé sur toute la section, sous les cards. */
+/* Le fil : SVG posé sur toute la section, derrière les cards. */
 .thread-journey__thread {
   position: absolute;
   top: 0;
@@ -3162,56 +3105,74 @@ body {
   opacity: 0.85;
 }
 
-/* Cards alternées de part et d'autre du fil. */
+/* Rangées d'ateliers : la card d'un côté (sur le fil), le texte complet de
+   l'autre, en alternance. */
 .thread-journey__list {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 150px;
+  gap: 130px;
   margin: 0;
-  padding: 110px 0 0;
+  padding: 150px 0 0;
   list-style: none;
 }
-.thread-card {
+.thread-row {
   --from-x: 48px;
-  width: min(540px, 48%);
-  margin-left: auto;
-  scroll-margin-top: 130px;
-  transition: width 520ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.thread-card[data-side="left"] {
-  --from-x: -48px;
-  margin-left: 0;
-  margin-right: auto;
-}
-.thread-card.is-open {
-  width: min(760px, 64%);
-}
-.thread-card__inner {
   position: relative;
-  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(40px, 7vw, 120px);
+  scroll-margin-top: 130px;
+}
+.thread-row[data-side="left"] {
+  --from-x: -48px;
+}
+/* Card à droite : le texte passe dans la colonne de gauche. */
+.thread-row[data-side="right"] .thread-card {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: start;
+}
+.thread-row[data-side="right"] .thread-row__text {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
+}
+.thread-row[data-side="left"] .thread-card {
+  justify-self: end;
+}
+
+/* La rangée survolée (ou dépliée) passe au-dessus des suivantes : le texte
+   déplié de la card peut ainsi déborder par-dessus sans rien décaler. */
+.thread-row:hover,
+.thread-row:focus-within,
+.thread-row.is-open {
+  z-index: 5;
+}
+.thread-card {
+  position: relative;
+  z-index: 1;
+  width: min(500px, 100%);
   border-radius: 24px;
+  transform-origin: 50% 30%;
+  /* Les cards restent claires, texte sombre, quelle que soit la couleur
+     du fond de la page. */
+  color: #2a211b;
   background: #fffdf8;
   box-shadow:
     0 1px 2px rgb(42 33 27 / 8%),
     0 18px 40px -18px rgb(42 33 27 / 35%);
   transition:
     opacity 600ms ease,
-    transform 700ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 300ms ease;
-}
-.thread-journey--js .thread-card__inner {
-  opacity: 0;
-  transform: translate(var(--from-x), 28px);
-}
-.thread-journey--js .thread-card.is-visible .thread-card__inner {
-  opacity: 1;
-  transform: none;
+    transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 400ms ease;
 }
 .thread-card__media {
   aspect-ratio: 16 / 10;
   overflow: hidden;
+  border-radius: 24px 24px 0 0;
 }
 .thread-card__media img {
   width: 100%;
@@ -3221,227 +3182,212 @@ body {
   transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .thread-card__body {
-  padding: 26px 32px 28px;
-}
-.thread-card__index {
-  margin: 0 0 6px;
-  color: #b08a3e;
-  font: 400 28px/1 Georgia, serif;
+  position: relative;
+  padding: 26px 96px 30px 32px;
 }
 .thread-card__title {
   font-size: clamp(1.55rem, 2.3vw, 2.15rem);
 }
-/* Le bouton couvre toute la card : un clic n'importe où l'ouvre. */
-.thread-card__toggle {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  font: inherit;
-  letter-spacing: inherit;
-  line-height: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-.thread-card__toggle::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
-.thread-card__toggle:focus-visible {
-  outline: none;
-}
-.thread-card__inner:has(.thread-card__toggle:focus-visible) {
-  box-shadow:
-    0 0 0 3px #ecd27e,
-    0 18px 40px -18px rgb(42 33 27 / 35%);
-}
-.thread-card__hook {
-  margin: 14px 0 0;
-  color: #4a3f36;
-  line-height: 1.6;
-}
-/* Détail dépliable (une seule card ouverte à la fois). */
-.thread-card__detail {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 520ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.thread-card__detail-inner {
-  min-height: 0;
-  overflow: hidden;
-  visibility: hidden;
-  transition: visibility 0s linear 520ms;
-}
 .thread-card__detail-inner p {
   margin: 14px 0 0;
   color: #4a3f36;
+  font-size: 15px;
   line-height: 1.65;
 }
-.thread-card__detail-inner .button {
-  margin: 22px 0 4px;
-}
-.thread-card.is-open .thread-card__detail {
-  grid-template-rows: 1fr;
-}
-.thread-card.is-open .thread-card__detail-inner {
-  visibility: visible;
-  transition-delay: 0s;
-}
-.thread-card__more {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 20px;
-  color: #2a211b;
-  font-size: 14px;
-  font-weight: 600;
-}
-.thread-card__more-icon {
-  display: inline-grid;
+
+/* Petit CTA rond avec une flèche (vers le contact). */
+.thread-card__go {
+  position: absolute;
+  top: 22px;
+  right: 28px;
+  z-index: 3;
+  display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: #ecd27e;
+  background: #2a211b;
+  color: #ecd27e;
   font-size: 18px;
-  line-height: 1;
-  transition: transform 320ms ease;
+  text-decoration: none;
+  transition:
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 200ms ease;
 }
-.thread-card.is-open .thread-card__more-icon {
-  transform: rotate(45deg);
+.thread-card__go:hover,
+.thread-card__go:focus-visible {
+  background: #ecd27e;
+  color: #2a211b;
+  transform: scale(1.08);
 }
+.thread-card__go:focus-visible {
+  outline: 3px solid #2a211b;
+  outline-offset: 3px;
+}
+
+/* Mini description, posée directement sur le fond en face de la card. */
+.thread-row__text {
+  position: relative;
+  z-index: 0;
+  max-width: 400px;
+  margin: 0;
+  font-size: clamp(18px, 1.55vw, 23px);
+  font-weight: 500;
+  line-height: 1.5;
+  transition:
+    opacity 700ms ease 120ms,
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+}
+
+/* Apparition quand le fil arrive : la card glisse depuis son côté, le texte
+   depuis l'autre. */
+.thread-journey--js .thread-card,
+.thread-journey--js .thread-row__text {
+  opacity: 0;
+}
+.thread-journey--js .thread-card {
+  transform: translate(var(--from-x), 28px);
+}
+.thread-journey--js .thread-row__text {
+  transform: translate(calc(var(--from-x) * -0.6), 20px);
+}
+.thread-journey--js .thread-row.is-visible .thread-card,
+.thread-journey--js .thread-row.is-visible .thread-row__text {
+  opacity: 1;
+  transform: none;
+}
+
+/* Ordinateur (survol) : la card grossit légèrement et déplie le texte
+   complet PAR-DESSUS la suite de la page (rien ne bouge en dessous). */
 @media (hover: hover) and (pointer: fine) {
-  .thread-card:not(.is-open) .thread-card__inner:hover {
+  .thread-card__detail {
+    position: absolute;
+    top: calc(100% - 24px);
+    left: 0;
+    right: 0;
+    z-index: 2;
+    padding: 4px 32px 30px;
+    border-radius: 0 0 24px 24px;
+    background: #fffdf8;
+    box-shadow: 0 30px 50px -24px rgb(42 33 27 / 45%);
+    opacity: 0;
+    transform: translateY(-14px);
+    pointer-events: none;
+    transition:
+      opacity 280ms ease,
+      transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .thread-card:hover .thread-card__detail,
+  .thread-card:focus-within .thread-card__detail {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .thread-journey--js .thread-row.is-visible .thread-card:hover,
+  .thread-journey--js .thread-row.is-visible .thread-card:focus-within {
+    transform: scale(1.03);
     box-shadow:
       0 1px 2px rgb(42 33 27 / 8%),
-      0 26px 50px -20px rgb(42 33 27 / 45%);
+      0 30px 56px -24px rgb(42 33 27 / 48%);
   }
-  .thread-card__inner:hover .thread-card__media img {
+  .thread-card:hover .thread-card__media img {
     transform: scale(1.05);
   }
 }
 
-/* Zone de trame : le fil s'y resserre avant le footer. */
-.thread-journey__weave {
-  height: 280px;
-  margin-top: 120px;
+/* Écrans tactiles : toucher la card déplie le texte sur place. */
+@media (hover: none), (pointer: coarse) {
+  .thread-card {
+    cursor: pointer;
+  }
+  .thread-card__detail {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .thread-card__detail-inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .thread-row.is-open .thread-card__detail {
+    grid-template-rows: 1fr;
+  }
 }
 
-/* Footer tissé (page Ateliers) : étoffe sombre, avec en haut une bande de
-   trame dorée dans la continuité du fil. */
-.site-footer--woven {
-  background-color: #2f251d;
-  background-image:
-    repeating-linear-gradient(0deg, rgb(201 164 92 / 9%) 0 2px, transparent 2px 5px),
-    repeating-linear-gradient(90deg, rgb(0 0 0 / 22%) 0 2px, transparent 2px 5px),
-    linear-gradient(rgb(54 43 34 / 60%), rgb(54 43 34 / 60%)),
-    url("/textures/pepier%20marron.webp");
-  background-repeat: repeat, repeat, no-repeat, no-repeat;
-  background-size:
-    auto,
-    auto,
-    100% 100%,
-    100% 100%;
-  background-position: center;
-  background-blend-mode: normal, normal, normal, soft-light;
-  padding-top: 0;
-}
-.site-footer--woven::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 72px;
-  background: repeating-linear-gradient(
-    0deg,
-    #c9a45c 0 2px,
-    #8c6a32 2px 3px,
-    transparent 3px 5px
-  );
-  -webkit-mask-image: linear-gradient(#000, transparent);
-  mask-image: linear-gradient(#000, transparent);
-  pointer-events: none;
-}
-.footer-cta {
+/* CTA final, sur le même fond que les cards : le fil s'arrête au-dessus. */
+.thread-journey__cta {
   position: relative;
   z-index: 1;
   max-width: 780px;
   margin: 0 auto;
-  padding: 130px 24px 90px;
+  padding: 170px 0 130px;
   text-align: center;
 }
-.footer-cta .eyebrow {
-  margin: 0 0 14px;
-  padding: 0;
-  border: 0;
-  color: #ecd27e;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.footer-cta h2 {
-  color: #f5efe3;
+.thread-journey__cta h2 {
+  color: inherit;
   font-size: clamp(2.2rem, 4.5vw, 3.75rem);
 }
-.footer-cta p:not(.eyebrow) {
-  color: #d8cfc4;
+.thread-journey__cta p {
+  color: inherit;
+  opacity: 0.85;
   line-height: 1.65;
 }
-.footer-cta .button {
+.thread-journey__cta .button {
   margin-top: 12px;
 }
 
 @media (max-width: 800px) {
   .thread-journey {
-    padding: 44px 16px 0;
-  }
-  .thread-journey__head {
-    align-items: flex-start;
-    padding-left: 40px;
-    text-align: left;
-  }
-  .thread-journey__spindle {
-    width: 64px;
-    margin-left: -40px;
+    padding: 52px 16px 0;
   }
   .thread-journey__list {
-    gap: 56px;
-    padding: 64px 0 0 40px;
+    gap: 88px;
+    /* Marge à gauche : le fil longe le bord. */
+    padding: 96px 0 0 18px;
   }
-  .thread-card,
-  .thread-card[data-side="left"],
-  .thread-card.is-open {
+  /* Mobile : la card puis son texte, empilés. */
+  .thread-row,
+  .thread-row[data-side="left"] {
     --from-x: 24px;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .thread-row[data-side="right"] .thread-card,
+  .thread-row[data-side="right"] .thread-row__text,
+  .thread-row[data-side="left"] .thread-card {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: stretch;
+  }
+  .thread-card {
     width: 100%;
-    margin: 0;
+  }
+  .thread-row__text {
+    max-width: none;
+    padding: 0 6px;
+    font-size: 17px;
   }
   .thread-card__body {
-    padding: 22px 22px 24px;
+    padding: 22px 84px 24px 22px;
   }
-  .thread-journey__weave {
-    height: 200px;
-    margin-top: 72px;
+  .thread-card__go {
+    top: 18px;
+    right: 20px;
   }
-  .footer-cta {
-    padding: 110px 20px 70px;
+  .thread-journey__cta {
+    padding: 120px 0 90px;
   }
 }
 
-/* Moins d'animations : fil entièrement tracé, cards visibles, rien ne bouge. */
-.thread-journey--static .thread-card__inner,
+/* Moins d'animations : fil entièrement tracé, tout visible, rien ne bouge. */
 .thread-journey--static .thread-card,
+.thread-journey--static .thread-row__text,
 .thread-journey--static .thread-card__detail,
-.thread-journey--static .thread-card__detail-inner,
 .thread-journey--static .thread-card__media img {
   transition: none;
 }
-.thread-journey--static.thread-journey--js .thread-card__inner {
+.thread-journey--static.thread-journey--js .thread-card,
+.thread-journey--static.thread-journey--js .thread-row__text {
   opacity: 1;
   transform: none;
 }

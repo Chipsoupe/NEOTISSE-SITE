@@ -1,29 +1,135 @@
 /*
  * Page Ateliers : « Le fil des ateliers ».
  *
- * Un fuseau (SVG) file un fil qui descend en vagues de gauche à droite.
+ * Un fil entre par le bord droit de la page puis descend en vagues en
+ * passant derrière le centre de chaque card : on ne le voit qu'entre deux
+ * cards, il les relie sans leur voler la vedette.
  * - Le fil suit le défilement : son extrémité est toujours au niveau de
  *   lecture (60 % de la hauteur de l'écran) ; il se rembobine si on remonte.
- * - Chaque card d'atelier apparaît quand le fil l'atteint.
- * - Un clic sur une card l'agrandit sur place (une seule ouverte à la fois) ;
- *   le fil se recalcule autour.
- * - En bas, le fil fait des allers-retours de plus en plus serrés (trame) et
- *   rejoint le footer tissé.
- * - Arrivée par un lien /ateliers/#id : la card est ouverte et la page y défile.
+ * - Chaque atelier (card + texte) apparaît quand le fil l'atteint.
+ * - Chaque atelier est une rangée : la card (photo, titre, bouton flèche)
+ *   d'un côté, une mini description de l'autre. Le texte complet se déplie
+ *   au survol de la card (CSS), ou au toucher sur mobile (classe .is-open).
+ * - Après la dernière card, le fil fait une dernière vague et s'arrête
+ *   au-dessus du CTA final « Tissons ensemble votre atelier ».
+ * - Arrivée par un lien /ateliers/#id : la page défile jusqu'à l'atelier.
+ * - Le fond de l'intro et du parcours change de couleur au défilement
+ *   (bords crème, centre qui vire au jaune), couleurs réglables en CSS.
  *
- * Le tracé est calculé en points (polyligne) plutôt qu'avec getPointAtLength :
- * on connaît ainsi la longueur exacte à chaque point, et le recalcul reste
- * assez rapide pour suivre l'ouverture d'une card image par image.
+ * Le tracé est calculé en points (polyligne) : on connaît ainsi la longueur
+ * exacte à chaque point, et le recalcul reste rapide.
  */
 document.addEventListener("DOMContentLoaded", () => {
+  /* ---------- Fond qui évolue au défilement ---------- */
+  // Les couleurs viennent des variables CSS --journey-* posées sur
+  // [data-scroll-bg] (voir style.css) : on les change là, pas ici.
+  const scrollBg = document.querySelector("[data-scroll-bg]");
+  if (scrollBg) {
+    const regionStart = scrollBg.querySelector(".thread-journey") || scrollBg;
+    const footer = document.querySelector(".site-footer");
+
+    const parseColor = (value) => {
+      const v = value.trim();
+      let m = v.match(/^#([0-9a-f]{3})$/i);
+      if (m) return [...m[1]].map((c) => parseInt(c + c, 16));
+      m = v.match(/^#([0-9a-f]{6})$/i);
+      if (m) return [0, 2, 4].map((i) => parseInt(m[1].slice(i, i + 2), 16));
+      m = v.match(/rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/i);
+      if (m) return [m[1], m[2], m[3]].map(Number);
+      return null;
+    };
+    const mix = (a, b, t) =>
+      `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(" ")})`;
+    // Luminance relative (WCAG), pour savoir quand le fond devient sombre.
+    const luminance = (rgb) => {
+      const [r, g, b] = rgb.map((v) => {
+        const c = v / 255;
+        return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+      });
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    };
+    const smoothstep = (a, b, x) => {
+      const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+      return t * t * (3 - 2 * t);
+    };
+
+    let palette = null;
+    const readPalette = () => {
+      const styles = getComputedStyle(scrollBg);
+      const get = (name) => parseColor(styles.getPropertyValue(name));
+      const from = get("--journey-from");
+      const to = get("--journey-to");
+      const inkFrom = get("--journey-ink-from");
+      const inkTo = get("--journey-ink-to");
+      if (!from || !to || !inkFrom || !inkTo) return null;
+      // Moment où le fond devient assez sombre pour un texte clair : le
+      // texte change de teinte autour de ce point, sur une plage resserrée,
+      // pour ne jamais avoir texte et fond de même valeur.
+      // Si le fond ne devient jamais sombre (arrivée claire, ex. jaune),
+      // le texte reste sombre du début à la fin.
+      let pivot = 2;
+      for (let i = 0; i <= 100; i++) {
+        const t = i / 100;
+        const rgb = from.map((v, k) => v + (to[k] - v) * t);
+        if (luminance(rgb) < 0.18) {
+          pivot = t;
+          break;
+        }
+      }
+      return { from, to, inkFrom, inkTo, pivot };
+    };
+
+    let bgFrame = 0;
+    const updateBg = () => {
+      bgFrame = 0;
+      if (!palette) return;
+      // Départ : dès que la section des cards entre en bas de l'écran
+      // (et non quand elle atteint le haut), pour que le jaune arrive tôt.
+      const start =
+        regionStart.getBoundingClientRect().top +
+        window.scrollY -
+        window.innerHeight;
+      // Arrivée : quand le footer entre en bas de l'écran.
+      const end = footer
+        ? footer.getBoundingClientRect().top + window.scrollY - window.innerHeight
+        : document.documentElement.scrollHeight - window.innerHeight;
+      const linear =
+        end > start
+          ? Math.min(1, Math.max(0, (window.scrollY - start) / (end - start)))
+          : 0;
+      // Courbe qui monte vite au début : la couleur est bien présente dès
+      // les premières cards, puis s'intensifie plus doucement.
+      const progress = 1 - (1 - linear) ** 1.8;
+      const inkT = smoothstep(palette.pivot - 0.08, palette.pivot + 0.08, progress);
+      scrollBg.style.setProperty("--journey-bg", mix(palette.from, palette.to, progress));
+      scrollBg.style.setProperty(
+        "--journey-ink",
+        mix(palette.inkFrom, palette.inkTo, inkT),
+      );
+    };
+    const requestBg = () => {
+      if (!bgFrame) bgFrame = requestAnimationFrame(updateBg);
+    };
+
+    palette = readPalette();
+    updateBg();
+    window.addEventListener("scroll", requestBg, { passive: true });
+    window.addEventListener("resize", () => {
+      palette = readPalette();
+      requestBg();
+    });
+    window.addEventListener("load", requestBg);
+  }
+
   const section = document.querySelector("[data-thread]");
   if (!section) return;
 
   const SVG_NS = "http://www.w3.org/2000/svg";
   const threadSvg = section.querySelector(".thread-journey__thread");
-  const spindle = section.querySelector(".thread-journey__spindle");
-  const weaveZone = section.querySelector(".thread-journey__weave");
-  const cards = [...section.querySelectorAll(".thread-card")];
+  const list = section.querySelector(".thread-journey__list");
+  const finalCta = section.querySelector(".thread-journey__cta");
+  // Une rangée = une card (photo, titre, accroche) + le texte complet en face.
+  const rows = [...section.querySelectorAll(".thread-row")];
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   ).matches;
@@ -34,50 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   section.classList.add("thread-journey--js");
   if (reducedMotion) section.classList.add("thread-journey--static");
-
-  /* ---------- Fuseau : enroulement et marques qui défilent ---------- */
-
-  const wrapsGroup = spindle?.querySelector("[data-spindle-wraps]");
-  const marksGroup = spindle?.querySelector("[data-spindle-marks]");
-  const WRAP_PERIOD = 9;
-  const MARK_PERIOD = 14;
-
-  const fillSpindle = () => {
-    if (!wrapsGroup || !marksGroup) return;
-    // Fils enroulés sur la bobine : traits obliques, sur deux périodes de
-    // large pour pouvoir les faire défiler en boucle.
-    for (let x = -60; x <= 180; x += WRAP_PERIOD) {
-      const line = document.createElementNS(SVG_NS, "line");
-      line.setAttribute("x1", x);
-      line.setAttribute("y1", 36);
-      line.setAttribute("x2", x + 26);
-      line.setAttribute("y2", 132);
-      wrapsGroup.append(line);
-    }
-    // Marques gravées sur la fusaïole.
-    for (let x = -40; x <= 160; x += MARK_PERIOD) {
-      const mark = document.createElementNS(SVG_NS, "line");
-      mark.setAttribute("x1", x);
-      mark.setAttribute("y1", 146);
-      mark.setAttribute("x2", x);
-      mark.setAttribute("y2", 170);
-      marksGroup.append(mark);
-    }
-  };
-  fillSpindle();
-
-  const spinSpindle = () => {
-    if (!wrapsGroup || !marksGroup || reducedMotion) return;
-    const turn = window.scrollY * 0.35;
-    wrapsGroup.setAttribute(
-      "transform",
-      `translate(${-(turn % WRAP_PERIOD)} 0)`,
-    );
-    marksGroup.setAttribute(
-      "transform",
-      `translate(${-((turn * 1.6) % MARK_PERIOD)} 0)`,
-    );
-  };
 
   /* ---------- Calques du fil ---------- */
 
@@ -94,9 +156,8 @@ document.addEventListener("DOMContentLoaded", () => {
     { id: "thread-reveal", maskUnits: "userSpaceOnUse" },
     defs,
   );
-  // Deux tracés de masque : le fil principal et la trame, révélés séparément.
+  // Tracé de masque : révèle le fil au fil du défilement.
   const maskMain = make("path", { class: "thread-mask" }, mask);
-  const maskWeave = make("path", { class: "thread-mask" }, mask);
 
   const threadGroup = make("g", { mask: "url(#thread-reveal)" });
   // Fil réaliste = plusieurs passes sur le même tracé :
@@ -110,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let geometry = null;
 
   // Position d'un élément dans la section, sans les transformations CSS
-  // (les cards glissent en apparaissant : on ne veut pas que le fil bouge).
+  // (les cards glissent en apparaissant : le fil ne doit pas bouger).
   const layoutBox = (el) => {
     let top = 0;
     let left = 0;
@@ -148,25 +209,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Courbe en S à tangentes verticales entre deux points (une « vague »).
   const pushWave = (points, from, to) => {
-    const pull = Math.max(40, (to.y - from.y) * 0.55);
+    const pull = Math.max(40, (to.y - from.y) * 0.6);
     pushCubic(
       points,
       from,
       { x: from.x, y: from.y + pull },
       { x: to.x, y: to.y - pull },
       to,
-    );
-  };
-
-  // Le long d'une card : descente avec un léger balancement.
-  const pushSway = (points, x, yTop, yBottom, sway) => {
-    const h = yBottom - yTop;
-    pushCubic(
-      points,
-      { x, y: yTop },
-      { x: x + sway, y: yTop + h / 3 },
-      { x: x - sway, y: yTop + (2 * h) / 3 },
-      { x, y: yBottom },
     );
   };
 
@@ -194,69 +243,48 @@ document.addEventListener("DOMContentLoaded", () => {
     threadSvg.setAttribute("height", height);
     threadSvg.setAttribute("viewBox", `0 0 ${width} ${height}`);
 
-    // Départ : sur le flanc de la bobine du fuseau. (Un <svg> n'a pas
-    // d'offsetTop : on le mesure à l'écran, il n'est jamais transformé.)
-    const sectionRect = section.getBoundingClientRect();
-    const spindleRect = spindle.getBoundingClientRect();
-    const start = {
-      x: spindleRect.left - sectionRect.left + spindleRect.width * 0.72,
-      y: spindleRect.top - sectionRect.top + spindleRect.height * 0.4,
-    };
-
-    const main = [start];
-    const cardMarks = [];
-    let previous = start;
-
-    cards.forEach((card, index) => {
-      const box = layoutBox(card);
-      const side = card.dataset.side;
-      let laneX;
-      if (isMobile) {
-        laneX = 22;
-      } else if (side === "right") {
-        laneX = box.left * 0.5;
-      } else {
-        laneX = box.right + (width - box.right) * 0.5;
-      }
-      const top = { x: laneX, y: box.top + 24 };
-      const bottom = { x: laneX, y: box.bottom - 24 };
-      pushWave(main, previous, top);
-      pushSway(main, laneX, top.y, bottom.y, (index % 2 ? -1 : 1) * (isMobile ? 9 : 26));
-      previous = bottom;
-      // La card apparaît quand le fil arrive à 20 % de sa hauteur.
-      cardMarks.push(box.top + box.height * 0.2);
+    // Points de passage : derrière le centre de chaque card. Sur mobile les
+    // cards sont empilées pleine largeur, on décale donc le passage à gauche
+    // puis à droite pour garder des vagues entre deux cards.
+    // Mobile : le texte de chaque atelier est sous sa card, le fil ne peut
+    // donc pas serpenter au milieu ; il longe le bord gauche en petites vagues.
+    const anchors = rows.map((row, index) => {
+      const box = layoutBox(row.querySelector(".thread-card") || row);
+      return {
+        x: isMobile ? (index % 2 ? 6 : 14) : box.left + box.width / 2,
+        y: box.top + box.height / 2,
+        // La card apparaît un peu avant que le fil l'atteigne : elle est
+        // déjà opaque quand le fil passe derrière elle.
+        mark: box.top - window.innerHeight * 0.15,
+      };
     });
 
-    // Trame : allers-retours de plus en plus serrés jusqu'au footer.
-    const weaveBox = layoutBox(weaveZone);
-    const margin = isMobile ? 12 : 24;
-    const weave = [];
-    let y = weaveBox.top + 8;
-    let goingRight = previous.x < width / 2;
-    let x = goingRight ? margin : width - margin;
-    pushWave(main, previous, { x, y });
-    weave.push({ x, y });
-    let spacing = isMobile ? 26 : 34;
-    while (y + spacing < weaveBox.bottom) {
-      const endX = goingRight ? width - margin : margin;
-      weave.push({ x: endX, y });
-      // Demi-tour arrondi vers le rang suivant.
-      const r = spacing / 2;
-      const cx = endX;
-      const cy = y + r;
-      const dir = goingRight ? 1 : -1;
-      for (let a = 1; a <= 8; a++) {
-        const angle = -Math.PI / 2 + (a / 8) * Math.PI;
-        weave.push({ x: cx + dir * Math.cos(angle) * r * 0.6, y: cy + Math.sin(angle) * r });
-      }
-      y += spacing;
-      goingRight = !goingRight;
-      spacing = Math.max(4, spacing * 0.8);
+    // Entrée : depuis l'extérieur de la page, à droite, au-dessus des cards.
+    const listBox = layoutBox(list);
+    // (dans l'espace libre entre le titre et la première card)
+    const entryY = listBox.top + (isMobile ? 32 : 56);
+    const start = { x: width + 40, y: entryY };
+    const main = [start];
+    const first = anchors[0];
+    pushCubic(
+      main,
+      start,
+      { x: width * 0.55, y: entryY },
+      { x: first.x, y: entryY + (first.y - entryY) * 0.25 },
+      first,
+    );
+    for (let i = 1; i < anchors.length; i++) {
+      pushWave(main, anchors[i - 1], anchors[i]);
     }
-    weave.push({ x: goingRight ? width - margin : margin, y });
+
+    // Fin : une dernière vague jusque juste au-dessus du titre du CTA final.
+    const ctaTitle = finalCta.querySelector("h2") || finalCta;
+    pushWave(main, anchors[anchors.length - 1], {
+      x: width / 2,
+      y: layoutBox(ctaTitle).top - (isMobile ? 28 : 40),
+    });
 
     const mainLengths = cumulativeLengths(main);
-    const weaveLengths = cumulativeLengths(weave);
     // Hauteurs croissantes pour retrouver la longueur à une hauteur donnée.
     const mainY = [];
     let maxY = -Infinity;
@@ -265,24 +293,18 @@ document.addEventListener("DOMContentLoaded", () => {
       mainY.push(maxY);
     });
 
-    const d = `${toPath(main)} ${toPath(weave)}`;
+    const d = toPath(main);
     layers.forEach((layer) => layer.setAttribute("d", d));
-    maskMain.setAttribute("d", toPath(main));
-    maskWeave.setAttribute("d", toPath(weave));
+    maskMain.setAttribute("d", d);
 
     const mainTotal = mainLengths[mainLengths.length - 1];
-    const weaveTotal = weaveLengths[weaveLengths.length - 1];
     maskMain.style.strokeDasharray = `${mainTotal} ${mainTotal}`;
-    maskWeave.style.strokeDasharray = `${weaveTotal} ${weaveTotal}`;
 
     geometry = {
       mainY,
       mainLengths,
       mainTotal,
-      weaveTotal,
-      weaveTop: weaveBox.top,
-      weaveBottom: weaveBox.bottom,
-      cardMarks,
+      cardMarks: anchors.map((a) => a.mark),
     };
   };
 
@@ -307,7 +329,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const render = () => {
     if (!geometry) return;
-    spinSpindle();
 
     const sectionTop = section.getBoundingClientRect().top;
     let reading = window.innerHeight * READING_LINE - sectionTop;
@@ -320,25 +341,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const mainDrawn = mainLengthAt(reading);
     maskMain.style.strokeDashoffset = geometry.mainTotal - mainDrawn;
 
-    const weaveProgress =
-      mainDrawn >= geometry.mainTotal - 1
-        ? Math.min(
-            1,
-            Math.max(
-              0,
-              (reading - geometry.weaveTop) /
-                (geometry.weaveBottom - geometry.weaveTop),
-            ),
-          )
-        : 0;
-    maskWeave.style.strokeDashoffset =
-      geometry.weaveTotal - geometry.weaveTotal * weaveProgress;
-
-    cards.forEach((card, index) => {
-      card.classList.toggle(
-        "is-visible",
-        reading >= geometry.cardMarks[index] || card.classList.contains("is-open"),
-      );
+    rows.forEach((row, index) => {
+      row.classList.toggle("is-visible", reading >= geometry.cardMarks[index]);
     });
   };
 
@@ -363,66 +367,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  /* ---------- Ouverture des cards ---------- */
-
   const scrollToY = (y) => {
     if (window.lenis) window.lenis.scrollTo(y, { immediate: true, force: true });
     else window.scrollTo(0, y);
   };
 
-  // Pendant l'animation d'ouverture, on garde la card cliquée immobile à
-  // l'écran (une card refermée au-dessus d'elle ferait sinon remonter la page).
-  const keepInPlace = (card, duration = 650) => {
-    const startTop = card.getBoundingClientRect().top;
+  /* ---------- Dépliage au toucher (mobile, tablette) ---------- */
+  // Sur ordinateur, le texte complet se déplie au survol (CSS) et un clic ne
+  // fait rien. Sur écran tactile, toucher la card la déplie (une à la fois).
+  const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+
+  // Si une card ouverte plus haut se referme, la card touchée ne doit pas
+  // sauter à l'écran : on compense le défilement pendant l'animation.
+  const keepInPlace = (el, duration = 650) => {
+    const startTop = el.getBoundingClientRect().top;
     const until = performance.now() + duration;
     const step = () => {
-      const drift = card.getBoundingClientRect().top - startTop;
+      const drift = el.getBoundingClientRect().top - startTop;
       if (Math.abs(drift) > 0.5) scrollToY(window.scrollY + drift);
       if (performance.now() < until) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
   };
 
-  const setOpen = (card, open) => {
-    card.classList.toggle("is-open", open);
-    const toggle = card.querySelector(".thread-card__toggle");
-    toggle?.setAttribute("aria-expanded", String(open));
-    const label = card.querySelector(".thread-card__more-label");
-    if (label) label.textContent = open ? "Refermer" : "Découvrir l’atelier";
-  };
-
-  const openCard = (card, { keep = true } = {}) => {
-    const willOpen = !card.classList.contains("is-open");
-    cards.forEach((other) => {
-      if (other !== card && other.classList.contains("is-open")) setOpen(other, false);
+  rows.forEach((row) => {
+    row.querySelector(".thread-card")?.addEventListener("click", (event) => {
+      if (hoverQuery.matches) return;
+      if (event.target.closest("a")) return; // le bouton flèche mène au contact
+      const willOpen = !row.classList.contains("is-open");
+      rows.forEach((other) => other !== row && other.classList.remove("is-open"));
+      row.classList.toggle("is-open", willOpen);
+      if (!reducedMotion) keepInPlace(row);
     });
-    setOpen(card, willOpen);
-    if (keep && !reducedMotion) keepInPlace(card);
-  };
-
-  cards.forEach((card) => {
-    card
-      .querySelector(".thread-card__toggle")
-      ?.addEventListener("click", () => openCard(card));
   });
 
   /* ---------- Liens vers un atelier précis (#id) ---------- */
 
-  const cardFromHash = (hash) =>
-    hash ? cards.find((card) => `#${card.id}` === decodeURIComponent(hash)) : null;
+  const rowFromHash = (hash) =>
+    hash ? rows.find((row) => `#${row.id}` === decodeURIComponent(hash)) : null;
 
-  const goToCard = (card) => {
-    if (!card.classList.contains("is-open")) {
-      cards.forEach((other) => other !== card && setOpen(other, false));
-      setOpen(card, true);
-    }
-    // Attend la fin de l'ouverture avant de défiler jusqu'à la card.
-    setTimeout(() => {
-      build();
-      const y = card.getBoundingClientRect().top + window.scrollY - 130;
-      if (window.lenis && !reducedMotion) window.lenis.scrollTo(y);
-      else scrollToY(y);
-    }, reducedMotion ? 0 : 520);
+  // Défile jusqu'à la rangée de l'atelier (le fil se déroule jusqu'à elle).
+  const goToRow = (row) => {
+    const y = row.getBoundingClientRect().top + window.scrollY - 130;
+    if (window.lenis && !reducedMotion) window.lenis.scrollTo(y);
+    else scrollToY(y);
   };
 
   document.addEventListener("click", (event) => {
@@ -430,11 +418,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!link) return;
     const url = new URL(link.href, window.location.href);
     if (url.pathname !== window.location.pathname) return;
-    const card = cardFromHash(url.hash);
-    if (!card) return;
+    const row = rowFromHash(url.hash);
+    if (!row) return;
     event.preventDefault();
     history.replaceState(null, "", url.hash);
-    goToCard(card);
+    goToRow(row);
   });
 
   /* ---------- Démarrage ---------- */
@@ -442,26 +430,23 @@ document.addEventListener("DOMContentLoaded", () => {
   build();
   render();
 
-  const initialCard = cardFromHash(window.location.hash);
-  if (initialCard) {
-    // Évite le saut natif du navigateur vers l'ancre, puis ouvre la card.
-    requestAnimationFrame(() => goToCard(initialCard));
-  }
+  const initialRow = rowFromHash(window.location.hash);
+  if (initialRow) requestAnimationFrame(() => goToRow(initialRow));
 
   // Changement d'ancre sans rechargement (adresse modifiée, historique…).
   window.addEventListener("hashchange", () => {
-    const card = cardFromHash(window.location.hash);
-    if (card) goToCard(card);
+    const row = rowFromHash(window.location.hash);
+    if (row) goToRow(row);
   });
 
   window.addEventListener("scroll", requestRender, { passive: true });
   window.addEventListener("resize", requestBuild);
   mobileQuery.addEventListener?.("change", requestBuild);
-  // Taille de la section qui change (card qui s'ouvre, images chargées…).
+  // Taille de la section qui change (images chargées, polices…).
   if ("ResizeObserver" in window) {
     const observer = new ResizeObserver(requestBuild);
     observer.observe(section);
-    cards.forEach((card) => observer.observe(card));
+    rows.forEach((row) => observer.observe(row));
   }
   window.addEventListener("load", requestBuild);
 });
