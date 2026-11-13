@@ -3048,7 +3048,7 @@ body {
   color: var(--journey-ink, var(--journey-ink-from));
 }
 .thread-journey {
-  --thread-gold: #c9a45c;
+  --thread-gold: #a8823a;
   position: relative;
   overflow-x: clip;
   padding: 72px max(24px, 6vw) 0;
@@ -3081,28 +3081,10 @@ body {
   stroke: #fff;
   stroke-width: 16;
 }
-.thread-layer--shadow {
-  stroke: rgb(42 33 27 / 22%);
-  stroke-width: 6;
-  transform: translate(1.5px, 2.5px);
-}
+/* Fil simple : un trait fin et continu (couleur et épaisseur réglables). */
 .thread-layer--body {
   stroke: var(--thread-gold);
-  stroke-width: 4.5;
-}
-/* Torsion : petits traits sombres en travers du fil, comme des brins. */
-.thread-layer--ply {
-  stroke: #8c6a32;
-  stroke-width: 4.5;
-  stroke-linecap: butt;
-  stroke-dasharray: 1.6 3.4;
-  opacity: 0.7;
-}
-.thread-layer--sheen {
-  stroke: #f4e2b0;
-  stroke-width: 1.2;
-  stroke-dasharray: 5 4;
-  opacity: 0.85;
+  stroke-width: 2.5;
 }
 
 /* Rangées d'ateliers : la card d'un côté (sur le fil), le texte complet de

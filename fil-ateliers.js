@@ -160,9 +160,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const maskMain = make("path", { class: "thread-mask" }, mask);
 
   const threadGroup = make("g", { mask: "url(#thread-reveal)" });
-  // Fil réaliste = plusieurs passes sur le même tracé :
-  // ombre portée, corps du fil, torsion (brins sombres), reflet.
-  const layers = ["shadow", "body", "ply", "sheen"].map((name) =>
+  // Fil simple : un seul trait continu.
+  const layers = ["body"].map((name) =>
     make("path", { class: `thread-layer thread-layer--${name}` }, threadGroup),
   );
 
