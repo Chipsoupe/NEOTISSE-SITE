@@ -58,6 +58,8 @@ export const extractContent = () => {
     phones,
     footerText: textOf(home, ".footer-about p"),
     area: textOf(contact, ".contact-info-card--dark p"),
+    facebook: home('.footer-social a[data-social="facebook"]').attr("href") || "",
+    instagram: home('.footer-social a[data-social="instagram"]').attr("href") || "",
   };
 
   /* Textes des pages */

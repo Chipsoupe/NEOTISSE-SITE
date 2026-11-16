@@ -65,6 +65,18 @@ export const siteSettings = defineType({
       type: "text",
       rows: 2,
     }),
+    defineField({
+      name: "facebook",
+      title: "Page Facebook",
+      type: "url",
+      description: "Adresse complète (https://www.facebook.com/…), icône du pied de page.",
+    }),
+    defineField({
+      name: "instagram",
+      title: "Compte Instagram",
+      type: "url",
+      description: "Adresse complète (https://www.instagram.com/…), icône du pied de page.",
+    }),
   ],
   preview: { prepare: () => ({ title: "Paramètres du site" }) },
 });

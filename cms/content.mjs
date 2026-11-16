@@ -117,6 +117,8 @@ export const normalize = (raw) => {
       phones: (settings.phones || []).map(({ number, label }) => ({ number, label })),
       footerText: settings.footerText || "",
       area: settings.area || "",
+      facebook: settings.facebook || "",
+      instagram: settings.instagram || "",
     },
     pages,
     events: (raw.events || []).map((e) => ({

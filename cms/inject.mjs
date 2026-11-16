@@ -80,6 +80,11 @@ const injectCommon = ($, content, h) => {
   const { settings, ateliers } = content;
   h.text(".footer-about p", settings.footerText);
 
+  // Réseaux sociaux du footer (l'icône reste si le champ est vide).
+  for (const network of ["facebook", "instagram"]) {
+    if (settings[network]) $(`.footer-social a[data-social="${network}"]`).attr("href", settings[network]);
+  }
+
   if (settings.email) {
     $('a[href^="mailto:"]').each((_, a) => {
       $(a).attr("href", `mailto:${settings.email}`).text(settings.email);

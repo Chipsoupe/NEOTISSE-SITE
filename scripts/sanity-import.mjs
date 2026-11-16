@@ -105,6 +105,8 @@ const buildDocuments = async (content) => {
     phones: content.settings.phones.map((p) => ({ _key: key(), _type: "phone", ...p })),
     area: content.settings.area,
     footerText: content.settings.footerText,
+    facebook: content.settings.facebook || undefined,
+    instagram: content.settings.instagram || undefined,
   });
 
   for (const [pageKey, fields] of Object.entries(content.pages)) {
