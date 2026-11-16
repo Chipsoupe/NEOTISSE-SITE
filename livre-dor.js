@@ -5,9 +5,9 @@
  *   pendant que la couverture tourne autour du dos (variable CSS --open,
  *   de 0 = fermé à 1 = ouvert). Sur mobile, la couverture s'efface et laisse
  *   une seule page.
- * - On écrit son mot directement dans le livre. À l'envoi, un « Merci »
- *   s'affiche dans le livre et le mot rejoint les feuilles d'avis en dessous
- *   (chez ce visiteur seulement, tant que Formspree n'est pas branché).
+ * - On écrit son mot directement dans le livre. À l'envoi, il part dans le
+ *   back office Sanity (en attente de validation) et un « Merci » s'affiche
+ *   dans le livre. Le mot rejoint les feuilles d'avis une fois publié.
  * - Les feuilles d'avis tombent doucement en place quand elles apparaissent.
  */
 document.addEventListener("DOMContentLoaded", () => {
@@ -137,51 +137,64 @@ document.addEventListener("DOMContentLoaded", () => {
   const thanks = document.querySelector("[data-book-thanks]");
   const errorBox = document.querySelector("[data-book-error]");
 
-  // Crée une feuille avec le mot envoyé (textes insérés comme texte brut).
-  const addSheet = ({ nom, structure, temoignage }) => {
-    if (!sheetsList) return;
-    const sheet = document.createElement("li");
-    sheet.className = "sheet sheet--new";
-    sheet.style.setProperty("--tilt", `${(Math.random() * 6 - 3).toFixed(1)}deg`);
-    sheet.style.setProperty("--i", 0);
-
-    const quote = document.createElement("blockquote");
-    const text = document.createElement("p");
-    text.textContent = `« ${temoignage} »`;
-    const cite = document.createElement("cite");
-    const strong = document.createElement("strong");
-    strong.textContent = nom;
-    cite.append(strong);
-    if (structure) cite.append(` · ${structure}`);
-    quote.append(text, cite);
-    sheet.append(quote);
-
-    sheetsList.prepend(sheet);
-    clampSheet(sheet);
-    requestAnimationFrame(() => revealSheet(sheet));
+  const submitButton = form?.querySelector('[type="submit"]');
+  const showError = (message) => {
+    if (!errorBox) return;
+    errorBox.textContent = message;
+    errorBox.hidden = false;
   };
+  const defaultError = errorBox?.textContent.trim();
 
-  form?.addEventListener("submit", (event) => {
+  // Envoi à la fonction Netlify (netlify/functions/livre-dor.mjs), qui crée
+  // l'avis « en attente » dans Sanity. Il apparaît sur le site une fois
+  // validé par une fondatrice dans le back office.
+  form?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const data = new FormData(form);
     const nom = String(data.get("nom") || "").trim();
     const structure = String(data.get("structure") || "").trim();
     const temoignage = String(data.get("temoignage") || "").trim();
-    const consent = data.get("consentement");
+    const consentement = Boolean(data.get("consentement"));
 
-    if (!nom || !temoignage || !consent) {
-      if (errorBox) errorBox.hidden = false;
+    if (!nom || !temoignage || !consentement) {
+      showError(defaultError);
       const firstInvalid = [
         [form.elements.nom, nom],
         [form.elements.temoignage, temoignage],
-        [form.elements.consentement, consent],
+        [form.elements.consentement, consentement],
       ].find(([, value]) => !value);
       firstInvalid?.[0]?.focus();
       return;
     }
 
     if (errorBox) errorBox.hidden = true;
-    addSheet({ nom, structure, temoignage });
+    if (submitButton) submitButton.disabled = true;
+    form.setAttribute("aria-busy", "true");
+    try {
+      const response = await fetch("/api/livre-dor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nom,
+          structure,
+          temoignage,
+          consentement,
+          site: String(data.get("site") || ""), // champ piège anti-robots
+        }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || "");
+    } catch (error) {
+      showError(
+        error.message ||
+          "L’envoi n’a pas fonctionné. Merci de réessayer plus tard ou de nous écrire par e-mail.",
+      );
+      return;
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+      form.removeAttribute("aria-busy");
+    }
+
     form.hidden = true;
     if (thanks) {
       thanks.hidden = false;

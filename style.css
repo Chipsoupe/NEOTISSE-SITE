@@ -3893,6 +3893,14 @@ body {
   color: #8a7a68;
   font-size: 11px;
 }
+/* Champ piège anti-robots du livre d'or : hors de l'écran, jamais vu. */
+.book-form__trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
 /* Remerciement après envoi. */
 .book-thanks {
   display: flex;

@@ -116,6 +116,11 @@
                   <span>Votre mot</span>
                   <textarea name="temoignage" rows="3" required></textarea>
                 </label>
+                <!-- Champ piège anti-robots : invisible pour les visiteurs. -->
+                <label class="book-form__trap" aria-hidden="true">
+                  Site web
+                  <input type="text" name="site" tabindex="-1" autocomplete="off" />
+                </label>
                 <label class="book-form__consent">
                   <input type="checkbox" name="consentement" required />
                   <span>
@@ -135,14 +140,11 @@
                   <span class="book-form__nib" aria-hidden="true">✒</span>
                   Signer le livre d’or
                 </button>
-                <p class="book-form__note">
-                  Le formulaire sera prochainement relié à Formspree.
-                </p>
               </form>
               <!-- Remerciement affiché à la place du formulaire après envoi. -->
               <div class="book-thanks" data-book-thanks hidden tabindex="-1">
                 <p class="book-thanks__word">Merci !</p>
-                <p>Votre mot a rejoint les feuilles du livre d’or, juste en dessous.</p>
+                <p>Votre mot rejoindra les feuilles du livre d’or dès que nous l’aurons relu.</p>
                 <button class="book-thanks__again" type="button" data-book-again>
                   Écrire un autre mot
                 </button>

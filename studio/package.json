@@ -1,0 +1,19 @@
+{
+  "name": "neotisse-studio",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Back office Sanity du site Neotisse",
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy"
+  },
+  "dependencies": {
+    "@sanity/locale-fr-fr": "1.2.37",
+    "react": "^19.2.2",
+    "react-dom": "^19.2.2",
+    "sanity": "6.23.0",
+    "styled-components": "^6.1.15"
+  }
+}
