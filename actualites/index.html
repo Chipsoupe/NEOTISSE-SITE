@@ -52,7 +52,7 @@
       <section class="news-heading">
         <img
           data-parallax
-          src="/images/Metier-a-tisser-a-pesons-scaled_aBCG.jpg"
+          src="/images/Atelier-participatif-tissage-aux-tablettes-scaled_o1sC.jpg"
           alt=""
         />
         <h1>Actualités</h1>
@@ -64,9 +64,9 @@
           filage, du tissage et de la teinture végétale.
         </p>
       </section>
-      <!-- Frise des actualités (actualites.js) : une ligne verticale se
-           remplit au défilement ; chaque date s'allume quand la ligne
-           l'atteint. Un clic sur une card déplie l'article.
+      <!-- Frise des actualités (actualites.js) : une couture se fait au
+           défilement le long de la frise ; à chaque date, elle fait un point
+           de croix. Un clic sur une card déplie l'article.
 
            AJOUTER UNE ACTUALITÉ :
            1. Copier le modèle ci-dessous et le coller EN HAUT de la liste
@@ -76,7 +76,10 @@
            L'alternance gauche/droite et la ligne se font toutes seules.
 
            <li class="timeline__item" id="mon-actualite">
-             <time class="timeline__date" datetime="2026-12-01">1er déc. 2026</time>
+             <time class="timeline__date" datetime="2026-12-01"
+              ><span class="timeline__day">1er déc.</span
+              ><span class="timeline__year">2026</span></time
+            >
              <article class="timeline__card">
                <div class="timeline__media">
                  <img src="/images/ma-photo.jpg" alt="Description de la photo" loading="lazy" />
@@ -100,7 +103,10 @@
       <section class="news-timeline" aria-label="Toutes les actualités">
         <ol class="timeline" data-timeline>
           <li class="timeline__item" id="festival-occitanie">
-            <time class="timeline__date" datetime="2026-11-04">4 nov. 2026</time>
+            <time class="timeline__date" datetime="2026-11-04"
+              ><span class="timeline__day">4 nov.</span
+              ><span class="timeline__year">2026</span></time
+            >
             <article class="timeline__card">
               <div class="timeline__media">
                 <img
@@ -138,7 +144,10 @@
           </li>
 
           <li class="timeline__item" id="teinture-gergovie">
-            <time class="timeline__date" datetime="2026-10-31">31 oct. 2026</time>
+            <time class="timeline__date" datetime="2026-10-31"
+              ><span class="timeline__day">31 oct.</span
+              ><span class="timeline__year">2026</span></time
+            >
             <article class="timeline__card">
               <div class="timeline__media">
                 <img
@@ -173,7 +182,10 @@
           </li>
 
           <li class="timeline__item" id="journee-lattara">
-            <time class="timeline__date" datetime="2026-10-25">25 oct. 2026</time>
+            <time class="timeline__date" datetime="2026-10-25"
+              ><span class="timeline__day">25 oct.</span
+              ><span class="timeline__year">2026</span></time
+            >
             <article class="timeline__card">
               <div class="timeline__media">
                 <img

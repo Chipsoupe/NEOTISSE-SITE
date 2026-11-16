@@ -2139,10 +2139,6 @@ body {
   background: #eee5d4;
   font-weight: 700;
 }
-.calendar-day.is-selected {
-  border-color: #362b22;
-  box-shadow: inset 0 0 0 1px #362b22;
-}
 .calendar-day i {
   position: absolute;
   bottom: 5px;
@@ -2289,9 +2285,10 @@ body {
     padding: 70px 24px;
   }
 }
-/* Team page */
-.team-hero,
-.team-testimonial {
+/* ==========================================================================
+   Page L'association / L'équipe (voir lassociation.js)
+   ========================================================================== */
+.team-hero {
   position: relative;
   min-height: 600px;
   padding: 120px max(24px, 7vw) 80px;
@@ -2300,16 +2297,14 @@ body {
   overflow: hidden;
   color: #f5efe3;
 }
-.team-hero img,
-.team-testimonial > img {
+.team-hero img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.team-hero:after,
-.team-testimonial:after {
+.team-hero:after {
   content: "";
   position: absolute;
   inset: 0;
@@ -2319,8 +2314,7 @@ body {
     rgba(30, 22, 17, 0.3)
   );
 }
-.team-hero > div,
-.team-testimonial > div {
+.team-hero > div {
   position: relative;
   z-index: 1;
   max-width: 950px;
@@ -2332,180 +2326,476 @@ body {
   font-size: clamp(14px, 1.4vw, 19px);
   max-width: 880px;
 }
-.team-origin {
-  padding: 100px max(24px, 9vw);
-  display: grid;
-  grid-template-columns: 38% 62%;
-  gap: 60px;
+
+/* --- 1. L'équipe : cartes qui se retournent --- */
+.team-members {
+  padding: 100px max(24px, 6vw) 110px;
 }
-.team-origin h2 {
-  font-size: clamp(2rem, 4vw, 3.5rem);
+.team-members__intro {
+  max-width: 640px;
+  margin: 0 auto 52px;
+  text-align: center;
 }
-.team-origin p {
+.team-members__intro h2 {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+}
+.team-members__intro p {
   color: #4a3f36;
-  font-size: 16px;
-  line-height: 1.65;
+  font-size: 17px;
+  line-height: 1.6;
 }
-.team-origin .lead {
-  font-size: 19px;
-  font-weight: 500;
-  color: #2a211b;
+.flip-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 3vw, 44px);
+  max-width: 1120px;
+  margin: 0 auto;
+  perspective: 1800px;
 }
-.commitments {
-  padding: 100px max(24px, 9vw);
-  background: #362b22;
+.flip-card {
+  cursor: pointer;
+  transition:
+    opacity 700ms ease,
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i) * 180ms);
+}
+.flip-grid.light-ready:not(.is-lit) .flip-card {
+  opacity: 0;
+  transform: translateY(48px);
+}
+.flip-card__inner {
+  display: grid;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 850ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Retournement : au survol (ordinateur), au focus clavier, ou au toucher
+   (classe .is-flipped posée par le JS sur mobile). */
+.flip-card.is-flipped .flip-card__inner,
+.flip-card:focus-visible .flip-card__inner {
+  transform: rotateY(180deg);
+}
+.flip-card:focus-visible {
+  outline: none;
+}
+.flip-card:focus-visible .flip-card__face {
+  outline: 3px solid #d4a429;
+  outline-offset: -3px;
+}
+.flip-card__face {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 28px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  box-shadow:
+    0 1px 2px rgb(42 33 27 / 8%),
+    0 30px 60px -30px rgb(42 33 27 / 45%);
+}
+/* Recto : photo, nom, rôle. */
+.flip-card__front {
+  background: #fffdf8;
+}
+.flip-card__photo {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: clamp(340px, 36vw, 500px);
+  overflow: hidden;
+  background: #ead9b7;
+}
+.flip-card__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  transition: transform 1200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.flip-card__caption {
+  padding: 26px 32px 30px;
+}
+.flip-card__name {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+}
+.flip-card__role {
+  margin: 6px 0 0;
+  color: #8a5a2b;
+  font: italic 16px/1.4 Georgia, serif;
+}
+.flip-card__hint {
+  margin: 16px 0 0;
+  color: #8a7a68;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+/* Verso : parcours, savoir-faire, citation. */
+.flip-card__back {
+  justify-content: center;
+  transform: rotateY(180deg);
+  padding: 44px 44px 40px;
+  background-color: #362b22;
+  background-image:
+    linear-gradient(rgb(54 43 34 / 60%), rgb(54 43 34 / 60%)),
+    url("/textures/pepier%20marron.webp");
+  background-size: 100% 100%, cover;
+  background-blend-mode: normal, soft-light;
   color: #f5efe3;
 }
-.commitments > h2,
-.team-members > h2,
-.trust-section > h2 {
-  font-size: clamp(2.4rem, 5vw, 4rem);
-  text-align: center;
-  margin-bottom: 56px;
+.flip-card__back .flip-card__name {
+  margin-bottom: 10px;
 }
-.commitment-grid,
-.member-grid {
+.flip-card__bio {
+  margin: 12px 0 0;
+  color: #d8cfc4;
+  font-size: 16px;
+  line-height: 1.7;
+}
+@media (hover: hover) and (pointer: fine) {
+  .flip-card:hover .flip-card__inner {
+    transform: rotateY(180deg);
+  }
+}
+
+/* --- 2. Nos engagements : le métier à pesons --- */
+.team-loom {
+  padding: 110px max(24px, 6vw) 120px;
+  background-color: #362b22;
+  color: #f5efe3;
+}
+.team-loom__intro {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: end;
+  gap: 24px 60px;
+  max-width: 1120px;
+  margin: 0 auto 44px;
 }
-.commitment-grid article {
-  border: 1px solid #5a4c40;
-  border-radius: 24px;
-  padding: 40px 36px;
+.team-loom__intro h2 {
+  margin: 0;
+  font-size: clamp(2.2rem, 4.5vw, 3.75rem);
 }
-.commitment-grid strong {
-  color: #F3DFA2;
-  font:
-    400 48px Georgia,
-    serif;
-}
-.commitment-grid h3 {
-  font-size: clamp(1.7rem, 3vw, 2.4rem);
-}
-.commitment-grid b {
-  display: block;
-}
-.commitment-grid p {
+.team-loom__intro p {
+  margin: 0;
   color: #d8cfc4;
   line-height: 1.65;
 }
-.team-members {
-  padding: 100px max(24px, 9vw);
+.loom {
+  position: relative;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 4px 4px 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
 }
-.member-grid {
-  grid-template-columns: repeat(2, 1fr);
+.loom::-webkit-scrollbar {
+  display: none;
 }
-.member-grid article {
-  border-radius: 24px;
-  background: #faf7f0;
-  padding: 44px;
+.loom__track {
+  width: -moz-max-content;
+  width: max-content;
+  min-width: 100%;
 }
-.initials {
-  display: inline-flex;
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
+/* L'ensouple : la barre de bois d'où pendent les fils. */
+.loom__beam {
+  position: relative;
+  z-index: 1;
+  height: 18px;
+  border-radius: 9px;
+  background: linear-gradient(180deg, #c08c58 0%, #8a5a2b 55%, #5e3b1c 100%);
+  box-shadow: 0 8px 16px -8px rgb(0 0 0 / 70%);
+  transform-origin: left center;
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.loom.light-ready:not(.is-lit) .loom__beam {
+  transform: scaleX(0);
+}
+.loom__weights {
+  display: flex;
+  margin-top: -9px;
+}
+.loom-weight {
+  flex: 1 0 112px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font:
-    28px Georgia,
-    serif;
-  margin-bottom: 20px;
+  padding: 0 6px 14px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
-.initials--gold {
-  background: #F3DFA2;
+.loom.is-lit .loom-weight__pendulum {
+  animation: loom-drop 1000ms cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  animation-delay: calc(450ms + var(--i) * 150ms);
 }
-.initials--dark {
+.loom.light-ready:not(.is-lit) .loom-weight__pendulum,
+.loom.light-ready:not(.is-lit) .loom-weight__label {
+  opacity: 0;
+}
+.loom-weight__pendulum,
+.loom-weight__swing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: top center;
+}
+.loom-weight__swing {
+  transition: transform 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.loom-weight__swing.is-swinging {
+  animation: loom-swing 1400ms ease-out;
+}
+.loom-weight__thread {
+  position: relative;
+  z-index: 1;
+  width: 2px;
+  height: var(--len, 90px);
+  background: #e8d9b8;
+}
+/* Le peson : terre cuite, percé en haut pour le fil. */
+.loom-weight__stone {
+  position: relative;
+  width: 46px;
+  height: 54px;
+  margin-top: -14px;
+  border-radius: 48% 48% 46% 46% / 40% 40% 60% 60%;
+  background: radial-gradient(circle at 35% 30%, #dc9f72, #a8643a 60%, #7f4527);
+  box-shadow:
+    inset -3px -4px 8px rgb(0 0 0 / 25%),
+    0 12px 18px -8px rgb(0 0 0 / 70%);
+  transition:
+    transform 300ms ease,
+    background 300ms ease;
+}
+.loom-weight__stone::after {
+  content: "";
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
   background: #2a211b;
-  color: #F3DFA2;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 60%);
+  transform: translateX(-50%);
 }
-.member-grid h3 {
-  font-size: clamp(1.7rem, 3vw, 2.4rem);
+.loom-weight.is-selected .loom-weight__stone {
+  background: radial-gradient(circle at 35% 30%, #fbecc0, #d4a429 58%, #9c7415);
+  box-shadow:
+    inset -3px -4px 8px rgb(0 0 0 / 20%),
+    0 0 0 4px rgb(243 223 162 / 22%),
+    0 12px 22px -8px rgb(0 0 0 / 70%);
+  transform: scale(1.12);
 }
-.member-grid p {
+.loom-weight__label {
+  margin-top: 14px;
+  color: #d8cfc4;
+  font: 400 17px/1.2 Georgia, serif;
+  white-space: nowrap;
+  transition:
+    color 200ms ease,
+    opacity 400ms ease;
+  transition-delay: 0s, calc(900ms + var(--i) * 150ms);
+}
+.loom-weight.is-selected .loom-weight__label {
+  color: #f3dfa2;
+}
+.loom-weight:focus-visible .loom-weight__stone {
+  outline: 2px solid #f3dfa2;
+  outline-offset: 5px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .loom-weight:hover .loom-weight__swing {
+    transform: rotate(5deg);
+  }
+  .loom-weight:hover .loom-weight__label {
+    color: #f5efe3;
+  }
+}
+@keyframes loom-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-60px);
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes loom-swing {
+  0% {
+    transform: rotate(0);
+  }
+  18% {
+    transform: rotate(10deg);
+  }
+  42% {
+    transform: rotate(-7deg);
+  }
+  64% {
+    transform: rotate(4deg);
+  }
+  84% {
+    transform: rotate(-1.5deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+/* Détail de l'étape choisie. */
+.loom-detail {
+  display: grid;
+  max-width: 1120px;
+  min-height: 300px;
+  margin: 30px auto 0;
+  overflow: hidden;
+  border-radius: 28px;
+  background: #fffdf8;
+  color: #2a211b;
+  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 60%);
+}
+.loom-detail:empty {
+  display: none;
+}
+.loom-detail.has-media {
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+}
+/* L'image suit la hauteur du texte (une photo verticale n'étire pas le bloc). */
+.loom-detail__media {
+  position: relative;
+  min-height: 340px;
+  overflow: hidden;
+}
+.loom-detail__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+.loom-detail__body {
+  align-self: center;
+  padding: 40px 46px;
+}
+.loom-detail h3 {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+}
+.loom-detail__text {
+  margin: 14px 0 0;
   color: #4a3f36;
   line-height: 1.65;
 }
-.trust-section {
-  padding: 100px max(24px, 9vw);
-  background: #faf7f0;
+.loom-detail.is-changing .loom-detail__media img {
+  animation: loom-detail-img 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-/* « Ils nous ont fait confiance » : défilement repris du bandeau partenaires
-   de l'accueil (.partners__logos / __track / __group), mais sur le fond clair
-   d'origine et avec les logos en couleurs. */
-.trust-marquee .partners__group img {
-  max-width: 150px;
-  max-height: 80px;
-  -o-object-fit: contain;
-  object-fit: contain;
+.loom-detail.is-changing .loom-detail__body > * {
+  animation: loom-detail-in 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-/* Le multiply est posé sur la bande animée (et non sur chaque logo) :
-   l'animation isole ses enfants, qui ne se mélangeraient plus au fond.
-   Les fonds blancs des logos disparaissent ainsi dans le fond clair. */
-.trust-marquee .partners__track {
-  mix-blend-mode: multiply;
+.loom-detail.is-changing .loom-detail__body > :nth-child(2) {
+  animation-delay: 60ms;
 }
-.team-testimonial {
-  min-height: 560px;
-  align-items: center;
-  justify-content: center;
+.loom-detail.is-changing .loom-detail__body > :nth-child(n + 3) {
+  animation-delay: 120ms;
 }
-.team-testimonial > div {
-  max-width: 760px;
+@keyframes loom-detail-img {
+  from {
+    opacity: 0;
+    transform: scale(1.06);
+  }
 }
-.team-testimonial h2 {
-  text-align: center;
-  font-size: clamp(2.4rem, 5vw, 4rem);
-  margin-bottom: 44px;
+@keyframes loom-detail-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 }
-.team-testimonial blockquote {
-  margin: 0;
-  padding: 56px 64px;
-  border-radius: 32px 140px 32px 32px;
-  background: #F3DFA2;
-  color: #2a211b;
-  font-size: clamp(18px, 2vw, 28px);
-  font-weight: 500;
-}
-.team-testimonial p {
-  margin-left: 24px;
-}
+
+/* Fond clair (texture laine) : se détache du métier et du footer, foncés. */
 .team-contact {
   padding: 100px 24px;
   text-align: center;
-  background: #362b22;
-  color: #f5efe3;
+  background-color: #faf7f0;
+  background-image: url("/textures/laine.webp");
+  background-size: 300px 300px;
+  color: #2a211b;
 }
 .team-contact h2 {
   font-size: clamp(2.4rem, 5vw, 4rem);
 }
 .team-contact p {
-  color: #d8cfc4;
+  color: #4a3f36;
 }
 .team-contact .button {
   margin: 20px 6px 0;
 }
 @media (max-width: 800px) {
-  .team-origin,
-  .member-grid {
+  .team-members {
+    padding: 70px 16px;
+  }
+  .team-members__intro {
+    margin-bottom: 36px;
+  }
+  .flip-grid {
     grid-template-columns: 1fr;
   }
-  .commitment-grid {
+  .flip-card__photo {
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+  }
+  .flip-card__caption {
+    padding: 22px 22px 26px;
+  }
+  .flip-card__back {
+    padding: 30px 24px 26px;
+  }
+  .team-loom {
+    padding: 72px 16px 80px;
+  }
+  .team-loom__intro {
+    grid-template-columns: 1fr;
+    margin-bottom: 32px;
+  }
+  .loom-weight {
+    flex-basis: 96px;
+  }
+  .loom-detail.has-media {
     grid-template-columns: 1fr;
   }
-  .team-origin,
-  .commitments,
-  .team-members,
-  .trust-section {
-    padding: 70px 24px;
+  .loom-detail__media {
+    min-height: 0;
+    aspect-ratio: 16 / 10;
   }
-  .team-testimonial {
-    padding: 70px 24px;
+  .loom-detail__body {
+    padding: 26px 22px 30px;
   }
-  .team-testimonial blockquote {
-    padding: 36px 28px;
-    border-radius: 24px 70px 24px 24px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .flip-card,
+  .flip-card__inner,
+  .flip-card__photo img,
+  .loom__beam,
+  .loom-weight__swing,
+  .loom-weight__label {
+    transition: none;
+  }
+  .loom.is-lit .loom-weight__pendulum,
+  .loom-detail.is-changing .loom-detail__media img,
+  .loom-detail.is-changing .loom-detail__body > * {
+    animation: none;
   }
 }
 /* News page */
@@ -2552,8 +2842,7 @@ body {
 .contact-info-card--dark,
 .atelier-detail-section--dark .atelier-detail-copy,
 .calendar-welcome,
-.commitments,
-.team-contact,
+.team-loom,
 .news-heading {
   background-image:
     linear-gradient(rgb(54 43 34 / 60%), rgb(54 43 34 / 60%)),
@@ -2574,9 +2863,7 @@ body {
 .contact-process,
 .contact-faq,
 .past-events,
-.team-origin,
 .team-members,
-.trust-section,
 .atelier-detail-copy:not(.atelier-detail-section--dark .atelier-detail-copy) {
   background-color: #faf7f0;
   background-image:
@@ -2673,14 +2960,6 @@ main > .news-contact p {
     rgb(30 22 17 / 88%) 0%,
     rgb(30 22 17 / 50%) 40%,
     rgb(30 22 17 / 10%) 100%
-  );
-}
-.team-testimonial:after {
-  background: linear-gradient(
-    180deg,
-    rgb(30 22 17 / 85%) 0%,
-    rgb(30 22 17 / 45%) 35%,
-    rgb(30 22 17 / 10%) 70%
   );
 }
 
@@ -3918,135 +4197,137 @@ body {
 
 /* ==========================================================================
    Page Actualités : frise chronologique (voir actualites.js)
-   Une ligne verticale droite se remplit au défilement ; les dates
-   s'allument quand elle les atteint ; les cards alternent gauche / droite
-   automatiquement (nth-child), il suffit d'ajouter des éléments.
+   Une couture (point avant) se fait au défilement le long de la frise, point
+   après point ; à chaque date, elle fait un point de croix. Dates en grand à
+   gauche, actualités à droite. Ajouter un élément suffit, rien à régler.
    ========================================================================== */
 .news-timeline {
   padding: 110px max(24px, 6vw) 140px;
-  background-color: #faf7f0;
-  background-image:
-    linear-gradient(rgb(250 247 240 / 76%), rgb(250 247 240 / 76%)),
-    url("/textures/soie.webp");
-  background-repeat: no-repeat, repeat;
-  background-size:
-    100% 100%,
-    900px 620px;
-  background-blend-mode: normal, multiply;
 }
 .timeline {
   --fill: 0px;
-  --gold: #d4af5f;
-  --gold-dark: #a8823a;
+  --stitch: 24px; /* longueur d'un point + espace (= STITCH dans le JS) */
+  --thread: #8a5a2b; /* couleur du fil */
+  --date-col: clamp(150px, 18vw, 230px);
+  --seam-x: calc(var(--date-col) + 34px); /* position de la couture */
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 100px;
-  max-width: 1180px;
+  gap: 90px;
+  /* Largeur exacte de la frise (dates + couture + cards) : elle est centrée. */
+  max-width: calc(var(--date-col) + 68px + 640px);
   margin: 0 auto;
   padding: 0;
   list-style: none;
 }
-/* La ligne : un rail pâle et, par-dessus, la partie remplie. */
+/* Trous d'aiguille déjà percés, puis la couture qui se fait par-dessus. */
 .timeline::before,
 .timeline::after {
   content: "";
   position: absolute;
   top: 0;
-  left: 50%;
-  width: 3px;
-  border-radius: 3px;
+  left: var(--seam-x);
+  width: 4px;
   transform: translateX(-50%);
 }
 .timeline::before {
   bottom: 0;
-  background: rgb(168 130 58 / 20%);
+  background: radial-gradient(
+      circle at 50% 2px,
+      rgb(90 60 30 / 28%) 1.4px,
+      transparent 1.6px
+    )
+    0 0 / 4px calc(var(--stitch) / 2);
 }
 .timeline::after {
   height: var(--fill);
-  background: linear-gradient(var(--gold), var(--gold-dark));
-  box-shadow: 0 0 12px rgb(212 175 95 / 55%);
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--thread) 0,
+    var(--thread) calc(var(--stitch) * 0.58),
+    transparent calc(var(--stitch) * 0.58),
+    transparent var(--stitch)
+  );
+  border-radius: 2px;
 }
 .timeline:not(.timeline--js)::after {
   height: 100%;
 }
 
 .timeline__item {
-  --from-x: 44px;
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  column-gap: 110px;
+  grid-template-columns: var(--date-col) minmax(0, 1fr);
+  column-gap: 68px;
   align-items: start;
   scroll-margin-top: 130px;
 }
-.timeline__item:nth-child(even) {
-  --from-x: -44px;
-}
-/* Pastille sur la ligne (à 40px du haut : DOT_OFFSET dans le JS). */
-.timeline__item::before {
+/* Point de croix sur la couture (à 40px du haut : DOT_OFFSET dans le JS). */
+.timeline__item::before,
+.timeline__item::after {
   content: "";
   position: absolute;
   top: 40px;
-  left: 50%;
+  left: var(--seam-x);
   z-index: 1;
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgb(168 130 58 / 45%);
-  border-radius: 50%;
-  background: #faf7f0;
-  transform: translate(-50%, -50%) scale(0.8);
+  width: 22px;
+  height: 3.5px;
+  border-radius: 2px;
+  background: rgb(90 60 30 / 22%);
   transition:
-    transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 350ms ease,
-    border-color 350ms ease,
-    box-shadow 350ms ease;
+    background-color 300ms ease,
+    transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.timeline__item::before {
+  transform: translate(-50%, -50%) rotate(45deg) scale(0.7);
+}
+.timeline__item::after {
+  transform: translate(-50%, -50%) rotate(-45deg) scale(0.7);
 }
 .timeline__item.is-reached::before,
 .timeline:not(.timeline--js) .timeline__item::before {
-  border-color: var(--gold-dark);
-  background: var(--gold);
-  box-shadow: 0 0 0 7px rgb(212 175 95 / 22%);
-  transform: translate(-50%, -50%) scale(1);
+  background: var(--thread);
+  transform: translate(-50%, -50%) rotate(45deg) scale(1);
+}
+.timeline__item.is-reached::after,
+.timeline:not(.timeline--js) .timeline__item::after {
+  background: var(--thread);
+  transform: translate(-50%, -50%) rotate(-45deg) scale(1);
+  transition-delay: 90ms; /* le second brin du point de croix suit */
 }
 
-/* Date, de l'autre côté de la ligne par rapport à la card. */
+/* Date en grand, dans la police du logo, comme un titre de chapitre. */
 .timeline__date {
+  grid-column: 1;
   grid-row: 1;
-  padding-top: 26px;
-  color: #a39482;
-  font: italic 18px/28px Georgia, serif;
-  transition: color 350ms ease;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-top: 14px;
+  text-align: right;
+  color: #b3a594;
+  transition: color 400ms ease;
+}
+.timeline__day {
+  font: 400 clamp(2rem, 3.2vw, 2.9rem) / 1 "Gloock", Georgia, serif;
+  letter-spacing: -0.01em;
+}
+.timeline__year {
+  margin-top: 6px;
+  font: italic 15px Georgia, serif;
 }
 .timeline__item.is-reached .timeline__date,
 .timeline:not(.timeline--js) .timeline__date {
   color: #2a211b;
 }
-/* Impairs : card à droite, date à gauche. Pairs : l'inverse. */
-.timeline__item:nth-child(odd) .timeline__date {
-  grid-column: 1;
-  justify-self: end;
-  text-align: right;
-}
-.timeline__item:nth-child(odd) .timeline__card {
-  grid-column: 2;
-  justify-self: start;
-}
-.timeline__item:nth-child(even) .timeline__date {
-  grid-column: 2;
-  justify-self: start;
-}
-.timeline__item:nth-child(even) .timeline__card {
-  grid-column: 1;
-  justify-self: end;
-}
 
-/* Card d'actualité. */
+/* Card d'actualité, à droite de la couture. */
 .timeline__card {
+  grid-column: 2;
   grid-row: 1;
   position: relative;
   z-index: 2;
-  width: min(500px, 100%);
+  width: min(640px, 100%);
   overflow: hidden;
   border-radius: 24px;
   color: #2a211b;
@@ -4062,7 +4343,7 @@ body {
 }
 .timeline--js .timeline__card {
   opacity: 0;
-  transform: translate(var(--from-x), 26px);
+  transform: translateY(30px);
 }
 .timeline--js .timeline__item.is-visible .timeline__card {
   opacity: 1;
@@ -4072,7 +4353,7 @@ body {
   cursor: auto;
 }
 .timeline__media {
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
 }
 .timeline__media img {
@@ -4083,10 +4364,10 @@ body {
   transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .timeline__body {
-  padding: 24px 32px 26px;
+  padding: 26px 34px 28px;
 }
 .timeline__title {
-  font-size: clamp(1.45rem, 2.1vw, 1.95rem);
+  font-size: clamp(1.5rem, 2.2vw, 2.05rem);
 }
 .timeline__excerpt {
   margin: 12px 0 0;
@@ -4101,7 +4382,7 @@ body {
       0 28px 52px -22px rgb(42 33 27 / 48%);
   }
   .timeline__card:hover .timeline__media img {
-    transform: scale(1.05);
+    transform: scale(1.04);
   }
 }
 
@@ -4164,41 +4445,41 @@ body {
   border-radius: 4px;
 }
 
-/* Mobile : la ligne longe le bord gauche, date au-dessus de chaque card. */
+/* Mobile : couture le long du bord gauche, date au-dessus de chaque card. */
 @media (max-width: 800px) {
   .news-timeline {
     padding: 72px 16px 96px;
   }
   .timeline {
+    --seam-x: 10px;
     gap: 64px;
-    padding-left: 34px;
+    padding-left: 36px;
   }
-  .timeline::before,
-  .timeline::after {
-    left: 9px;
-  }
-  .timeline__item,
-  .timeline__item:nth-child(even) {
-    --from-x: 24px;
+  .timeline__item {
     grid-template-columns: 1fr;
-    row-gap: 12px;
+    row-gap: 14px;
   }
-  .timeline__item::before {
-    top: 14px;
-    left: -25px;
-  }
-  .timeline__item:nth-child(odd) .timeline__date,
-  .timeline__item:nth-child(even) .timeline__date,
-  .timeline__item:nth-child(odd) .timeline__card,
-  .timeline__item:nth-child(even) .timeline__card {
-    grid-column: 1;
-    justify-self: stretch;
-    text-align: left;
+  .timeline__item::before,
+  .timeline__item::after {
+    top: 18px;
+    left: -26px;
   }
   .timeline__date {
+    grid-column: 1;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 10px;
     padding-top: 0;
+    text-align: left;
+  }
+  .timeline__day {
+    font-size: 1.9rem;
+  }
+  .timeline__year {
+    margin-top: 0;
   }
   .timeline__card {
+    grid-column: 1;
     grid-row: 2;
     width: 100%;
   }
@@ -4210,12 +4491,13 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .timeline__card,
   .timeline__item::before,
+  .timeline__item::after,
+  .timeline__date,
   .timeline__article,
   .timeline__media img {
     transition: none;
   }
 }
-
 
 /* Actualités : hero en photo (au lieu du papier marron) et frise sur le
    même fond laine que le bandeau « Suivez nos prochaines actualités ». */
@@ -4231,8 +4513,9 @@ body {
   height: 100%;
   -o-object-fit: cover;
   object-fit: cover;
-  -o-object-position: 50% 45%;
-  object-position: 50% 45%;
+  /* Cadrage sur les participants autour de la table. */
+  -o-object-position: 50% 30%;
+  object-position: 50% 30%;
 }
 .news-heading::after {
   content: "";
@@ -4257,4 +4540,235 @@ body {
   background-size: 300px 300px;
   background-position: center;
   background-blend-mode: normal;
+}
+
+/* ==========================================================================
+   Page Calendrier (voir calendrier.js)
+   ========================================================================== */
+
+/* --- 1. Prochain rendez-vous --- */
+.next-event {
+  padding: 100px max(24px, 6vw) 40px;
+  background-color: #faf7f0;
+  background-image: url("/textures/laine.webp");
+  background-size: 300px 300px;
+}
+.next-event[hidden] {
+  display: none;
+}
+.next-event__heading {
+  max-width: 1120px;
+  margin: 0 auto 32px;
+  font-size: clamp(2.2rem, 4.5vw, 3.75rem);
+}
+.next-event__card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  max-width: 1120px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 28px;
+  background: #fffdf8;
+  box-shadow:
+    0 1px 2px rgb(42 33 27 / 8%),
+    0 30px 60px -30px rgb(42 33 27 / 45%);
+}
+.next-event__media {
+  min-height: 100%;
+}
+.next-event__media img {
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+.next-event__body {
+  align-self: center;
+  padding: 44px 48px;
+}
+/* Texte simple, dans la police du site : date, lieu, public, délai. */
+.next-event__date {
+  margin: 0;
+  color: #8a5a2b;
+  font-size: 17px;
+  font-weight: 600;
+}
+.next-event__title {
+  margin-top: 10px;
+  font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+}
+.next-event__meta {
+  margin: 4px 0 0;
+  color: #4a3f36;
+}
+.next-event__title + .next-event__meta {
+  margin-top: 12px;
+}
+.next-event__countdown {
+  margin: 22px 0 0;
+  color: #2a211b;
+  font-size: 17px;
+}
+.next-event__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 24px;
+  margin-top: 30px;
+}
+.next-event__link {
+  color: #5a2817;
+  font-weight: 600;
+  text-decoration: none;
+}
+.next-event__link:hover,
+.next-event__link:focus-visible {
+  text-decoration: underline;
+}
+
+/* --- 2. Calendrier plus vivant --- */
+.calendar-card {
+  position: relative;
+}
+.calendar-controls {
+  flex-shrink: 0;
+  align-items: center;
+}
+/* (sélecteur renforcé : les flèches du calendrier sont des boutons ronds de 38px) */
+.calendar-controls .calendar-next-event {
+  width: auto;
+  height: 38px;
+  margin-right: 6px;
+  white-space: nowrap;
+  padding: 9px 14px;
+  border: 1px solid #cfc8bd;
+  border-radius: 999px;
+  background: transparent;
+  color: #362b22;
+  font: 600 13px/1 Arial, sans-serif;
+  cursor: pointer;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.calendar-controls .calendar-next-event:hover,
+.calendar-controls .calendar-next-event:focus-visible {
+  background: #362b22;
+  color: #f5efe3;
+}
+.calendar-day {
+  transition:
+    transform 200ms ease,
+    background-color 200ms ease;
+}
+.calendar-day:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+/* Jour d'aujourd'hui : chiffre entouré. */
+.calendar-day.is-today span {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid #8a5a2b;
+  border-radius: 50%;
+}
+/* Jour d'événement : fond doux. */
+.calendar-day.has-event {
+  background: #f3e6c4;
+  color: #2a211b;
+}
+.calendar-day.is-selected {
+  border-color: #362b22;
+  box-shadow: inset 0 0 0 1px #362b22;
+}
+.calendar-day.is-selected {
+  border-color: #8a5a2b;
+  box-shadow: inset 0 0 0 1px #8a5a2b;
+}
+/* Changement de mois : les jours glissent dans le sens de la navigation. */
+@keyframes calendar-in-next {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+@keyframes calendar-in-prev {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}
+.calendar-days.is-next .calendar-day {
+  animation: calendar-in-next 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i) * 8ms);
+}
+.calendar-days.is-prev .calendar-day {
+  animation: calendar-in-prev 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i) * 8ms);
+}
+/* Aperçu au survol d'un jour d'événement. */
+.calendar-preview {
+  position: absolute;
+  z-index: 5;
+  width: 260px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #fffdf8;
+  box-shadow: 0 20px 40px -18px rgb(42 33 27 / 55%);
+  pointer-events: none;
+  animation: calendar-preview-in 220ms ease both;
+}
+.calendar-preview[hidden] {
+  display: none;
+}
+@keyframes calendar-preview-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.calendar-preview img {
+  display: block;
+  width: 100%;
+  height: 120px;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+.calendar-preview strong {
+  display: block;
+  padding: 12px 14px 2px;
+  font: 400 17px/1.2 Georgia, serif;
+}
+.calendar-preview span {
+  display: block;
+  padding: 0 14px 12px;
+  color: #6b5a48;
+  font-size: 13px;
+}
+
+@media (max-width: 800px) {
+  .next-event {
+    padding: 72px 16px 24px;
+  }
+  .next-event__card {
+    grid-template-columns: 1fr;
+  }
+  .next-event__media img {
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+  }
+  .next-event__body {
+    padding: 28px 22px 30px;
+  }
+  .calendar-heading {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .calendar-days.is-next .calendar-day,
+  .calendar-days.is-prev .calendar-day,
+  .calendar-preview {
+    animation: none;
+  }
 }

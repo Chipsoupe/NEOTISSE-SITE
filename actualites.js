@@ -1,9 +1,10 @@
 /*
  * Page Actualités : frise chronologique.
  *
- * - Une ligne verticale droite se remplit au défilement, jusqu'au niveau de
- *   lecture (60 % de la hauteur de l'écran) ; elle se vide si on remonte.
- * - Chaque date (pastille sur la ligne) s'allume quand la ligne l'atteint, et
+ * - Une couture (point avant) se fait au défilement, point après point,
+ *   jusqu'au niveau de lecture (60 % de la hauteur de l'écran) ; elle se
+ *   défait si on remonte.
+ * - À chaque date, la couture fait un point de croix et la date s'allume ;
  *   la card de l'actualité apparaît juste avant.
  * - Un clic sur une card déplie l'article complet sur place (une seule card
  *   ouverte à la fois).
@@ -23,8 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
     "(prefers-reduced-motion: reduce)",
   ).matches;
   const READING_LINE = 0.6;
-  // Hauteur de la pastille dans chaque élément (doit correspondre au CSS).
+  // Hauteur du point de croix dans chaque élément (= top: 40px en CSS).
   const DOT_OFFSET = 40;
+  // Longueur d'un point de couture + espace (= --stitch en CSS).
+  const STITCH = 24;
 
   timeline.classList.add("timeline--js");
 
@@ -44,7 +47,9 @@ document.addEventListener("DOMContentLoaded", () => {
             rect.height,
             Math.max(0, window.innerHeight * READING_LINE - rect.top),
           );
-    timeline.style.setProperty("--fill", `${fill.toFixed(1)}px`);
+    // Arrondi au point près : les points de couture apparaissent un à un.
+    const sewn = Math.floor(fill / STITCH) * STITCH;
+    timeline.style.setProperty("--fill", `${sewn}px`);
 
     items.forEach((item) => {
       const dotY = item.offsetTop + DOT_OFFSET;

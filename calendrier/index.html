@@ -65,6 +65,26 @@
           </p>
         </div>
       </section>
+      <!-- Prochain rendez-vous : rempli par calendrier.js à partir des données
+           en bas de page (premier événement à venir), avec compte à rebours. -->
+      <section class="next-event" aria-labelledby="next-event-title" data-next-event hidden>
+        <h2 id="next-event-title" class="next-event__heading">Prochain rendez-vous</h2>
+        <article class="next-event__card">
+          <div class="next-event__media"><img data-next-image src="" alt="" /></div>
+          <div class="next-event__body">
+            <p class="next-event__date" data-next-date></p>
+            <h3 class="next-event__title" data-next-title></h3>
+            <p class="next-event__meta" data-next-place></p>
+            <p class="next-event__meta" data-next-audience></p>
+            <p class="next-event__countdown" data-countdown></p>
+            <div class="next-event__actions">
+              <a class="next-event__link" data-next-more href="#" target="_blank" rel="noopener"
+                >En savoir plus<span class="sr-only"> (site du musée, nouvel onglet)</span></a
+              >
+            </div>
+          </div>
+        </article>
+      </section>
       <section class="calendar-upcoming paper-section" data-parallax-bg>
         <h2 class="calendar-section-title">Nos prochaines dates</h2>
         <div class="calendar-grid">
@@ -72,6 +92,7 @@
             <div class="calendar-heading">
               <h2 id="calendar-title">Octobre 2027</h2>
               <div class="calendar-controls" aria-label="Navigation du calendrier">
+                <button type="button" class="calendar-next-event" data-calendar-goto>Prochain événement</button>
                 <button type="button" data-calendar-prev aria-label="Mois précédent">
                   <span aria-hidden="true">←</span>
                 </button>
@@ -91,6 +112,7 @@
               aria-labelledby="calendar-title"
             ></div>
             <article class="calendar-event-detail" data-calendar-detail hidden></article>
+            <div class="calendar-preview" data-calendar-preview hidden></div>
           </div>
           <div class="calendar-welcome" data-parallax-bg>
             <h2>Vous souhaitez nous accueillir ?</h2>
@@ -105,6 +127,26 @@
           </div>
         </div>
       </section>
+
+      <!-- DONNÉES DU CALENDRIER : c'est ici qu'on ajoute un événement.
+           Événements : dates au format AAAA-MM-JJ ; site = site de la structure
+           d'accueil, ouvert par « En savoir plus » du prochain rendez-vous ;
+           url = page ouverte par « En savoir plus » dans le calendrier ;
+           image facultative. -->
+      <script type="application/json" id="calendar-events">
+        [
+          {
+            "start": "2027-10-09",
+            "end": "2027-10-10",
+            "title": "Festival d’Archéologie Expérimentale d’Occitanie",
+            "location": "Musée de l’Aurignacien, Aurignac",
+            "audience": "Tout public",
+            "url": "/actualites/#festival-occitanie",
+            "site": "https://www.musee-aurignacien.com/",
+            "image": "/images/Table-ronde-archeologie-experimentale_Usqj.jpg"
+          }
+        ]
+      </script>
     </main>
     <footer class="site-footer" data-parallax-bg>
       <div class="footer-inner">
@@ -186,5 +228,6 @@
     </div>
     <script src="/vendor/lenis/lenis.min.js" defer></script>
     <script src="/script.js" defer></script>
+    <script src="/calendrier.js" defer></script>
   </body>
 </html>
