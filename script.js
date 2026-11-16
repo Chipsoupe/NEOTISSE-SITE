@@ -229,5 +229,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Coutures entre deux sections ([data-seam]) : la ligne de points se coud
+  // de gauche à droite quand elle arrive à l'écran.
+  const seams = document.querySelectorAll("[data-seam]");
+  if (seams.length && !reducedMotion && "IntersectionObserver" in window) {
+    const seamObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-sewn");
+          seamObserver.unobserve(entry.target);
+        });
+      },
+      { threshold: 1, rootMargin: "0px 0px -15% 0px" },
+    );
+    seams.forEach((seam) => {
+      seam.classList.add("seam--animated");
+      seamObserver.observe(seam);
+    });
+  }
+
   // Le calendrier de la page Calendrier est géré par calendrier.js.
 });
