@@ -45,13 +45,14 @@ const structure = (S) => {
           .defaultOrdering(ordering || [{ field: "order", direction: "asc" }]),
       );
 
-  const reviews = (title, filter, emoji) =>
+  const reviews = (title, id, filter, emoji) =>
     S.listItem()
       .title(title)
-      .id(`reviews-${emoji}`)
+      .id(id)
       .icon(icon(emoji))
       .child(
         S.documentList()
+          .id(id)
           .title(title)
           .apiVersion(API_VERSION)
           .schemaType("review")
@@ -60,6 +61,7 @@ const structure = (S) => {
       );
 
   return S.list()
+    .id("neotisse")
     .title("Neotisse")
     .items([
       single("Paramètres du site", "siteSettings", "siteSettings", "⚙️"),
@@ -69,6 +71,7 @@ const structure = (S) => {
         .icon(icon("📄"))
         .child(
           S.list()
+            .id("textes-des-pages")
             .title("Textes des pages")
             .items(PAGES.map((page) => single(page.title, page.type, page.id, "📄"))),
         ),
@@ -81,11 +84,12 @@ const structure = (S) => {
         .icon(icon("✒️"))
         .child(
           S.list()
+            .id("livre-dor-liste")
             .title("Livre d’or")
             .items([
-              reviews("À valider", 'status == "pending"', "⏳"),
-              reviews("Publiés", 'status == "approved"', "✅"),
-              reviews("Refusés", 'status == "refused"', "⛔"),
+              reviews("À valider", "avis-en-attente", 'status == "pending"', "⏳"),
+              reviews("Publiés", "avis-publies", 'status == "approved"', "✅"),
+              reviews("Refusés", "avis-refuses", 'status == "refused"', "⛔"),
             ]),
         ),
       S.divider(),
