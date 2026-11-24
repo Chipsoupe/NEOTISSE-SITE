@@ -8,6 +8,7 @@
  * exactement ce qui est publié.
  */
 import * as cheerio from "cheerio";
+import { SANITY_IMAGE_PARAMS } from "./content.mjs";
 
 /* ---------- Outils ---------- */
 
@@ -27,16 +28,46 @@ const attrs = (obj) =>
     .map(([k, v]) => (v === true ? ` ${k}` : ` ${k}="${escapeHtml(v)}"`))
     .join("");
 
-const imgTag = (image, extra = {}) =>
-  image?.url
-    ? `<img${attrs({
-        src: image.url,
-        alt: extra.alt ?? image.alt ?? "",
-        loading: extra.loading ?? "lazy",
-        style: image.focus ? `object-position: ${image.focus}` : undefined,
-        ...Object.fromEntries(Object.entries(extra).filter(([k]) => !["alt", "loading"].includes(k))),
-      })} />`
-    : "";
+/*
+ * src / srcset / sizes d'une image Sanity, d'après sa taille d'affichage :
+ * - widths : largeurs voulues (jamais plus que l'original) ;
+ * - sizes  : attribut sizes (largeur affichée selon l'écran) ;
+ * - height : hauteur maximale (logos : boîte w × h, sans recadrage).
+ * Sans `base` (contenu de test), l'URL déjà fournie est gardée.
+ */
+const responsive = (image, { widths, sizes, height } = {}) => {
+  if (!widths || !image.base) return { src: image.url };
+  let list = image.width ? widths.filter((w) => w <= image.width) : widths;
+  if (!list.length) list = [image.width];
+  const url = (w) => `${image.base}?w=${w}${height ? `&h=${height}` : ""}&${SANITY_IMAGE_PARAMS}`;
+  if (list.length === 1) return { src: url(list[0]) };
+  return {
+    src: url(list[0]),
+    srcset: list.map((w) => `${url(w)} ${w}w`).join(", "),
+    sizes,
+  };
+};
+
+// Largeurs et sizes des images, d'après style.css.
+const FULL_WIDTH = { widths: [800, 1600], sizes: "100vw" };
+const HALF_WIDTH = { widths: [800, 1600], sizes: "(max-width: 800px) 100vw, 50vw" };
+const PROMISE_CARD = { widths: [800, 1600], sizes: "(max-width: 800px) 100vw, 65vw" };
+const THUMBNAIL = { widths: [240] }; // .atelier-detail img : 120 × 90 px
+const PARTNER_LOGO = { widths: [260], height: 140 }; // .partners img : 130 × 70 px max
+
+const imgTag = (image, extra = {}) => {
+  if (!image?.url) return "";
+  const { responsive: options, ...rest } = extra;
+  const loading = rest.loading ?? "lazy";
+  return `<img${attrs({
+    ...responsive(image, options),
+    alt: rest.alt ?? image.alt ?? "",
+    loading,
+    decoding: loading === "lazy" ? "async" : undefined,
+    style: image.focus ? `object-position: ${image.focus}` : undefined,
+    ...Object.fromEntries(Object.entries(rest).filter(([k]) => !["alt", "loading"].includes(k))),
+  })} />`;
+};
 
 const monthsShort = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
 const parseDate = (value) => {
@@ -52,13 +83,18 @@ const makeHelpers = ($) => ({
     if (typeof value === "string" && value.trim()) $(selector).first().html(lines(value.trim()));
   },
   // Remplace une image (src, alt, cadrage) si une image est fournie.
-  image(selector, image, { keepAlt = false } = {}) {
-    if (!image?.url) return;
+  // Les autres attributs (classes, loading, data-parallax…) sont gardés.
+  image(selector, image, { keepAlt = false, ...options } = {}) {
+    if (!image?.url) return null;
     const el = $(selector).first();
-    if (!el.length) return;
-    el.attr("src", image.url).removeAttr("srcset").removeAttr("sizes");
+    if (!el.length) return null;
+    const { src, srcset, sizes } = responsive(image, options);
+    el.attr("src", src);
+    if (srcset) el.attr("srcset", srcset).attr("sizes", sizes);
+    else el.removeAttr("srcset").removeAttr("sizes");
     if (!keepAlt) el.attr("alt", image.alt || "");
     if (image.focus) el.attr("style", `object-position: ${image.focus}`);
+    return { src, srcset, sizes };
   },
   // Remplace le contenu d'un bloc JSON <script type="application/json">.
   json(id, data) {
@@ -110,14 +146,21 @@ const injectAccueil = ($, content, h) => {
   const p = content.pages.accueil || {};
   h.text(".hero__content h1", p.heroTitle);
   h.text(".hero__content p", p.heroText);
-  h.image(".hero > img", p.heroImage);
+  // Hero : image du LCP, préchargée dans le <head> avec les mêmes URL.
+  const hero = h.image(".hero > img", p.heroImage, FULL_WIDTH);
+  if (hero) {
+    const preload = $("link[data-hero-preload]");
+    preload.attr("href", hero.src);
+    if (hero.srcset) preload.attr("imagesrcset", hero.srcset).attr("imagesizes", hero.sizes);
+    else preload.removeAttr("imagesrcset").removeAttr("imagesizes");
+  }
   h.text(".intro__content p", p.introText);
 
   (p.promises || []).forEach((promise, i) => {
     const card = `.promises .image-card:nth-of-type(${i + 1})`;
     h.text(`${card} h2`, promise.title);
     h.text(`${card} p`, promise.text);
-    h.image(`${card} > img`, promise.image);
+    h.image(`${card} > img`, promise.image, PROMISE_CARD);
   });
 
   // Partenaires : deux groupes identiques pour le défilement en boucle.
@@ -126,7 +169,12 @@ const injectAccueil = ($, content, h) => {
     const logos = (hidden) =>
       content.partners
         .filter((partner) => partner.logo?.url)
-        .map((partner) => `\n              ${imgTag(partner.logo, { alt: hidden ? "" : partner.name })}`)
+        // Le 2e groupe (copie pour la boucle) est masqué aux lecteurs d'écran
+        // (alt vide) ; le 1er porte le nom du partenaire : c'est une info.
+        .map((partner) => `\n              ${imgTag(partner.logo, {
+          alt: hidden ? "" : partner.name || partner.logo.alt,
+          responsive: PARTNER_LOGO,
+        })}`)
         .join("");
     $(".partners__track").html(
       `\n            <div class="partners__group">${logos(false)}\n            </div>` +
@@ -136,7 +184,7 @@ const injectAccueil = ($, content, h) => {
 
   // Ateliers (liste dépliable).
   h.text(".atelier-feature h2", p.ateliersTitle);
-  h.image(".atelier-feature__image img", p.ateliersImage);
+  h.image(".atelier-feature__image img", p.ateliersImage, HALF_WIDTH);
   if (content.ateliers.length) {
     $(".atelier-list").html(
       content.ateliers
@@ -147,7 +195,7 @@ const injectAccueil = ($, content, h) => {
                 <a href="/ateliers/#${escapeHtml(a.slug)}">${escapeHtml(a.name)}</a><span aria-hidden="true">↗</span>
               </summary>
               <div class="atelier-detail">
-                ${imgTag(a.homeImage || a.image)}
+                ${imgTag(a.homeImage || a.image, { responsive: THUMBNAIL })}
                 <p>${lines(a.summary)}</p>
               </div>
             </details>`,
@@ -158,7 +206,7 @@ const injectAccueil = ($, content, h) => {
 
   h.text(".publics h2", p.publicsTitle);
   h.text(".publics > div > p", p.publicsText);
-  h.image(".publics > img", p.publicsImage);
+  h.image(".publics > img", p.publicsImage, FULL_WIDTH);
 
   // Prochaines dates : les trois prochains événements.
   h.text(".dates > h2", p.datesTitle);
@@ -200,7 +248,7 @@ const injectAccueil = ($, content, h) => {
 
   // Témoignages : les avis mis en avant (sinon les plus récents).
   h.text(".testimonial h2", p.testimonialTitle);
-  h.image(".testimonial > img", p.testimonialImage, { keepAlt: true });
+  h.image(".testimonial > img", p.testimonialImage, { keepAlt: true, ...FULL_WIDTH });
   const featured = content.reviews.filter((r) => r.featured);
   const quotes = (featured.length ? featured : content.reviews).slice(0, 6);
   if (quotes.length) {
@@ -219,7 +267,7 @@ const injectAccueil = ($, content, h) => {
 
   h.text(".contact-copy h2", p.contactTitle);
   h.text(".contact-copy p", p.contactText);
-  h.image(".contact-section > img", p.contactImage);
+  h.image(".contact-section > img", p.contactImage, FULL_WIDTH);
 };
 
 const injectAteliers = ($, content, h) => {

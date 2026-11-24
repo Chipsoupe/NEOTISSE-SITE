@@ -46,6 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const saveConsent = (value) => {
     document.cookie = `${consentKey}=${value}; max-age=${60 * 60 * 24 * 183}; path=/; SameSite=Lax`;
     if (banner) banner.hidden = true;
+    // Balise Google (définie dans le <head>) : chargée dès l'accord donné.
+    if (value === "statistics") window.loadGoogleTag?.();
   };
 
   if (banner && !document.cookie.includes(`${consentKey}=`)) {

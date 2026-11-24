@@ -32,22 +32,38 @@ const QUERY = `{
 
 /* ---------- Images ---------- */
 
-// « image-<id>-<l>x<h>-<ext> » → URL du CDN Sanity (redimensionnée, format
-// moderne choisi automatiquement par le navigateur).
-export const imageUrl = (image, width = 1600) => {
+// Paramètres communs des images Sanity : jamais agrandies, format moderne
+// (WebP/AVIF) choisi selon le navigateur, qualité 75.
+export const SANITY_IMAGE_PARAMS = "fit=max&auto=format&q=75";
+
+// « image-<id>-<l>x<h>-<ext> » → URL du CDN Sanity, sans paramètres.
+const imageBase = (image) => {
   const ref = image?.asset?._ref;
-  if (!ref) return "";
+  if (!ref) return null;
   const [, id, size, ext] = ref.split("-");
   const { projectId, dataset } = sanityConfig;
-  return `https://cdn.sanity.io/images/${projectId}/${dataset}/${id}-${size}.${ext}?w=${width}&fit=max&auto=format`;
+  return {
+    base: `https://cdn.sanity.io/images/${projectId}/${dataset}/${id}-${size}.${ext}`,
+    width: Number(size.split("x")[0]) || null,
+  };
+};
+
+// URL du CDN Sanity redimensionnée (voir SANITY_IMAGE_PARAMS).
+export const imageUrl = (image, width = 1600) => {
+  const asset = imageBase(image);
+  return asset ? `${asset.base}?w=${width}&${SANITY_IMAGE_PARAMS}` : "";
 };
 
 const toImage = (image, width) => {
   const url = imageUrl(image, width);
   if (!url) return null;
   const hotspot = image.hotspot;
+  // base + width : inject.mjs en tire des srcset (plusieurs largeurs).
+  const { base, width: originalWidth } = imageBase(image);
   return {
     url,
+    base,
+    width: originalWidth,
     alt: image.alt || "",
     focus: hotspot
       ? `${Math.round(hotspot.x * 100)}% ${Math.round(hotspot.y * 100)}%`

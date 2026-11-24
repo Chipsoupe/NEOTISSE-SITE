@@ -23,7 +23,9 @@ style.css                  design du site
 script.js                  comportements communs (menu, cookies, parallax…)
 calendrier.js, lassociation.js, actualites.js, livre-dor.js, fil.js
                            comportements propres à chaque page
-IMAGES/, public/           photos et logos (publiés en /images)
+images-src/                originaux des photos, logos et textures (jamais publiés)
+IMAGES/, textures/         versions optimisées, publiées en /images et /textures :
+                           `npm run images` les régénère (scripts/optimize-images.mjs)
 cms/                       lecture du contenu Sanity et insertion dans les pages au build
 studio/                    back office Sanity Studio (déployé sur neotisse-asso.sanity.studio)
 netlify/functions/         fonction du livre d'or (enregistre les avis à valider)

@@ -37,7 +37,8 @@ const uploaded = new Map();
 const uploadImage = async (image) => {
   if (!image?.url) return undefined;
   const file = image.url.replace(/^\/images\//, "");
-  const path = [join(ROOT, "IMAGES", file), join(ROOT, "public", "images", file)].find(existsSync);
+  // Originaux en priorité (images-src/), sinon la version publiée.
+  const path = [join(ROOT, "images-src", file), join(ROOT, "IMAGES", file)].find(existsSync);
   if (!path) {
     console.warn(`  ⚠ Photo introuvable : ${image.url}`);
     return undefined;

@@ -1151,7 +1151,7 @@ body {
       rgb(42 33 27 / 70%) 40%,
       rgb(42 33 27 / 10%) 100%
     ),
-    url(/images/Atelier-explicatif_IJXv.png) center/cover;
+    url(/images/Atelier-explicatif_IJXv-800.webp) center/cover;
 }
 .homepage .testimonial:after {
   background: linear-gradient(
@@ -1298,7 +1298,7 @@ body {
   color: #f5efe3;
   background:
     linear-gradient(180deg, #2a211b33, #2a211bf2),
-    url(/images/Atelier-explicatif_IJXv.png) center/cover;
+    url(/images/Atelier-explicatif_IJXv-800.webp) center/cover;
 }
 .event-card h3 {
   font-size: 2rem;

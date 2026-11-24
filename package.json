@@ -8,7 +8,8 @@
     "preview": "node cms/build.mjs && vite preview --outDir dist",
     "studio": "npm --prefix studio run dev",
     "studio:deploy": "npm --prefix studio run deploy",
-    "sanity:import": "node scripts/sanity-import.mjs"
+    "sanity:import": "node scripts/sanity-import.mjs",
+    "images": "node scripts/optimize-images.mjs"
   },
   "dependencies": {
     "@sanity/client": "^8.16.0",
@@ -16,6 +17,7 @@
     "lenis": "^1.3.27"
   },
   "devDependencies": {
+    "sharp": "^0.35.5",
     "vite": "^8.3.8"
   }
 }

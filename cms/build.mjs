@@ -3,7 +3,8 @@
  *
  * 1. Lit tout le contenu publié dans Sanity (si SANITY_PROJECT_ID est défini).
  * 2. Copie le site dans dist/ : pages, scripts, styles, polices, textures,
- *    images (dossiers public/images et IMAGES réunis dans dist/images).
+ *    images (dossier IMAGES → dist/images ; versions optimisées produites
+ *    par `npm run images` à partir des originaux de images-src/).
  * 3. Insère le contenu Sanity dans chaque page HTML (voir inject.mjs).
  *
  * Option de test : SANITY_FIXTURE=chemin/vers/contenu.json utilise un
@@ -20,7 +21,7 @@ const DIST = join(ROOT, "dist");
 // Dossiers qui ne font pas partie du site publié.
 const EXCLUDED = new Set([
   "node_modules", "dist", "studio", "cms", "scripts", "netlify", "docs",
-  "references", "Photos", "public", "IMAGES", ".git", ".astro",
+  "references", "Photos", "public", "IMAGES", "images-src", ".git", ".astro",
 ]);
 const ASSET_DIRS = ["textures", "vendor", "fonts"];
 
