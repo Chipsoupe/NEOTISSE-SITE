@@ -37,8 +37,8 @@ const attrs = (obj) =>
  */
 const responsive = (image, { widths, sizes, height } = {}) => {
   if (!widths || !image.base) return { src: image.url };
-  let list = image.width ? widths.filter((w) => w <= image.width) : widths;
-  if (!list.length) list = [image.width];
+  // Jamais plus large que l'original : 1600 devient 1179 pour une image de 1179 px.
+  const list = [...new Set(widths.map((w) => (image.width ? Math.min(w, image.width) : w)))];
   const url = (w) => `${image.base}?w=${w}${height ? `&h=${height}` : ""}&${SANITY_IMAGE_PARAMS}`;
   if (list.length === 1) return { src: url(list[0]) };
   return {

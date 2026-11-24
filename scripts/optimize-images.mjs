@@ -5,9 +5,9 @@
  * les modifie jamais. Ce script écrit les versions publiées :
  *
  *   images-src/<nom>.jpg   →  IMAGES/<nom>-800.webp, IMAGES/<nom>-1600.webp
- *                              (WebP q75, jamais plus large que l'original ;
- *                              original < 800 px → une seule version
- *                              <nom>-<largeur>.webp)
+ *                              (WebP q75, jamais plus large que l'original :
+ *                              une largeur trop grande est ramenée à celle de
+ *                              l'original, ex. <nom>-1179.webp)
  *                           +  IMAGES/<nom>.jpg recompressé (≤ 1600 px), pour
  *                              les pages et les liens qui citent encore le .jpg
  *   images-src/<photo>.png →  WebP uniquement (pas de PNG pour une photo)
@@ -72,15 +72,19 @@ const writeCompat = async (pipeline, source, file) => {
 };
 
 const optimizePhoto = async (file, name, ext, meta) => {
-  const widths = PHOTO_WIDTHS.filter((w) => w <= meta.width);
-  if (!widths.length) widths.push(meta.width);
+  // Une photo PNG et une JPG de même nom (ce sont parfois deux photos
+  // différentes) : la PNG garde le nom, les WebP de la JPG prennent « -jpg ».
+  const twin = readdirSync(SRC).some((f) => f !== basename(file) && basename(f, extname(f)) === name);
+  const webpName = twin && ext !== ".png" ? `${name}-${ext.slice(1)}` : name;
+  // 800 et 1600 px, plafonnés à la largeur de l'original (nom = largeur réelle).
+  const widths = [...new Set(PHOTO_WIDTHS.map((w) => Math.min(w, meta.width)))];
   const outputs = [];
   for (const w of widths) {
     await write(
       sharp(file).rotate().resize({ width: w, withoutEnlargement: true }).webp({ quality: PHOTO_QUALITY, effort: 6 }),
-      join(OUT, `${name}-${w}.webp`),
+      join(OUT, `${webpName}-${w}.webp`),
     );
-    outputs.push(`${name}-${w}.webp`);
+    outputs.push(`${webpName}-${w}.webp`);
   }
   // Copie compatible (même nom) pour les JPG : pages secondaires, og:image…
   if (ext === ".jpg" || ext === ".jpeg") {
