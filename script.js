@@ -251,5 +251,111 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Feuilles d'avis (page Livre d'or et « Ce qu'ils en disent » de
+  // l'accueil) : elles tombent doucement en place quand elles apparaissent,
+  // et un texte de plus de 6 lignes reçoit « Lire la suite ».
+  const sheetLists = document.querySelectorAll("[data-sheets]");
+  const allSheets = () => document.querySelectorAll("[data-sheets] .sheet");
+  const revealSheet = (sheet) => sheet.classList.add("is-in");
+  const sheetObserver =
+    !reducedMotion && "IntersectionObserver" in window
+      ? new IntersectionObserver(
+          (entries) => {
+            // Les feuilles qui apparaissent ensemble tombent l'une après
+            // l'autre (délai selon leur rang dans ce groupe, pas dans la
+            // rangée : on les découvre au fil du carrousel).
+            entries
+              .filter((entry) => entry.isIntersecting)
+              .forEach((entry, rank) => {
+                entry.target.style.setProperty("--i", rank);
+                revealSheet(entry.target);
+                sheetObserver.unobserve(entry.target);
+              });
+          },
+          { threshold: 0.25 },
+        )
+      : null;
+
+  const clampSheet = (sheet) => {
+    const text = sheet.querySelector("blockquote > p");
+    if (!text || sheet.querySelector(".sheet__more")) return;
+    text.classList.add("is-clamped");
+    if (text.scrollHeight <= text.clientHeight + 2) return; // tout tient
+    const more = document.createElement("button");
+    more.type = "button";
+    more.className = "sheet__more";
+    more.textContent = "Lire la suite";
+    more.setAttribute("aria-expanded", "false");
+    more.addEventListener("click", () => {
+      const expanded = sheet.classList.toggle("is-expanded");
+      more.textContent = expanded ? "Réduire" : "Lire la suite";
+      more.setAttribute("aria-expanded", String(expanded));
+    });
+    text.after(more);
+  };
+
+  if (sheetObserver) sheetLists.forEach((list) => list.classList.add("sheets--js"));
+  allSheets().forEach((sheet) => {
+    if (sheetObserver) sheetObserver.observe(sheet);
+    else revealSheet(sheet);
+  });
+  // Mesure une fois l'écriture manuscrite chargée (elle change la hauteur).
+  const clampAll = () => allSheets().forEach(clampSheet);
+  if (document.fonts?.ready) document.fonts.ready.then(clampAll);
+  else clampAll();
+
+  // Carrousels d'avis ([data-carousel] : « Ce qu'ils en disent » sur
+  // l'accueil, feuilles du livre d'or). La rangée défile horizontalement
+  // (au doigt sur mobile) ; les flèches ‹ › avancent d'un écran d'avis.
+  // Elles sont masquées quand tous les avis tiennent à l'écran.
+  document.querySelectorAll("[data-carousel]").forEach((track, index) => {
+    if (!track.id) track.id = `carousel-${index + 1}`;
+    const nav = document.createElement("div");
+    nav.className = "carousel-nav";
+    nav.innerHTML = `
+      <button type="button" class="carousel-nav__button" data-dir="-1"
+        aria-controls="${track.id}" aria-label="Avis précédents">
+        <span aria-hidden="true">‹</span>
+      </button>
+      <button type="button" class="carousel-nav__button" data-dir="1"
+        aria-controls="${track.id}" aria-label="Avis suivants">
+        <span aria-hidden="true">›</span>
+      </button>`;
+    track.after(nav);
+    const [prev, next] = nav.querySelectorAll("button");
+
+    // Pas d'un avis (largeur + écart), multiplié par le nombre d'avis
+    // entièrement visibles.
+    const step = () => {
+      const items = track.children;
+      if (items.length < 2) return track.clientWidth;
+      const one = items[1].offsetLeft - items[0].offsetLeft;
+      return Math.max(1, Math.floor(track.clientWidth / one)) * one;
+    };
+
+    const update = () => {
+      const max = track.scrollWidth - track.clientWidth;
+      // Tolérance de quelques pixels : le calage (scroll-snap) et le
+      // rembourrage de la rangée laissent un petit décalage aux bouts.
+      nav.hidden = max <= 8;
+      prev.disabled = track.scrollLeft <= 8;
+      next.disabled = track.scrollLeft >= max - 8;
+    };
+
+    nav.addEventListener("click", (event) => {
+      const button = event.target.closest("button");
+      if (!button) return;
+      track.scrollBy({
+        left: Number(button.dataset.dir) * step(),
+        behavior: reducedMotion ? "auto" : "smooth",
+      });
+    });
+    track.addEventListener("scroll", update, { passive: true });
+    if ("ResizeObserver" in window) new ResizeObserver(update).observe(track);
+    else window.addEventListener("resize", update);
+    document.fonts?.ready.then(update);
+    update();
+  });
+
   // Le calendrier de la page Calendrier est géré par calendrier.js.
 });

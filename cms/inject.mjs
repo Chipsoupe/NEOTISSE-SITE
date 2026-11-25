@@ -110,6 +110,24 @@ const makeHelpers = ($) => ({
   },
 });
 
+/* ---------- Feuilles d'avis ---------- */
+
+// Page Livre d'or et « Ce qu'ils en disent » de l'accueil : même feuille,
+// légèrement inclinée (inclinaison fixe selon la position).
+const SHEET_TILTS = [-3, 2, -1.5, 2.5, -2, 1.5];
+const renderSheets = (reviews, indent) =>
+  reviews
+    .map(
+      (r, i) => `
+${indent}<li class="sheet" style="--tilt: ${SHEET_TILTS[i % SHEET_TILTS.length]}deg">
+${indent}  <blockquote>
+${indent}    <p>« ${escapeHtml(r.text)} »</p>
+${indent}    <cite><strong>${escapeHtml(r.name)}</strong>${r.structure ? ` · ${escapeHtml(r.structure)}` : ""}</cite>
+${indent}  </blockquote>
+${indent}</li>`,
+    )
+    .join("") + `\n${indent.slice(2)}`;
+
 /* ---------- Parties communes (footer, e-mail) ---------- */
 
 const injectCommon = ($, content, h) => {
@@ -252,17 +270,7 @@ const injectAccueil = ($, content, h) => {
   const featured = content.reviews.filter((r) => r.featured);
   const quotes = (featured.length ? featured : content.reviews).slice(0, 6);
   if (quotes.length) {
-    $(".testimonial-track").html(
-      quotes
-        .map(
-          (r) => `
-            <blockquote>
-              <span>“${escapeHtml(r.text)}”</span>
-              <cite><strong>${escapeHtml(r.name)}</strong>${r.structure ? `<br />${escapeHtml(r.structure)}` : ""}</cite>
-            </blockquote>`,
-        )
-        .join("") + "\n          ",
-    );
+    $(".testimonial [data-sheets]").html(renderSheets(quotes, "            "));
   }
 
   h.text(".contact-copy h2", p.contactTitle);
@@ -412,21 +420,7 @@ const injectLivreDor = ($, content, h) => {
   h.text(".guestbook-contact h2", p.ctaTitle);
   h.text(".guestbook-contact p", p.ctaText);
 
-  // Feuilles d'avis, légèrement inclinées (inclinaison fixe par avis).
-  const tilts = [-3, 2, -1.5, 2.5, -2, 1.5];
-  $("[data-sheets]").html(
-    content.reviews
-      .map(
-        (r, i) => `
-          <li class="sheet" style="--tilt: ${tilts[i % tilts.length]}deg">
-            <blockquote>
-              <p>« ${escapeHtml(r.text)} »</p>
-              <cite><strong>${escapeHtml(r.name)}</strong>${r.structure ? ` · ${escapeHtml(r.structure)}` : ""}</cite>
-            </blockquote>
-          </li>`,
-      )
-      .join("") + "\n        ",
-  );
+  $("[data-sheets]").html(renderSheets(content.reviews, "          "));
 };
 
 const injectContact = ($, content, h) => {

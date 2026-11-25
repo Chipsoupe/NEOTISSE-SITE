@@ -121,6 +121,22 @@ Désormais, chaque publication dans le Studio relance le build Netlify.
 > nouvelle publication, on peut programmer un build quotidien (par exemple
 > une tâche planifiée qui appelle le build hook chaque nuit).
 
+### 9. Onglet « Statistiques » (fréquentation GA4)
+
+Le Studio a un onglet **Statistiques** qui affiche un rapport Looker Studio
+(`studio/statsTool.jsx`).
+
+1. lookerstudio.google.com → **Créer → Rapport** → source **Google
+   Analytics** → la propriété GA4 du site. Composer le rapport.
+2. **Partager** : ajouter l'adresse Google de chaque fondatrice (Lecteur).
+3. **Fichier → Intégrer le rapport → Activer l'intégration** → copier
+   l'**URL d'intégration** (`https://lookerstudio.google.com/embed/reporting/…`).
+4. La coller dans `studio/.env` : `SANITY_STUDIO_STATS_URL=…`, puis
+   `npm run deploy` dans `studio/`.
+
+> GA4 ne compte que les visiteurs qui ont accepté les cookies statistiques :
+> les tendances sont justes, les totaux sous-estimés.
+
 ---
 
 ## Au quotidien (fondatrices)

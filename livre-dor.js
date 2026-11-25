@@ -50,8 +50,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const raw = range > 0 ? (window.scrollY - sceneTop()) / range : 1;
       open = smoothstep(OPEN_FROM, OPEN_TO, raw);
     }
+    // Presque ouvert = ouvert : on cale la valeur sur 1 pour que le livre
+    // n'ait plus d'échelle fractionnaire (sinon Chrome laisse des traits
+    // noirs en redessinant la page pendant qu'on écrit).
+    if (open > 0.97) open = 1;
     scene.style.setProperty("--open", open.toFixed(4));
-    scene.classList.toggle("is-open", open > 0.97);
+    scene.classList.toggle("is-open", open === 1);
   };
 
   if (scene && book) {
@@ -80,56 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* ---------- Feuilles d'avis ---------- */
-
-  const sheetsList = document.querySelector("[data-sheets]");
-
-  const revealSheet = (sheet) => sheet.classList.add("is-in");
-  const observer =
-    !reducedMotion && "IntersectionObserver" in window
-      ? new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                revealSheet(entry.target);
-                observer.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.25 },
-        )
-      : null;
-
-  // Texte limité à 6 lignes : si le mot est plus long, on ajoute
-  // « Lire la suite » pour déplier la feuille.
-  const clampSheet = (sheet) => {
-    const text = sheet.querySelector("blockquote > p");
-    if (!text || sheet.querySelector(".sheet__more")) return;
-    text.classList.add("is-clamped");
-    if (text.scrollHeight <= text.clientHeight + 2) return; // tout tient
-    const more = document.createElement("button");
-    more.type = "button";
-    more.className = "sheet__more";
-    more.textContent = "Lire la suite";
-    more.setAttribute("aria-expanded", "false");
-    more.addEventListener("click", () => {
-      const expanded = sheet.classList.toggle("is-expanded");
-      more.textContent = expanded ? "Réduire" : "Lire la suite";
-      more.setAttribute("aria-expanded", String(expanded));
-    });
-    text.after(more);
-  };
-
-  if (observer) sheetsList?.classList.add("sheets--js");
-  sheetsList?.querySelectorAll(".sheet").forEach((sheet, index) => {
-    sheet.style.setProperty("--i", index);
-    if (observer) observer.observe(sheet);
-    else revealSheet(sheet);
-  });
-  // Mesure une fois l'écriture manuscrite chargée (elle change la hauteur).
-  const clampAll = () => sheetsList?.querySelectorAll(".sheet").forEach(clampSheet);
-  if (document.fonts?.ready) document.fonts.ready.then(clampAll);
-  else clampAll();
+  // Les feuilles d'avis (apparition, « Lire la suite ») sont gérées par
+  // script.js : elles sont aussi sur l'accueil.
 
   /* ---------- Envoi d'un mot ---------- */
 

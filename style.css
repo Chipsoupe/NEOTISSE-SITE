@@ -1323,39 +1323,59 @@ body {
   font-size: clamp(2.5rem, 5vw, 4.5rem);
   margin-bottom: 40px;
 }
-.testimonial blockquote {
-  flex: 0 0 min(420px, 78vw);
-  margin: 0;
-  padding: 32px 36px;
-  border-radius: 32px 120px 32px 32px;
-  background: #F3DFA2;
-  color: #2a211b;
-  font-size: clamp(17px, 1.5vw, 22px);
-  font-weight: 500;
+/* Les avis de l'accueil sont les feuilles du livre d'or (.sheets, plus bas).
+   Le titre se rapproche un peu de la rangée : elle a déjà un rembourrage
+   pour le ruban adhésif. */
+.testimonial h2 {
+  margin-bottom: 8px;
 }
-.testimonial-track {
+/* Peu d'avis : la rangée reste centrée (marges automatiques, sans effet
+   quand elle déborde). */
+.sheets > :first-child {
+  margin-left: auto;
+}
+.sheets > :last-child {
+  margin-right: auto;
+}
+
+/* Flèches des carrousels d'avis (ajoutées par script.js). */
+.carousel-nav {
+  --nav-bg: #f3dfa2;
+  --nav-ink: #2a211b;
   display: flex;
-  gap: 20px;
-  overflow-x: auto;
-  width: 100%;
-  max-width: none;
-  padding: 0 4px 20px;
-  scroll-snap-type: x mandatory;
-  scrollbar-color: #F3DFA2 #2a211b;
-}
-.testimonial-track blockquote {
-  scroll-snap-align: start;
-}
-.testimonial blockquote cite {
-  display: block;
+  justify-content: center;
+  gap: 14px;
   margin-top: 28px;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.45;
 }
-.testimonial blockquote cite strong {
-  font-weight: 700;
+.carousel-nav[hidden] {
+  display: none;
+}
+.carousel-nav__button {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  padding: 0 0 4px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--nav-bg);
+  color: var(--nav-ink);
+  font: 400 34px/1 Georgia, serif;
+  cursor: pointer;
+  transition:
+    transform 250ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 200ms ease;
+}
+.carousel-nav__button:hover:not(:disabled) {
+  transform: scale(1.08);
+}
+.carousel-nav__button:focus-visible {
+  outline: 2px solid var(--nav-bg);
+  outline-offset: 3px;
+}
+.carousel-nav__button:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
 .contact-section {
   min-height: 760px;
@@ -3647,6 +3667,34 @@ body {
     scale(calc(0.9 + var(--open) * 0.1));
   color: #2a211b;
 }
+/* Ouvert : plus aucune transformation ni perspective sur le livre. Un calque
+   3D mis à l'échelle fait apparaître des traits noirs (coutures entre les
+   tuiles) quand Chrome redessine la page pendant qu'on écrit. */
+.book-scene.is-open .book {
+  transform: none;
+  perspective: none;
+}
+/* Ouvert (ordinateur) : la couverture retournée est remplacée par un rendu
+   à plat identique — le plat en cuir passe sous les deux pages et la page de
+   gauche reçoit le papier de l'intérieur de la couverture. Le bord du calque
+   3D laissait sinon un trait vertical au milieu du livre pendant qu'on
+   écrit. (Sur mobile, voir plus bas : la couverture est déjà retirée.) */
+@media (min-width: 801px) {
+  .book-scene.is-open .book__cover {
+    display: none;
+  }
+  .book-scene.is-open .book__board {
+    left: -12px;
+    width: calc(100% + 24px);
+    border-radius: 12px;
+  }
+  .book-scene.is-open .book__page--left {
+    border-radius: 6px 0 0 6px;
+    background:
+      linear-gradient(270deg, rgb(60 40 20 / 18%), transparent 9%),
+      var(--paper);
+  }
+}
 
 /* Cuir : base sombre + reflets et grain discret. */
 .book__board,
@@ -4030,17 +4078,35 @@ body {
   text-align: center;
   font-size: clamp(2.2rem, 4.5vw, 4rem);
 }
+/* Une rangée de feuilles qui défile de gauche à droite (flèches sous la
+   rangée, au doigt sur mobile). Le rembourrage laisse la place au ruban
+   adhésif, à l'inclinaison, à l'ombre et au soulèvement au survol. */
 .sheets {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 56px 44px;
+  display: flex;
+  align-items: flex-start;
+  gap: 44px;
   max-width: 1180px;
   margin: 0 auto;
-  padding: 0;
+  padding: 34px 20px 46px;
   list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 20px;
+  scrollbar-width: none;
+}
+.sheets::-webkit-scrollbar {
+  display: none;
+}
+.guestbook-sheets .carousel-nav {
+  --nav-bg: #5a2817;
+  --nav-ink: #f3dfa2;
+  margin-top: 6px;
 }
 .sheet {
   --tilt: 0deg;
+  flex: 0 0 min(340px, 78vw);
+  scroll-snap-align: start;
   position: relative;
   padding: 44px 34px 32px;
   background:
@@ -4181,6 +4247,11 @@ body {
     width: auto;
     height: auto;
     opacity: clamp(0, calc((1 - var(--open)) * 2.4), 1);
+  }
+  /* Ouverte, elle est invisible : on la retire pour ne pas laisser un
+     calque 3D au-dessus de la page où l'on écrit. */
+  .book-scene.is-open .book__cover {
+    display: none;
   }
   .book__cover-front {
     border-radius: 12px;

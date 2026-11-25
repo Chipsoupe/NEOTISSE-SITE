@@ -15,6 +15,7 @@ import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { schemaTypes } from "./schemaTypes";
 import { PAGES } from "./schemaTypes/pages";
+import { statsTool } from "./statsTool";
 
 const API_VERSION = "2025-01-01";
 
@@ -105,7 +106,9 @@ export default defineConfig({
   title: "Neotisse",
   projectId: process.env.SANITY_STUDIO_PROJECT_ID,
   dataset: process.env.SANITY_STUDIO_DATASET || "production",
-  plugins: [structureTool({ structure }), frFRLocale()],
+  // Onglets du haut : « Structure » (le contenu) et « Statistiques »
+  // (rapport Looker Studio, voir statsTool.jsx).
+  plugins: [structureTool({ structure }), statsTool(), frFRLocale()],
   schema: {
     types: schemaTypes,
     // Pas de bouton « Créer » pour les documents uniques.
