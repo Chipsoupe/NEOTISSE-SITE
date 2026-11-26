@@ -151,6 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
       form.removeAttribute("aria-busy");
     }
 
+    window.neotisseTrack?.("submit_avis"); // mesure d'audience (analytics.js)
     form.hidden = true;
     if (thanks) {
       thanks.hidden = false;

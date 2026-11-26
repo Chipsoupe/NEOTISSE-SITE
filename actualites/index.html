@@ -1,18 +1,20 @@
 <!doctype html>
 <html lang="fr">
   <head>
-    <!-- Balise Google (GTM-MH7LN44S). Chargée seulement si le visiteur a
-         accepté les cookies statistiques (bannière, voir script.js). -->
+    <!-- Google Analytics (GA4, G-6YGRC75KY9). Chargé seulement si le visiteur a
+         accepté les cookies statistiques (bannière, voir script.js).
+         Actions mesurées : analytics.js. -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
+      gtag('config', 'G-6YGRC75KY9');
       window.loadGoogleTag = function () {
         if (window.googleTagLoaded) return;
         window.googleTagLoaded = true;
         var s = document.createElement('script');
         s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-MH7LN44S';
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-6YGRC75KY9';
         document.head.appendChild(s);
       };
       if (document.cookie.indexOf('neotisse-cookie-consent=statistics') !== -1) {
@@ -348,6 +350,7 @@
       </div>
     </div>
     <script src="/vendor/lenis/lenis.min.js" defer></script>
+    <script src="/analytics.js" defer></script>
     <script src="/script.js" defer></script>
     <script src="/actualites.js" defer></script>
   </body>

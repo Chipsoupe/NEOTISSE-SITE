@@ -137,6 +137,86 @@ Le Studio a un onglet **Statistiques** qui affiche un rapport Looker Studio
 > GA4 ne compte que les visiteurs qui ont accepté les cookies statistiques :
 > les tendances sont justes, les totaux sous-estimés.
 
+### 10. Actions mesurées (ateliers, contact, agenda…)
+
+Le site envoie directement à GA4 (`G-6YGRC75KY9`, sans Google Tag
+Manager) les actions listées dans `analytics.js`. Elles sont repérées
+d'après le HTML : un atelier ou un événement ajouté dans Sanity est suivi
+sans rien toucher.
+
+Les noms suivent le plan de taggage du rapport Looker : ne pas les renommer
+sans mettre le rapport à jour.
+
+| Événement GA4 | Ce qu'il compte | Paramètres |
+|---|---|---|
+| `generate_lead` | Formulaire de contact envoyé (dès qu'il a un `action` Formspree) | form_name (`contact`) |
+| `click_contact` | Clic sur l'e-mail ou le téléphone, ou adresse e-mail copiée | contact_type (`email`, `telephone`, `copie_email`), emplacement |
+| `inscription_evenement` | « En savoir plus » d'un événement du calendrier (site de la structure) | activity_name, structure |
+| `submit_avis` | Mot envoyé dans le livre d'or | — |
+| `click_atelier` | Atelier survolé ≥ 1 s (ordinateur), ouvert au toucher (mobile) ou déplié à l'accueil — une fois par page vue | activity_name, emplacement |
+| `clic_atelier_accueil` | Clic sur un atelier dans la liste de l'accueil | activity_name |
+| `clic_bouton_contact` | Clic sur un lien vers la page Contact | emplacement (« Ateliers · Carte atelier »…), activity_name |
+| `debut_formulaire` | Premier champ rempli du formulaire de contact | form_name |
+| `ouverture_article` | Article des Actualités ouvert | article |
+| `clic_reseau_social` | Clic vers Instagram, Facebook… | reseau, emplacement |
+
+**Réglage unique dans GA4** (analytics.google.com → roue dentée **Admin**) :
+
+1. **Affichage des données → Définitions personnalisées → Créer une
+   dimension personnalisée**, champ d'application **Événement**, une fois
+   pour chaque ligne :
+
+   | Nom de la dimension | Paramètre d'événement |
+   |---|---|
+   | Atelier ou événement | `activity_name` |
+   | Emplacement | `emplacement` |
+   | Type de contact | `contact_type` |
+   | Structure | `structure` |
+   | Article | `article` |
+   | Réseau social | `reseau` |
+   | Formulaire | `form_name` |
+
+2. *(Facultatif)* **Affichage des données → Événements clés → Nouvel
+   événement clé** : `generate_lead`, `click_contact`,
+   `inscription_evenement`, `submit_avis`.
+
+Les dimensions ne se remplissent qu'à partir de leur création, et les
+rapports GA4 ont 24 à 48 h de retard. Pour vérifier tout de suite : sur le
+site, accepter les cookies, survoler un atelier 1 seconde, puis GA4 →
+**Rapports → Temps réel** : `click_atelier` apparaît en une minute.
+
+**Pages à ajouter au rapport Looker Studio** (mode Modification) :
+
+0. **Ressource → Gérer les sources de données ajoutées → Modifier →
+   Actualiser les champs** (sinon les nouvelles dimensions n'apparaissent
+   pas). Clic droit sur le sélecteur de dates → **Rendre au niveau du
+   rapport** : la période choisie vaut pour toutes les pages.
+1. Page **« Ateliers »** :
+   - tableau *Atelier ou événement* / *Nombre d'événements*, filtre *Nom de
+     l'événement* = `click_atelier`, trié du plus grand au plus petit
+     (titre : « Ateliers les plus consultés ») ;
+   - même tableau avec le filtre `clic_bouton_contact` et *Atelier ou événement* non vide
+     (titre : « Ateliers qui donnent envie de nous contacter »).
+2. Page **« Contact »** :
+   - tableau *Emplacement* / *Nombre d'événements*, filtre `clic_bouton_contact`
+     (titre : « Les boutons qui mènent au contact ») ;
+   - trois chiffres clés côte à côte : *Vues* avec le filtre *Chemin de la
+     page* = `/contact/`, puis *Nombre d'événements* filtré sur
+     `debut_formulaire`, puis sur `generate_lead`
+     (« Visites de Contact → Formulaires commencés → Envoyés »).
+3. Page **« Agenda & actualités »** :
+   - tableau *Atelier ou événement* / *Structure* / *Nombre
+     d'événements*, filtre `inscription_evenement` ;
+   - tableau *Article* / *Nombre d'événements*, filtre `ouverture_article` ;
+   - tableau *Réseau social* / *Emplacement* / *Nombre d'événements*,
+     filtre `clic_reseau_social`.
+4. Le tableau des actions importantes existant : filtre *Nom de
+   l'événement* parmi `generate_lead`, `click_contact` (détail par
+   *Type de contact*), `inscription_evenement`, `submit_avis`, `click_atelier`.
+
+L'onglet Statistiques du Studio affiche le rapport entier : les nouvelles
+pages y apparaissent sans redéployer le Studio.
+
 ---
 
 ## Au quotidien (fondatrices)
